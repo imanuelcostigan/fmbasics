@@ -2,36 +2,9 @@
 % Please edit documentation in R/currency-class.R
 \name{Currency}
 \alias{Currency}
-\alias{AUD}
-\alias{EUR}
-\alias{GBP}
-\alias{JPY}
-\alias{NZD}
-\alias{USD}
-\alias{CHF}
-\alias{HKD}
-\alias{NOK}
 \title{Build a Currency}
 \usage{
 Currency(iso, calendar)
-
-AUD()
-
-EUR()
-
-GBP()
-
-JPY()
-
-NZD()
-
-USD()
-
-CHF()
-
-HKD()
-
-NOK()
 }
 \arguments{
 \item{iso}{a three letter code representing the currency (see \href{https://en.wikipedia.org/wiki/ISO_4217}{ISO4217})}
@@ -46,25 +19,6 @@ A currency refers to money in any form when in actual use or circulation, as
 a medium of exchange, especially circulating paper money. This package
 includes handy constructors for common currencies.
 }
-\section{Handy constructors}{
-
-
-The handy currency constructors use the following conventions:
-
-\tabular{ll}{
-\bold{Creator} \tab \bold{Joint calendars} \cr
-\code{AUD()} \tab \code{AUSYCalendar} \cr
-\code{EUR()} \tab \code{EUTACalendar} \cr
-\code{GBP()} \tab \code{GBLOCalendar} \cr
-\code{JPY()} \tab \code{JPTOCalendar} \cr
-\code{NZD()} \tab \code{NZAUCalendar}, \code{NZWECalendar} \cr
-\code{USD()} \tab \code{USNYCalendar} \cr
-\code{CHF()} \tab \code{CHZHCalendar} \cr
-\code{HKD()} \tab \code{HKHKCalendar} \cr
-\code{NOK()} \tab \code{NOOSCalendar}
-}
-}
-
 \examples{
 library("fmdates")
 Currency("AUD", c(AUSYCalendar()))
@@ -72,4 +26,7 @@ AUD()
 }
 \references{
 \href{http://en.wikipedia.org/w/index.php?title=Currency&oldid=598027200}{Currency. (2014, March 3). In Wikipedia}
+}
+\seealso{
+\link{CurrencyConstructors}
 }

@@ -4,9 +4,29 @@
 #' a medium of exchange, especially circulating paper money. This package
 #' includes handy constructors for common currencies.
 #'
-#' @section Handy constructors:
+#' @param iso a three letter code representing the currency (see [ISO
+#'   4217](https://en.wikipedia.org/wiki/ISO_4217))
+#' @param calendar a [JointCalendar][fmdates::JointCalendar()]
+#' @return an object of class `Currency`
 #'
-#' The handy currency constructors use the following conventions:
+#' @references
+#' \href{http://en.wikipedia.org/w/index.php?title=Currency&oldid=598027200}{Currency. (2014, March 3). In Wikipedia}
+#' @examples
+#' library("fmdates")
+#' Currency("AUD", c(AUSYCalendar()))
+#' AUD()
+#' @seealso [CurrencyConstructors]
+#' @export
+
+Currency <- function(iso, calendar) {
+  assertthat::assert_that(assertthat::is.string(iso), nchar(iso) == 3,
+    is.JointCalendar(calendar))
+  structure(list(iso = toupper(iso), calendar = calendar), class = "Currency")
+}
+
+#' Handy Currency constructors
+#'
+#' These constructors use the following conventions:
 #'
 #' \tabular{ll}{
 #' \bold{Creator} \tab \bold{Joint calendars} \cr
@@ -21,50 +41,35 @@
 #' `NOK()` \tab `NOOSCalendar`
 #' }
 #'
-#' @param iso a three letter code representing the currency (see [ISO
-#'   4217](https://en.wikipedia.org/wiki/ISO_4217))
-#' @param calendar a [JointCalendar][fmdates::JointCalendar()]
-#' @return an object of class `Currency`
-#'
-#' @references
-#' \href{http://en.wikipedia.org/w/index.php?title=Currency&oldid=598027200}{Currency. (2014, March 3). In Wikipedia}
+#' @return a [Currency][Currency()] object.
 #' @examples
-#' library("fmdates")
-#' Currency("AUD", c(AUSYCalendar()))
 #' AUD()
-#' @export
-
-Currency <- function(iso, calendar) {
-  assertthat::assert_that(assertthat::is.string(iso), nchar(iso) == 3,
-    is.JointCalendar(calendar))
-  structure(list(iso = toupper(iso), calendar = calendar), class = "Currency")
-}
-
-#' @rdname Currency
+#' @name CurrencyConstructors
+#' @seealso [Currency()]
 #' @export
 AUD <- function() Currency("AUD", c(AUSYCalendar()))
-#' @rdname Currency
+#' @rdname CurrencyConstructors
 #' @export
 EUR <- function() Currency("EUR", c(EUTACalendar()))
-#' @rdname Currency
+#' @rdname CurrencyConstructors
 #' @export
 GBP <- function() Currency("GBP", c(GBLOCalendar()))
-#' @rdname Currency
+#' @rdname CurrencyConstructors
 #' @export
 JPY <- function() Currency("JPY", c(JPTOCalendar()))
-#' @rdname Currency
+#' @rdname CurrencyConstructors
 #' @export
 NZD <- function() Currency("NZD", c(NZAUCalendar(), NZWECalendar()))
-#' @rdname Currency
+#' @rdname CurrencyConstructors
 #' @export
 USD <- function() Currency("USD", c(USNYCalendar()))
-#' @rdname Currency
+#' @rdname CurrencyConstructors
 #' @export
 CHF <- function() Currency("CHF", c(CHZHCalendar()))
-#' @rdname Currency
+#' @rdname CurrencyConstructors
 #' @export
 HKD <- function() Currency("HKD", c(HKHKCalendar()))
-#' @rdname Currency
+#' @rdname CurrencyConstructors
 #' @export
 NOK <- function() Currency("NOK", c(NOOSCalendar()))
 
