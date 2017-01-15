@@ -1,0 +1,79 @@
+---
+title: "Rates and Discount Factors"
+author: "Imanuel Costigan"
+date: "`r Sys.Date()`"
+output: 
+  rmarkdown::html_document:
+    toc: true
+    theme: spacelab
+vignette: >
+  %\VignetteIndexEntry{Rates and Discount Factors}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
+
+FinancialMarkets makes it easy to work with interest rates (and discount factors). You can covert from interest rates to discount factors and vice-versa.
+
+## Interest rates
+
+Let's make an interest rate (R6) object:
+
+```{r interest_rate_make}
+library("FinancialMarkets")
+# Quarterly compounding, with Actual/365 day basis
+(rate <- InterestRate$new(rate = 0.04, compounding = 4, day_basis = 'act/365'))
+```
+
+You can convert this rate to another rate with a different compounding/day basis:
+
+```{r convert}
+rate$convert(compounding = 2)
+rate$convert(day_basis = 'act/360')
+(rate$convert(compounding = 1000, day_basis = '30/360us'))
+```
+
+You can perform arithmetic on interest rates. Rates are implicitly converted to equivalent day basis and compounding before the operation is performed on the rates' values.
+
+```{r rate_ops}
+rate1 <- InterestRate$new(0.04, 2, 'act/365')
+rate2 <- InterestRate$new(0.01, 1000, 'act/360')
+rate1 + rate2
+```
+
+The `$to_df()` method will allow you to map this interest rate to a discount factor:
+
+```{r to_df}
+library (lubridate)
+df <- rate$to_df(ymd(20140101), ymd(20140401))
+```
+
+The `InterestRate` class is vectorised.
+
+```{r interest_rate_vectorised}
+rates <- InterestRate$new(seq(0.04, 0.05, 1e-4), 2, 'act/365')
+rates[23:26]
+rates[23:26] <- InterestRate$new(0.05, 2, 'act/365')
+rates[23:26]
+```
+
+
+## Discount factors
+
+Let's make a discount factor object:
+
+```{r discount_factor_make}
+(df <- DiscountFactor$new(0.9, ymd(20140101), ymd(20150101)))
+```
+
+You can convert discount factors to interest rates.
+
+```{r to_rate}
+df$to_rate(compounding = 2, day_basis = 'act/365')
+```
+
+The `DiscountFactor` class is vectorised.
+
+```{r df_vectorised}
+dfs <- DiscountFactor$new(seq(1, 0.9, -1e-3), ymd(20140101), ymd(20150101) + days(0:100))
+dfs[23:26]
+```
