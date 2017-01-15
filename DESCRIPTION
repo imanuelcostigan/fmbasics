@@ -16,3 +16,7 @@ Encoding: UTF-8
 LazyData: true
 URL: https://github.com/imanuelcostigan/fmbasics
 BugReports: https://github.com/imanuelcostigan/fmbasics/issues
+Suggests: testthat,
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr
