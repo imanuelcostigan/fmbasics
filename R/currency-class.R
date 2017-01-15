@@ -96,3 +96,13 @@ format.Currency <- function(x, ...) {paste("<Currency>", x$iso)}
 #' @export
 print.Currency <- function(x, ...) {cat(format(x), "\n"); invisible(x)}
 
+#' Inherits from Currency
+#'
+#' A variety of Currency class methods
+#'
+#' @param x an R object
+#' @return `TRUE` if `x` inherits from the `Currency` class; otherwise `FALSE`
+#' @examples
+#' is.Currency(AUD())
+#' @export
+is.Currency <- function(x) inherits(x, "Currency")
