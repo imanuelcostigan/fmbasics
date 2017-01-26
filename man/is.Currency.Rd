@@ -13,7 +13,7 @@ is.Currency(x)
 \code{TRUE} if \code{x} inherits from the \code{Currency} class; otherwise \code{FALSE}
 }
 \description{
-A variety of Currency class methods
+Checks whether object inherits from \code{Currency} class
 }
 \examples{
 is.Currency(AUD())

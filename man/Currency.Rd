@@ -22,7 +22,6 @@ includes handy constructors for common currencies.
 \examples{
 library("fmdates")
 Currency("AUD", c(AUSYCalendar()))
-AUD()
 }
 \references{
 \href{http://en.wikipedia.org/w/index.php?title=Currency&oldid=598027200}{Currency. (2014, March 3). In Wikipedia}
