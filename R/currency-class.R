@@ -85,9 +85,9 @@ NOK <- function() Currency("NOK", c(NOOSCalendar()))
 #' @examples
 #' iso(AUD())
 #' @export
-iso <- function(x, ...) UseMethod("iso")
+iso <- function(x) UseMethod("iso")
 #' @export
-iso.default <- function(x, ...) x$iso
+iso.default <- function(x) x$iso
 #' @export
 locale.Currency <- function(x) x$calendar
 #' @export
