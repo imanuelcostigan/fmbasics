@@ -4,19 +4,33 @@ Title: Financial Market Building Blocks
 Version: 0.0.99
 Author: Imanuel Costigan <i.costigan@me.com>
 Maintainer: Imanuel Costigan <i.costigan@me.com>
-Description: Implements basic financial market objects like currencies, 
-  currency pairs, interest rates and interest rate indices. You will be able to
-  use Benchmark instances of these objects which have been defined using their
-  most common conventions or those defined by International Swap Dealer 
-  Association (ISDA, http://www2.isda.org) legal documentation.
+Description: Implements basic financial market objects like currencies, currency
+    pairs, interest rates and interest rate indices. You will be able to use
+    Benchmark instances of these objects which have been defined using their most
+    common conventions or those defined by International Swap Dealer Association
+    (ISDA, http://www2.isda.org) legal documentation.
 License: GPL-2
+Imports:
+    fmdates,
+    assertthat
+Suggests:
+    testthat,
+    knitr,
+    rmarkdown,
+    lubridate (>= 1.6.0)
+Remotes: imanuelcostigan/fmdates#4
 RoxygenNote: 5.0.1.9000
 Roxygen: list(markdown = TRUE)
+VignetteBuilder: knitr
 Encoding: UTF-8
 LazyData: true
 URL: https://github.com/imanuelcostigan/fmbasics
 BugReports: https://github.com/imanuelcostigan/fmbasics/issues
-Suggests: testthat,
-    knitr,
-    rmarkdown
-VignetteBuilder: knitr
+Collate:
+    'currency-class.R'
+    'currency-pair-class.R'
+    'fmbasics-package.r'
+    'indices-class.R'
+    'interest-rate-classes.R'
+    'interest-rate-ops.R'
+    'zzz-create-market-objects.R'
