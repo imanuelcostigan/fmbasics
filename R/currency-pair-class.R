@@ -155,47 +155,47 @@ print.CurrencyPair <- function(x, ...) {cat(format(x), "\n"); invisible(x)}
 #'
 #' @examples
 #' AUDUSD()
-#' @name CurrencyConstructors
+#' @name CurrencyPairConstructors
 #' @family constructors
 NULL
 
-#' @rdname CurrencyConstructors
+#' @rdname CurrencyPairConstructors
 #' @export
 AUDUSD <- function () CurrencyPair(AUD(), USD())
-#' @rdname CurrencyConstructors
+#' @rdname CurrencyPairConstructors
 #' @export
 EURUSD <- function () CurrencyPair(EUR(), USD())
-#' @rdname CurrencyConstructors
+#' @rdname CurrencyPairConstructors
 #' @export
 NZDUSD <- function () CurrencyPair(NZD(), USD())
-#' @rdname CurrencyConstructors
+#' @rdname CurrencyPairConstructors
 #' @export
 GBPUSD <- function () CurrencyPair(GBP(), USD())
-#' @rdname CurrencyConstructors
+#' @rdname CurrencyPairConstructors
 #' @export
 USDJPY <- function () CurrencyPair(USD(), JPY())
-#' @rdname CurrencyConstructors
+#' @rdname CurrencyPairConstructors
 #' @export
 GBPJPY <- function () CurrencyPair(GBP(), JPY())
-#' @rdname CurrencyConstructors
+#' @rdname CurrencyPairConstructors
 #' @export
 EURGBP <- function () CurrencyPair(EUR(), GBP())
-#' @rdname CurrencyConstructors
+#' @rdname CurrencyPairConstructors
 #' @export
 AUDNZD <- function () CurrencyPair(AUD(), NZD())
-#' @rdname CurrencyConstructors
+#' @rdname CurrencyPairConstructors
 #' @export
 EURCHF <- function () CurrencyPair(EUR(), CHF())
-#' @rdname CurrencyConstructors
+#' @rdname CurrencyPairConstructors
 #' @export
 USDCHF <- function () CurrencyPair(USD(), CHF())
-#' @rdname CurrencyConstructors
+#' @rdname CurrencyPairConstructors
 #' @export
 USDHKD <- function () CurrencyPair(USD(), HKD())
-#' @rdname CurrencyConstructors
+#' @rdname CurrencyPairConstructors
 #' @export
 EURNOK <- function () CurrencyPair(EUR(), NOK())
-#' @rdname CurrencyConstructors
+#' @rdname CurrencyPairConstructors
 #' @export
 USDNOK <- function () CurrencyPair(USD(), NOK())
 
