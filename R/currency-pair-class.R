@@ -1,185 +1,211 @@
-#' @include currency-class.R
-NULL
-
-#' Class \code{'CurrencyPair'}
+#' CurrencyPair class
 #'
-#' A currency pair is the quotation of the relative value of a currency unit
-#' against the unit of another currency in the foreign exchange market.
-#' The currency that is used as the reference is called the quote currency and
-#' the currency that is quoted in relation (the numeraire) is called the base
-#' currency.
+#' Create an object of class `CurrencyPair`
 #'
-#' @section Methods:
-#' \describe{
-#' \item{\code{initialize(base_ccy, quote_ccy, calendar = NULL)}}{Creates a
-#' currency pair from the arguments \code{base_ccy}, \code{quote_ccy} and
-#' \code{calendar}. The first two arguments must be \code{\link{Currency}}
-#' objects, while \code{calendar} defaults to \code{NULL} and inherits its
-#' calendar as the \code{\link{JointCalendar}} of the \code{base_ccy} and
-#' \code{quote_ccy} calendars.  Note that USNY calendars are stripped out from
-#' the resulting \code{calendar} and that a pair is has T+1 spot days if it
-#' includes one of the currencies documented in the \code{is_t1} method.
-#' Otherwise it has T=2 spot days.}
-#' \item{\code{iso()}}{return ISO code of currency pair and is used by the
-#' \code{print} method}
-#' \item{\code{is_t1()}}{Returns TRUE if the currency pair settles one good day
-#' after trade. At the moment no supported currency is a T1 currency. However,
-#' the pairs against the following currencies are T1: CAD, TRY, PHP, RUB, KZT
-#' and PKR}
-#' \item{\code{spot(dates)}}{The spot dates are usually two non-NYC good day
-#' after today. The method \code{is_t1} identifies the pairs whose spot dates
-#' are conventionally one good non-NYC day after today. In both cases, if those
-#' dates are not a good NYC day, they are rolled to good NYC and non-NYC days
-#' using the Following convention.}
-#' \item{\code{spot_next(dates)}}{The spot next dates are one good NYC and
-#' non-NYC day after spot rolled using the Following convention if necessary.}
-#' \item{\code{forward(dates)}}{Forward dates are determined using the
-#' calendar's \code{shift()} method rolling bad NYC and non-NYC days using the
-#' Following convention. The end-to-end convention applies.}
-#' \item{\code{today(dates)}}{Today is simply dates which are good NYC and
-#' non-NYC days. Otherwise today is undefined and returns \code{NA}.}
-#' \item{\code{tomorrow(dates, tenor = 'spot')}}{Tomorrow is one good NYC and
-#' non-NYC day except where that is on or after spot. In that case, is is
-#' undefined and returns \code{NA}.}
-#' \item{\code{value_dates(dates)}}{Determine common value dates. The supported
-#' value date \code{tenors} are: "spot", "spot_next", "today", "tomorrow" and
-#' the usual "forward" dates (e.g. \code{lubridate::months(3)}).}
-#' \item{\code{invert()}}{Inverts the currency pair and returns new
-#' \code{CurrencyPair} object. Does not mutate instance against which this method
-#' is called.}
-#' }
-#'
-#' @section Active methods:
-#' There are two active methods: \code{base_ccy(value)} and \code{quote_ccy(value)}
-#' which return the base and quote currency respectively when \code{value} is
-#' missing or otherwise set the fields. When the setter is called, the resulting
-#' currency pair's calendar is the joint calendar of the base and quote
-#' currency (with any New York calendars removed).
-#'
-#' @section Fields:
-#' There are no public fields.
-#'
+#' @param base_ccy a [Currency][Currency()] object
+#' @param quote_ccy a [Currency][Currency()] object
+#' @param calendar a [JointCalendar][JointCalendar()] object. Defaults to
+#' `NULL` which sets this to the joint calendar of the two currencies and
+#' removes any [USNYCalendar][USNYCalendar()] object to allow currency pair
+#' methods to work correctly
+#' @return a `CurrencyPair` object
 #' @examples
-#' CurrencyPair$new(AUD(), USD())
-#' @references
-#' TDG Practitioner Guide: Forex Market, Reddi & Yesuthasen, 2009
-#' @docType class
-#' @format A \code{\link{R6Class}} generator object
-#' @keywords data
+#' CurrencyPair(AUD(), USD())
 #' @export
 
-CurrencyPair <- R6::R6Class (
-  classname = 'CurrencyPair',
-  public = list(
-    initialize = function (base_ccy, quote_ccy, calendar = NULL) {
-      assertthat::assert_that(is(base_ccy, "Currency"),
-        is(quote_ccy, "Currency"))
-      private$.base_ccy <- base_ccy
-      private$.quote_ccy <- quote_ccy
-      if (!is.null(calendar)) {
-        assertthat::assert_that(is(calendar, "JointCalendar"))
-        private$.calendar <- calendar
-      } else {
-        private$.calendar <- c(base_ccy$calendar, quote_ccy$calendar)
-      }
-      private$.remove_usny()
-      invisible(self)
-    },
-    iso = function () {
-      paste0(private$.base_ccy$iso, private$.quote_ccy$iso)
-    },
-    print = function () {
-      cat("<CurrencyPair>", self$iso(), "\n")
-    },
-    is_t1 = function () {
-      t1_ccy <- c('cad', 'try', 'php', 'rub', 'kzt', 'pkr')
-      t1_pair <- paste0('usd', t1_ccy)
-      t1_pair <- c(t1_pair, paste0(t1_ccy, 'usd'))
-      self$iso() %in% t1_pair
-    },
-    spot = function (dates) {
-      delay <- if (self$is_t1()) lubridate::days(1) else lubridate::days(2)
-      spot <- private$.calendar$shift(dates, delay, 'f', FALSE)
-      private$.add_usny()
-      res <- private$.calendar$shift(spot, lubridate::days(0), 'f', FALSE)
-      private$.remove_usny()
-      res
-    },
-    spot_next = function (dates) {
-      private$.add_usny()
-      res <- private$.calendar$shift(self$spot(dates), lubridate::days(1),
-        'f', FALSE)
-      private$.remove_usny()
-      res
-    },
-    forward = function (dates, period) {
-      private$.add_usny()
-      res <- private$.calendar$shift(self$spot(dates), period, 'f', TRUE)
-      private$.remove_usny()
-      res
-    },
-    today = function (dates) {
-      dates[!(private$.calendar$is_good(dates))] <- NA
-      dates
-    },
-    tomorrow = function (dates) {
-      tom <- private$.calendar$shift(dates, lubridate::days(1), 'f', FALSE)
-      tom[!(tom < self$spot(dates))] <- NA
-      tom
-    },
-    value_dates = function (dates, tenor = 'spot') {
-      if (identical(tenor, 'spot'))
-        self$spot(dates)
-      else if (identical(tenor, 'spot_next'))
-        self$spot_next(dates)
-      else if (identical(tenor, 'today'))
-        self$today(dates)
-      else if(identical(tenor, 'tomorrow'))
-        self$tomorrow(dates)
-      else
-        self$forward(dates, tenor)
-    },
-    invert = function () {
-      CurrencyPair$new(self$quote_ccy, self$base_ccy, private$.calendar)
-    }
-  ),
-  active = list(
-    base_ccy = function (value) {
-      if (missing(value)) {
-        private$.base_ccy
-      } else {
-        assertthat::assert_that(is(value, "Currency"),
-          value$as.character() != private$.quote_ccy$as.character())
-        private$.base_ccy <- value
-        private$.calendar <- c(private$.base_ccy$calendar,
-          private$.quote_ccy$calendar)
-        private$.remove_usny()
-      }
-    },
-    quote_ccy = function (value) {
-      if (missing(value)) {
-        private$.quote_ccy
-      } else {
-        assertthat::assert_that(is(value, "Currency"),
-          value$as.character() != private$.base_ccy$as.character())
-        private$.quote_ccy <- value
-        private$.calendar <- c(private$.base_ccy$calendar,
-          private$.quote_ccy$calendar)
-        private$.remove_usny()
-      }
-    }
-  ),
-  private = list(
-    .base_ccy = NA,
-    .quote_ccy = NA,
-    .spot_days = NA,
-    .calendar = NA,
-    .remove_usny = function () {
-      is_usny <- private$.calendar$locales() %in% "USNYCalendar"
-      private$.calendar <- private$.calendar[!is_usny]
-    },
-    .add_usny = function () {
-      private$.calendar <- c(USNYCalendar$new(), private$.calendar)
-    }
-  )
-)
+CurrencyPair <- function (base_ccy, quote_ccy, calendar = NULL) {
+  assertthat::assert_that(is.Currency(base_ccy), is.Currency(quote_ccy),
+    is.null(calendar) || fmdates::is.JointCalendar(calendar))
+  if (is.null(calendar)) {
+    calendar <- c(locale(base_ccy), locale(quote_ccy))
+  }
+  structure(list(base_ccy = base_ccy, quote_ccy = quote_ccy,
+    calendar = remove_usny(calendar)), class = "CurrencyPair")
+}
+
+#' CurrencyPair methods
+#'
+#' A collection of methods related to currency pairs.
+#'
+#' The methods are sumarised as follows:
+#'
+#' * `is_t1`: Returns `TRUE` if the currency pair settles one good day after
+#' trade. This includes the following currencies crossed with the USD: CAD, TRY,
+#' PHP, RUB, KZT and PKR
+#' * `to_spot`: The spot dates are usually two non-NY good day after today.
+#' `is_t1()` identifies the pairs whose spot dates are conventionally one good
+#' non-NYC day after today. In both cases, if those dates are not a good NYC
+#' day, they are rolled to good NYC and non-NYC days using the Following
+#' convention.
+#' * `to_spot_next`: The spot next dates are one good NYC and non-NYC day after
+#' spot rolled using the Following convention if necessary.
+#' * `to_forward`: Forward dates are determined using the calendar's `shift()`
+#' method rolling bad NYC and non-NYC days using the Following convention. The
+#' end-to-end convention applies.
+#' * `to_today`: Today is simply dates which are good NYC and non-NYC days.
+#' Otherwise today is undefined and returns `NA`.
+#' * `to_tomorrow`: Tomorrow is one good NYC and non-NYC day except where that
+#' is on or after spot. In that case, is is undefined and returns `NA`.
+#' * `to_value`: Determine common value dates. The supported value date `tenors`
+#' are: "spot", "spot_next", "today", "tomorrow" and the usual
+#' "forward" dates (e.g. `lubridate::months(3)`).
+#' * `invert`: Inverts the currency pair and returns new `CurrencyPair` object.
+#' * `is.CurrencyPair`:  Returns `TRUE` if `x` inherits from the `CurrencyPair`
+#' class; otherwise `FALSE`
+#'
+#' @param x a `CurrencyPair` object
+#' @param dates a vector of dates from which forward dates are calculated
+#' @param tenor the tenor of the value date which can be one of the following:
+#' "spot", "spot_next", "today", "tomorrow" and the usual "forward" dates (e.g.
+#' `lubridate::months(3)`)
+#' @examples
+#' library(lubridate)
+#' is_t1(AUDUSD())
+#' dts <- lubridate::ymd(20170101) + lubridate::days(0:30)
+#' to_spot(dts, AUDUSD())
+#' to_spot_next(dts, AUDUSD())
+#' to_today(dts, AUDUSD())
+#' to_tomorrow(dts, AUDUSD())
+#' to_value(dts, months(3), AUDUSD())
+#' @name CurrencyPairMethods
+NULL
+
+#' @rdname CurrencyPairMethods
+#' @export
+is_t1 <- function(x) {
+  t1_ccy <- c('cad', 'try', 'php', 'rub', 'kzt', 'pkr')
+  t1_pair <- paste0('usd', t1_ccy)
+  t1_pair <- c(t1_pair, paste0(t1_ccy, 'usd'))
+  iso(x) %in% t1_pair
+}
+
+#' @rdname CurrencyPairMethods
+#' @export
+to_spot <- function(dates, x) {
+  delay <- if (is_t1(x)) lubridate::days(1) else lubridate::days(2)
+  spot <- shift(dates, delay, 'f', x$calendar, FALSE)
+  shift(spot, lubridate::days(0), 'f', add_usny(x$calendar), FALSE)
+}
+
+#' @rdname CurrencyPairMethods
+#' @export
+to_spot_next <- function(dates, x) {
+  shift(to_spot(dates, x), lubridate::days(1), 'f',
+    add_usny(x$calendar), FALSE)
+}
+
+#' @rdname CurrencyPairMethods
+#' @export
+to_forward = function(dates, tenor, x) {
+  shift(to_spot(dates, x), tenor, 'f', add_usny(x$calendar), TRUE)
+}
+
+#' @rdname CurrencyPairMethods
+#' @export
+to_today <- function(dates, x) {
+  dates[!is_good(dates, x$calendar)] <- NA
+  dates
+}
+
+#' @rdname CurrencyPairMethods
+#' @export
+to_tomorrow = function(dates, x) {
+  tom <- shift(dates, lubridate::days(1), 'f', x$calendar, FALSE)
+  tom[!(tom < to_spot(dates, x))] <- NA
+  tom
+}
+
+#' @rdname CurrencyPairMethods
+#' @export
+to_value = function(dates, tenor, x) {
+  if (identical(tenor, 'spot'))
+    to_spot(dates, x)
+  else if (identical(tenor, 'spot_next'))
+    to_spot_next(dates, x)
+  else if (identical(tenor, 'today'))
+    to_today(dates, x)
+  else if (identical(tenor, 'tomorrow'))
+    to_tomorrow(dates, x)
+  else
+    to_forward(dates, tenor, x)
+}
+#' @rdname CurrencyPairMethods
+#' @export
+invert = function (x) {
+  CurrencyPair(x$quote_ccy, x$base_ccy, x$calendar)
+}
+#' @rdname CurrencyPairMethods
+#' @export
+is.CurrencyPair <- function(x) inherits(x, "CurrencyPair")
+
+#' @export
+iso.CurrencyPair <- function(x) {paste0(iso(x$base_ccy), iso(x$quote_ccy))}
+#' @export
+locale.CurrencyPair <- function(x) add_usny(x$calendar)
+#' @export
+format.CurrencyPair <- function(x, ...) {paste("<CurrencyPair>", iso(x))}
+#' @export
+print.CurrencyPair <- function(x, ...) {cat(format(x), "\n"); invisible(x)}
+
+
+#' Handy CurrencyPair constructors
+#'
+#' These handy `CurrencyPair` constructors use their [single currency
+#' counterparts][CurrencyConstructors] in the obvious fashion.
+#'
+#' @examples
+#' AUDUSD()
+#' @name CurrencyConstructors
+#' @family constructors
+NULL
+
+#' @rdname CurrencyConstructors
+#' @export
+AUDUSD <- function () CurrencyPair(AUD(), USD())
+#' @rdname CurrencyConstructors
+#' @export
+EURUSD <- function () CurrencyPair(EUR(), USD())
+#' @rdname CurrencyConstructors
+#' @export
+NZDUSD <- function () CurrencyPair(NZD(), USD())
+#' @rdname CurrencyConstructors
+#' @export
+GBPUSD <- function () CurrencyPair(GBP(), USD())
+#' @rdname CurrencyConstructors
+#' @export
+USDJPY <- function () CurrencyPair(USD(), JPY())
+#' @rdname CurrencyConstructors
+#' @export
+GBPJPY <- function () CurrencyPair(GBP(), JPY())
+#' @rdname CurrencyConstructors
+#' @export
+EURGBP <- function () CurrencyPair(EUR(), GBP())
+#' @rdname CurrencyConstructors
+#' @export
+AUDNZD <- function () CurrencyPair(AUD(), NZD())
+#' @rdname CurrencyConstructors
+#' @export
+EURCHF <- function () CurrencyPair(EUR(), CHF())
+#' @rdname CurrencyConstructors
+#' @export
+USDCHF <- function () CurrencyPair(USD(), CHF())
+#' @rdname CurrencyConstructors
+#' @export
+USDHKD <- function () CurrencyPair(USD(), HKD())
+#' @rdname CurrencyConstructors
+#' @export
+EURNOK <- function () CurrencyPair(EUR(), NOK())
+#' @rdname CurrencyConstructors
+#' @export
+USDNOK <- function () CurrencyPair(USD(), NOK())
+
+
+add_usny <- function(calendar) {
+  c(USNYCalendar(), calendar)
+}
+
+remove_usny <- function(calendar) {
+  is_not_usny <- !(locale(calendar) %in% "USNY")
+  calendar[is_not_usny]
+}
+

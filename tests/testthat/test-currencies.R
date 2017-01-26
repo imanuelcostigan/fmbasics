@@ -1,7 +1,9 @@
 context('Currencies')
 
-library("lubridate")
-library("fmdates")
+suppressPackageStartupMessages({
+  library("lubridate")
+  library("fmdates")
+})
 
 test_that("Accessor methods work", {
   expect_equal(iso(AUD()), "AUD")
@@ -12,41 +14,34 @@ test_that('as.character method works', {
   expect_equal(as.character(AUD()), "AUD")
 })
 
+test_that("is.Currency method works", {
+  expect_true(is.Currency(AUD()))
+  expect_false(is.Currency(AUDUSD()))
+})
 
-# context("Currency pairs")
-#
-# test_that("Initialize method works", {
-#   audusd <- CurrencyPair$new(AUD(), USD())
-#   expect_equal(audusd$iso(), "AUDUSD")
-#   audusd <- CurrencyPair$new(AUD(), USD(),
-#     JointCalendar$new(list(AUSYCalendar$new(), USNYCalendar$new())))
-#   expect_equal(audusd$iso(), "AUDUSD")
-# })
-# test_that('iso method works', {
-#   audusd <- CurrencyPair$new(AUD(), USD(),
-#     JointCalendar$new(list(AUSYCalendar$new(), USNYCalendar$new())))
-#   expect_equal(audusd$iso(), 'AUDUSD')
-# })
-#
-# test_that('is_t1 method', {
-#   audusd <- CurrencyPair$new(AUD(), USD(),
-#     JointCalendar$new(list(AUSYCalendar$new(), USNYCalendar$new())))
-#   expect_true(!audusd$is_t1())
-#   # CAD not supported. But should be tested when this is supported.
-# })
-#
-# test_that('value_dates method', {
-#   audusd <- CurrencyPair$new(AUD(), USD(),
-#     JointCalendar$new(list(AUSYCalendar$new(), USNYCalendar$new())))
-#   dates <- ymd(20140416, 20140419)
-#   expect_equal(audusd$value_dates(dates, 'today'),
-#     ymd(20140416, NA))
-#   expect_equal(audusd$value_dates(dates, 'spot'),
-#     ymd(20140422, 20140423))
-#   expect_equal(audusd$value_dates(dates, 'tomorrow'),
-#     ymd(20140417, 20140422))
-#   expect_equal(audusd$value_dates(dates, 'spot_next'),
-#     ymd(20140423, 20140424))
-#   expect_equal(audusd$value_dates(dates, months(1)),
-#     ymd(20140522, 20140523))
-# })
+context("Currency pairs")
+
+test_that("Initialize method works", {
+  audusd <- CurrencyPair(AUD(), USD())
+  expect_equal(iso(audusd), "AUDUSD")
+  audusd <- CurrencyPair(AUD(), USD(), c(AUSYCalendar(), USNYCalendar()))
+  expect_equal(iso(audusd), "AUDUSD")
+})
+
+test_that("is.CurrencyPair method works", {
+  expect_false(is.CurrencyPair(AUD()))
+  expect_true(is.CurrencyPair(AUDUSD()))
+})
+
+test_that('is_t1 method works', {
+  expect_true(!is_t1(AUDUSD()))
+})
+
+test_that('Value date methods work', {
+  dates <- ymd(20140416, 20140419)
+  expect_equal(to_value(dates, 'today', AUDUSD()), ymd(20140416, NA))
+  expect_equal(to_value(dates, 'spot', AUDUSD()), ymd(20140422, 20140423))
+  expect_equal(to_value(dates, 'tomorrow', AUDUSD()), ymd(20140417, 20140422))
+  expect_equal(to_value(dates, 'spot_next', AUDUSD()), ymd(20140423, 20140424))
+  expect_equal(to_value(dates, months(1), AUDUSD()), ymd(20140522, 20140523))
+})
