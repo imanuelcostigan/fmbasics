@@ -14,7 +14,6 @@
 #' @examples
 #' library("fmdates")
 #' Currency("AUD", c(AUSYCalendar()))
-#' AUD()
 #' @seealso [CurrencyConstructors]
 #' @export
 
@@ -41,11 +40,13 @@ Currency <- function(iso, calendar) {
 #' `NOK()` \tab `NOOSCalendar`
 #' }
 #'
-#' @return a [Currency][Currency()] object.
 #' @examples
 #' AUD()
 #' @name CurrencyConstructors
-#' @seealso [Currency()]
+#' @family constructors
+NULL
+
+#' @rdname CurrencyConstructors
 #' @export
 AUD <- function() Currency("AUD", c(AUSYCalendar()))
 #' @rdname CurrencyConstructors
@@ -98,7 +99,7 @@ print.Currency <- function(x, ...) {cat(format(x), "\n"); invisible(x)}
 
 #' Inherits from Currency
 #'
-#' A variety of Currency class methods
+#' Checks whether object inherits from `Currency` class
 #'
 #' @param x an R object
 #' @return `TRUE` if `x` inherits from the `Currency` class; otherwise `FALSE`
