@@ -66,7 +66,7 @@ CurrencyPair <- function (base_ccy, quote_ccy, calendar = NULL) {
 #' to_spot_next(dts, AUDUSD())
 #' to_today(dts, AUDUSD())
 #' to_tomorrow(dts, AUDUSD())
-#' to_value(dts, months(3), AUDUSD())
+#' to_fx_value(dts, months(3), AUDUSD())
 #' @name CurrencyPairMethods
 NULL
 
@@ -117,7 +117,7 @@ to_tomorrow = function(dates, x) {
 
 #' @rdname CurrencyPairMethods
 #' @export
-to_value = function(dates, tenor, x) {
+to_fx_value = function(dates, tenor, x) {
   if (identical(tenor, 'spot'))
     to_spot(dates, x)
   else if (identical(tenor, 'spot_next'))
@@ -129,11 +129,13 @@ to_value = function(dates, tenor, x) {
   else
     to_forward(dates, tenor, x)
 }
+
 #' @rdname CurrencyPairMethods
 #' @export
 invert = function (x) {
   CurrencyPair(x$quote_ccy, x$base_ccy, x$calendar)
 }
+
 #' @rdname CurrencyPairMethods
 #' @export
 is.CurrencyPair <- function(x) inherits(x, "CurrencyPair")
