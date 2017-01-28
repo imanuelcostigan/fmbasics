@@ -12,12 +12,12 @@ Description: Implements basic financial market objects like currencies, currency
 License: GPL-2
 Imports:
     fmdates,
-    assertthat
+    assertthat,
+    lubridate (>= 1.6.0)
 Suggests:
     testthat,
     knitr,
-    rmarkdown,
-    lubridate (>= 1.6.0)
+    rmarkdown
 Remotes: imanuelcostigan/fmdates#4
 RoxygenNote: 5.0.1.9000
 Roxygen: list(markdown = TRUE)
