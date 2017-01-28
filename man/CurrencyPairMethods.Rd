@@ -8,7 +8,7 @@
 \alias{to_forward}
 \alias{to_today}
 \alias{to_tomorrow}
-\alias{to_value}
+\alias{to_fx_value}
 \alias{invert}
 \alias{is.CurrencyPair}
 \title{CurrencyPair methods}
@@ -25,7 +25,7 @@ to_today(dates, x)
 
 to_tomorrow(dates, x)
 
-to_value(dates, tenor, x)
+to_fx_value(dates, tenor, x)
 
 invert(x)
 
@@ -79,5 +79,5 @@ to_spot(dts, AUDUSD())
 to_spot_next(dts, AUDUSD())
 to_today(dts, AUDUSD())
 to_tomorrow(dts, AUDUSD())
-to_value(dts, months(3), AUDUSD())
+to_fx_value(dts, months(3), AUDUSD())
 }
