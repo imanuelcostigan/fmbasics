@@ -39,9 +39,9 @@ test_that('is_t1 method works', {
 
 test_that('Value date methods work', {
   dates <- ymd(20140416, 20140419)
-  expect_equal(to_value(dates, 'today', AUDUSD()), ymd(20140416, NA))
-  expect_equal(to_value(dates, 'spot', AUDUSD()), ymd(20140422, 20140423))
-  expect_equal(to_value(dates, 'tomorrow', AUDUSD()), ymd(20140417, 20140422))
-  expect_equal(to_value(dates, 'spot_next', AUDUSD()), ymd(20140423, 20140424))
-  expect_equal(to_value(dates, months(1), AUDUSD()), ymd(20140522, 20140523))
+  expect_equal(to_fx_value(dates, 'today', AUDUSD()), ymd(20140416, NA))
+  expect_equal(to_fx_value(dates, 'spot', AUDUSD()), ymd(20140422, 20140423))
+  expect_equal(to_fx_value(dates, 'tomorrow', AUDUSD()), ymd(20140417, 20140422))
+  expect_equal(to_fx_value(dates, 'spot_next', AUDUSD()), ymd(20140423, 20140424))
+  expect_equal(to_fx_value(dates, months(1), AUDUSD()), ymd(20140522, 20140523))
 })
