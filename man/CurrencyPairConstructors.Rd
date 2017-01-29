@@ -51,5 +51,6 @@ counterparts} in the obvious fashion.
 AUDUSD()
 }
 \seealso{
-Other constructors: \code{\link{CurrencyConstructors}}
+Other constructors: \code{\link{CurrencyConstructors}},
+  \code{\link{iborindices}}, \code{\link{oniaindices}}
 }

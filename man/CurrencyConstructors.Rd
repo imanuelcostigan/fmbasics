@@ -52,5 +52,6 @@ These constructors use the following conventions:
 AUD()
 }
 \seealso{
-Other constructors: \code{\link{CurrencyPairConstructors}}
+Other constructors: \code{\link{CurrencyPairConstructors}},
+  \code{\link{iborindices}}, \code{\link{oniaindices}}
 }
