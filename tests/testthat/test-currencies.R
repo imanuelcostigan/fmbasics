@@ -16,10 +16,16 @@ test_that('as.character method works', {
 
 test_that("is.Currency method works", {
   expect_true(is.Currency(AUD()))
-  expect_false(is.Currency(AUDUSD()))
 })
 
 context("Currency pairs")
+
+test_that("Remove USNY calendar works", {
+  expect_equal(remove_usny(c(AUSYCalendar())), c(AUSYCalendar()))
+  expect_equal(remove_usny(c(AUSYCalendar(), USNYCalendar())), c(AUSYCalendar()))
+  expect_equal(remove_usny(c(AUSYCalendar(), USNYCalendar(), GBLOCalendar())),
+    c(AUSYCalendar(), GBLOCalendar()))
+})
 
 test_that("Initialize method works", {
   audusd <- CurrencyPair(AUD(), USD())
