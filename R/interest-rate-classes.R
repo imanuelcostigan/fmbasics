@@ -103,6 +103,10 @@ as_InterestRate.DiscountFactor <- function(x, compounding, day_basis) {
     ((1 / x$value) ^ (1 / (compounding * term)) - 1)
   InterestRate(rate, compounding, day_basis)
 }
+
+#' @inheritParams InterestRate
+#' @rdname as_InterestRate
+#' @export
 as_InterestRate.InterestRate <- function(x, compounding = NULL, day_basis = NULL) {
   if (!all(is.null(compounding), is.null(day_basis))) {
     # start and end dates here don't matter.

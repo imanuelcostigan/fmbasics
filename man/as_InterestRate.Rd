@@ -3,11 +3,15 @@
 \name{as_InterestRate}
 \alias{as_InterestRate}
 \alias{as_InterestRate.DiscountFactor}
+\alias{as_InterestRate.InterestRate}
 \title{Coerce to InterestRate}
 \usage{
 as_InterestRate(x, ...)
 
 \method{as_InterestRate}{DiscountFactor}(x, compounding, day_basis)
+
+\method{as_InterestRate}{InterestRate}(x, compounding = NULL,
+  day_basis = NULL)
 }
 \arguments{
 \item{x}{object to coerce}
