@@ -19,7 +19,7 @@ Suggests:
     knitr,
     rmarkdown
 Remotes: imanuelcostigan/fmdates#4
-RoxygenNote: 5.0.1.9000
+RoxygenNote: 6.0.0
 Roxygen: list(markdown = TRUE)
 VignetteBuilder: knitr
 Encoding: UTF-8

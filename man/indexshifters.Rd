@@ -44,7 +44,7 @@ index's tenor.
 }
 \examples{
 library(lubridate)
-to_reset(ymd(20170101) + days(0:30), AUDBBSW())
-to_value(ymd(20170101) + days(0:30), AUDBBSW())
-to_maturity(ymd(20170101) + days(0:30), AUDBBSW())
+to_reset(ymd(20170101) + days(0:30), AUDBBSW(months(3)))
+to_value(ymd(20170101) + days(0:30), AUDBBSW(months(3)))
+to_maturity(ymd(20170101) + days(0:30), AUDBBSW(months(3)))
 }
