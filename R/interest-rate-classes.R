@@ -89,7 +89,7 @@ as_InterestRate <- function(x, ...) UseMethod("as_InterestRate")
 #' @inheritParams InterestRate
 #' @rdname as_InterestRate
 #' @export
-as_InterestRate.DiscountFactor <- function(x, compounding, day_basis) {
+as_InterestRate.DiscountFactor <- function(x, compounding, day_basis, ...) {
   term <- fmdates::year_frac(x$start_date, x$end_date, day_basis)
   is_cc <- is.infinite(compounding)
   is_simple <- compounding == 0
@@ -107,7 +107,7 @@ as_InterestRate.DiscountFactor <- function(x, compounding, day_basis) {
 #' @inheritParams InterestRate
 #' @rdname as_InterestRate
 #' @export
-as_InterestRate.InterestRate <- function(x, compounding = NULL, day_basis = NULL) {
+as_InterestRate.InterestRate <- function(x, compounding = NULL, day_basis = NULL, ...) {
   if (!all(is.null(compounding), is.null(day_basis))) {
     # start and end dates here don't matter.
     df <- as_DiscountFactor(x, as.Date("2013-01-01"), as.Date("2014-01-01"))
@@ -143,7 +143,7 @@ as_DiscountFactor <- function(x, ...) UseMethod("as_DiscountFactor")
 #' @inheritParams DiscountFactor
 #' @rdname as_DiscountFactor
 #' @export
-as_DiscountFactor.InterestRate <- function(x, d1, d2) {
+as_DiscountFactor.InterestRate <- function(x, d1, d2, ...) {
   # year_frac is vectorised
   term <- fmdates::year_frac(d1, d2, x$day_basis)
   # determine compounding frequency for each x value

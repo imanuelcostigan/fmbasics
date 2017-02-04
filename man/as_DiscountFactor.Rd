@@ -7,7 +7,7 @@
 \usage{
 as_DiscountFactor(x, ...)
 
-\method{as_DiscountFactor}{InterestRate}(x, d1, d2)
+\method{as_DiscountFactor}{InterestRate}(x, d1, d2, ...)
 }
 \arguments{
 \item{x}{object to coerce}

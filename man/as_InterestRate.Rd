@@ -8,10 +8,10 @@
 \usage{
 as_InterestRate(x, ...)
 
-\method{as_InterestRate}{DiscountFactor}(x, compounding, day_basis)
+\method{as_InterestRate}{DiscountFactor}(x, compounding, day_basis, ...)
 
 \method{as_InterestRate}{InterestRate}(x, compounding = NULL,
-  day_basis = NULL)
+  day_basis = NULL, ...)
 }
 \arguments{
 \item{x}{object to coerce}
