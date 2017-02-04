@@ -114,7 +114,7 @@ op_ir <- function (op) {
     } else {
       # Both are IR (this function is called only if at least one IR found)
       # Convert second to same comp/daybasis as first.
-      e2$equivalent_rate(e1)
+      e2 <- as_InterestRate(e2, e1$compounding, e1$day_basis)
       return(InterestRate(op(e1$value, e2$value), e1$compounding, e1$day_basis))
     }
   }
@@ -126,20 +126,29 @@ times_ir <- op_ir(`*`)
 minus_ir <- op_ir(`-`)
 div_ir <- op_ir(`/`)
 
-#' @export
-`==.InterestRate` <- function (e1, e2) {
-  e1$value == as_InterestRate(e2, e1$compounding, e1$day_basis)$value
+compare_rate <- function(op) {
+  function (e1, e2) {
+    res <- vector("logical", length(e1))
+    same_basis <- e1$compounding == e2$compounding & e1$day_basis == e2$day_basis
+    if (any(same_basis)) {
+      res[same_basis] <- op(e1$value[same_basis], e2$value[same_basis])
+    }
+    if (!all(same_basis)) {
+      res[!same_basis] <- op(e1$value[!same_basis], as_InterestRate(e2,
+        e1$compounding[!same_basis], e1$day_basis[!same_basis])$value)
+    }
+    return(res)
+  }
 }
 
 #' @export
-`<.InterestRate` <- function (e1, e2) {
-  e1$value < as_InterestRate(e2, e1$compounding, e1$day_basis)$value
-}
+`==.InterestRate` <- compare_rate(`==`)
 
 #' @export
-`>.InterestRate` <- function (e1, e2) {
-  e1$value > as_InterestRate(e2, e1$compounding, e1$day_basis)$value
-}
+`<.InterestRate` <- compare_rate(`<`)
+
+#' @export
+`>.InterestRate` <- compare_rate(`>`)
 
 #' @export
 `<=.InterestRate` <- function (e1, e2) {
