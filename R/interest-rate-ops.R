@@ -103,7 +103,7 @@ op_ir <- function (op) {
     e1 <- rep(e1, length.out = n)
     e2 <- rep(e2, length.out = n)
     # Operate
-    is_ir <- c(is(e1, "InterestRate"), is(e2, "InterestRate"))
+    is_ir <- c(is.InterestRate(e1), is.InterestRate(e2))
     if (xor(is_ir[1], is_ir[2])) {
       # Only one IR. Which of e1 / e2 is IR?
       if (is_ir[1]) {

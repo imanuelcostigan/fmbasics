@@ -161,6 +161,30 @@ as_DiscountFactor.InterestRate <- function(x, d1, d2) {
   DiscountFactor(df, d1, d2)
 }
 
+#' Inherits from InterestRate
+#'
+#' Checks whether object inherits from `InterestRate` class
+#'
+#' @param x an R object
+#' @return `TRUE` if `x` inherits from the `InterestRate` class; otherwise `FALSE`
+#' @examples
+#' is.InterestRate(InterestRate(0.04, 2, "act/365"))
+#' @export
+
+is.InterestRate <- function(x) inherits(x, "InterestRate")
+
+#' Inherits from DiscountFactor
+#'
+#' Checks whether object inherits from `DiscountFactor` class
+#'
+#' @param x an R object
+#' @return `TRUE` if `x` inherits from the `DiscountFactor` class; otherwise `FALSE`
+#' @examples
+#' is.DiscountFactor(DiscountFactor(0.97, Sys.Date(), Sys.Date() + 30))
+#' @export
+
+is.DiscountFactor <- function(x) inherits(x, "DiscountFactor")
+
 #' Compounding frequencies
 #'
 #' A non-exported function that checks whether compounding values frequencies
