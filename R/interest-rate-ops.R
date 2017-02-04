@@ -1,6 +1,3 @@
-#' @include interest-rate-classes.R
-NULL
-
 #' \code{InterestRate} operations
 #'
 #' A number of different operations can be performed on or with
@@ -43,28 +40,25 @@ NULL
 
 #' @export
 c.InterestRate <- function (..., recursive = FALSE) {
-  arg <- list(...)
-  ns <- Map(length, arg)
-  n <- Reduce(sum, ns)
-  rate <- vector("numeric")
-  compounding <- vector("numeric")
+  dots <- list(...)
+  value <- compounding <- vector("numeric")
   day_basis <- vector("character")
-  for (i in seq_along(arg)) {
-    rate <- c(rate, arg[[i]]$rate)
-    compounding <- c(compounding, arg[[i]]$compounding)
-    day_basis <- c(day_basis, arg[[i]]$day_basis)
+  for (i in seq_along(dots)) {
+    value <- c(value, dots[[i]]$value)
+    compounding <- c(compounding, dots[[i]]$compounding)
+    day_basis <- c(day_basis, dots[[i]]$day_basis)
   }
-  InterestRate$new(rate, compounding, day_basis)
+  InterestRate(value, compounding, day_basis)
 }
 
 #' @export
 `[.InterestRate` <- function (x, i, j, ..., drop = TRUE) {
-  InterestRate$new(x$rate[i], x$compounding[i], x$day_basis[i])
+  InterestRate(x$value[i], x$compounding[i], x$day_basis[i])
 }
 
 #' @export
 `[<-.InterestRate` <- function (x, i, j, ..., value) {
-  x$rate[i] <- value$rate
+  x$value[i] <- value$value
   x$compounding[i] <- value$compounding
   x$day_basis[i] <- value$day_basis
   x
@@ -72,21 +66,20 @@ c.InterestRate <- function (..., recursive = FALSE) {
 
 #' @export
 rep.InterestRate <- function (x, ...) {
-  rate <- rep(x$rate, ...)
+  value <- rep(x$value, ...)
   compounding <- rep(x$compounding, ...)
   day_basis <- rep(x$day_basis, ...)
-  InterestRate$new(rate, compounding, day_basis)
+  InterestRate(value, compounding, day_basis)
 }
 
 #' @export
 length.InterestRate <- function (x) {
-  length(x$rate)
+  length(x$value)
 }
 
 #' @export
-all.equal.InterestRate <- function (target, current, ...)
-{
-  equal_rates <- all.equal(target$rate, current$rate)
+all.equal.InterestRate <- function (target, current, ...) {
+  equal_rates <- all.equal(target$value, current$value)
   equal_compounding <- all.equal(target$compounding, current$compounding)
   equal_day_basis <- all.equal(target$day_basis, current$day_basis)
   msg <- NULL
@@ -114,7 +107,7 @@ op_ir <- function (op) {
     if (xor(is_ir[1], is_ir[2])) {
       # Only one IR. Which of e1 / e2 is IR?
       if (is_ir[1]) {
-        return(InterestRate$new(op(e1$rate, e2), e1$compounding, e1$day_basis))
+        return(InterestRate(op(e1$value, e2), e1$compounding, e1$day_basis))
       } else {
         return(f(e2, e1))
       }
@@ -122,7 +115,7 @@ op_ir <- function (op) {
       # Both are IR (this function is called only if at least one IR found)
       # Convert second to same comp/daybasis as first.
       e2$equivalent_rate(e1)
-      return(InterestRate$new(op(e1$rate, e2$rate), e1$compounding, e1$day_basis))
+      return(InterestRate(op(e1$value, e2$value), e1$compounding, e1$day_basis))
     }
   }
   return (f)
@@ -135,17 +128,17 @@ div_ir <- op_ir(`/`)
 
 #' @export
 `==.InterestRate` <- function (e1, e2) {
-  e1$rate == e2$equivalent_rate(e1)$rate
+  e1$value == as_InterestRate(e2, e1$compounding, e1$day_basis)$value
 }
 
 #' @export
 `<.InterestRate` <- function (e1, e2) {
-  e1$rate < e2$equivalent_rate(e1)$rate
+  e1$value < as_InterestRate(e2, e1$compounding, e1$day_basis)$value
 }
 
 #' @export
 `>.InterestRate` <- function (e1, e2) {
-  e1$rate > e2$equivalent_rate(e1)$rate
+  e1$value > as_InterestRate(e2, e1$compounding, e1$day_basis)$value
 }
 
 #' @export
@@ -191,24 +184,24 @@ NULL
 
 #' @export
 c.DiscountFactor <- function (..., recursive = FALSE) {
-  args <- list(...)
-  df <- d1 <- d2 <- vector("numeric", length(args))
-  for (i in seq_along(args)) {
-    df[i] <- args[[i]]$discount_factor
-    d1[i] <- args[[i]]$start_date
-    d2[i] <- args[[i]]$end_date
+  dots <- list(...)
+  df <- d1 <- d2 <- vector("numeric", length(dots))
+  for (i in seq_along(dots)) {
+    df[i] <- dots[[i]]$value
+    d1[i] <- dots[[i]]$start_date
+    d2[i] <- dots[[i]]$end_date
   }
-  DiscountFactor$new(df, lubridate::as_date(d1), lubridate::as_date(d2))
+  DiscountFactor(df, lubridate::as_date(d1), lubridate::as_date(d2))
 }
 
 #' @export
 `[.DiscountFactor` <- function (x, i, j, ..., drop = TRUE) {
-  DiscountFactor$new(x$discount_factor[i], x$start_date[i], x$end_date[i])
+  DiscountFactor(x$value[i], x$start_date[i], x$end_date[i])
 }
 
 #' @export
 `[<-.DiscountFactor` <- function (x, i, j, ..., value) {
-  x$discount_factor[i] <- value$discount_factor
+  x$value[i] <- value$value
   x$start_date[i] <- value$start_date
   x$end_date[i] <- value$end_date
   x
@@ -216,21 +209,20 @@ c.DiscountFactor <- function (..., recursive = FALSE) {
 
 #' @export
 rep.DiscountFactor <- function (x, ...) {
-  discount_factor <- rep(x$discount_factor, ...)
+  discount_factor <- rep(x$value, ...)
   start_date <- rep(x$start_date, ...)
   end_date <- rep(x$end_date, ...)
-  DiscountFactor$new(discount_factor, start_date, end_date)
+  DiscountFactor(discount_factor, start_date, end_date)
 }
 
 #' @export
 length.DiscountFactor <- function (x) {
-  length(x$discount_factor)
+  length(x$value)
 }
 
 #' @export
-all.equal.DiscountFactor <- function (target, current, ...)
-{
-  equal_df <- all.equal(target$discount_factor, current$discount_factor)
+all.equal.DiscountFactor <- function (target, current, ...) {
+  equal_df <- all.equal(target$value, current$value)
   equal_d1 <- all.equal(target$start_date, current$start_date)
   equal_d2 <- all.equal(target$end_date, current$end_date)
   msg <- NULL
@@ -251,16 +243,17 @@ times_df <- function (e1, e2) {
   n <- max(length(e1), length(e2))
   e1 <- rep(e1, length.out = n)
   e2 <- rep(e2, length.out = n)
-  assertthat::assert_that(any(all(e2$end_date == e1$start_date),
+  assertthat::assert_that(
+    any(all(e2$end_date == e1$start_date),
     all(e1$end_date == e2$start_date)))
-  df <- e1$discount_factor * e2$discount_factor
+  df <- e1$value * e2$value
   # http://adv-r.had.co.nz/Performance.html#implementation-performance
   # Use of pmin/pmax suboptimal
   d1 <- e1$start_date
   d1[d1 >= e2$start_date] <- e2$start_date[d1 >= e2$start_date]
   d2 <- e1$end_date
   d2[d2 <= e2$end_date] <- e2$end_date[d2 <= e2$end_date]
-  DiscountFactor$new(df, d1, d2)
+  DiscountFactor(df, d1, d2)
 }
 
 div_df <- function (e1, e2) {
@@ -268,26 +261,26 @@ div_df <- function (e1, e2) {
   e1 <- rep(e1, length.out = n)
   e2 <- rep(e2, length.out = n)
   assertthat::assert_that(all(e1$start_date == e2$start_date))
-  df <- e1$discount_factor / e2$discount_factor
+  df <- e1$value / e2$value
   d1 <- e1$end_date
   d1[d1 >= e2$end_date] <- e2$end_date[d1 >= e2$end_date]
   d2 <- e1$end_date
   d2[d2 <= e2$end_date] <- e2$end_date[d2 <= e2$end_date]
-  DiscountFactor$new(df, d1, d2)
+  DiscountFactor(df, d1, d2)
 }
 
 #' @export
 `==.DiscountFactor` <- function (e1, e2) {
-  e1$discount_factor == e2$discount_factor
+  e1$value == e2$value
 }
 
 #' @export
 `<.DiscountFactor` <- function (e1, e2) {
-  e1$discount_factor < e2$discount_factor
+  e1$value < e2$value
 }
 
 `>.DiscountFactor` <- function (e1, e2) {
-  e1$discount_factor > e2$discount_factor
+  e1$value > e2$value
 }
 
 #' @export

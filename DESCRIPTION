@@ -33,3 +33,4 @@ Collate:
     'indices-class.R'
     'interest-rate-classes.R'
     'interest-rate-ops.R'
+    'zzz.R'
