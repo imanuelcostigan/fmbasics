@@ -5,3 +5,5 @@
 ^\.travis\.yml$
 ^codecov\.yml$
 ^appveyor\.yml$
+^CONTRIBUTING\.md$
+^\.github$
