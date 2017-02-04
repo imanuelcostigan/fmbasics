@@ -1,0 +1,77 @@
+---
+title: "Currencies, currency pairs and indices"
+author: "Imanuel Costigan"
+date: "`r Sys.Date()`"
+output: 
+  rmarkdown::html_document:
+    toc: true
+    theme: spacelab
+vignette: >
+  %\VignetteIndexEntry{Currencies}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
+
+```{r, echo = FALSE, message = FALSE}
+knitr::opts_chunk$set(
+  comment = "#>",
+  error = FALSE,
+  tidy = FALSE)
+```
+
+Currencies, currency pairs and interest rate indices are key building blocks to a coherent financial mathematics library. As currencies are the basis for transactions, they bring together different conventions in a unique manner. Currency pairs are required to define the terms of FX transactions while interest rate indices define the payoffs of the largest over-the-counter derivatives asset class.
+
+## Currencies
+
+The `fmbasics` package supplies implementations of the following key currencies:  `AUD`, `EUR`, `GBP`, `JPY`, `NZD` and `USD`. The 2006 ISDA definitions map these currencies to financial centres for the purposes of determining whether banks and FX markets settle payments on a given date.
+
+```{r currency}
+library("fmbasics")
+(aud <- AUD())
+aud$iso
+aud$calendar
+```
+
+You can create other currencies by calling `Currency()`. However, you will need to define the currency's associated `fmdates::Calendar` first (along with its associated `fmdates::is_good()` method). 
+
+## Currency pairs
+
+It is also possible to create currency pairs and calculate value dates:
+
+```{r currency_pairs}
+(audusd <- AUDUSD())
+dates <- as.Date(c("2014-04-16", "2014-04-19"))
+to_fx_value(dates, 'today', audusd)
+to_fx_value(dates, 'spot', audusd)
+to_fx_value(dates, 'spot_next', audusd)
+to_fx_value(dates, 'tomorrow', audusd)
+to_fx_value(dates, months(3), audusd)
+```
+
+You can create other currency pairs by calling `CurrencyPair()`:
+
+```{r make_currency_pair}
+library("fmdates")
+CurrencyPair(USD(), AUD(), c(USNYCalendar(), AUSYCalendar()))
+```
+
+## Interest rate indices
+
+Interest rate indices are key to defining the payoffs on interest rate derivatives such as interest rate swaps, swaptions, etc. The `fmbasics` package provides implementations of the most important indices for the currencies that it supports including "xIBOR" and "xONIA" indices such as `USDLIBOR` and `EONIA`.
+
+```{r indices, message=FALSE}
+library("lubridate")
+AONIA()
+FedFunds()
+AUDBBSW(months(3))
+USDLIBOR(months(3))
+```
+
+You can use determine key dates associated with these indices relative to supplied dates such as the reset dates, value date and maturity date:
+
+```{r index_dates}
+to_reset(ymd(20170105) + days(0:2), USDLIBOR(months(3)))
+to_value(ymd(20170105) + days(0:2), USDLIBOR(months(3)))
+to_maturity(ymd(20170105) + days(0:2), USDLIBOR(months(3)))
+```
+
