@@ -12,11 +12,15 @@ vignette: >
   \usepackage[utf8]{inputenc}
 ---
 
-fmbasics makes it easy to work with interest rates (and discount factors). You can covert from interest rates to discount factors and vice-versa.
+```{r, echo = FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
+```
+
+fmbasics makes it easy to work with interest rates and discount factors. You can convert interest rates to discount factors and vice-versa.
 
 ## Interest rates
 
-Let's make an interest rate (R6) object:
+Let's make an interest rate object:
 
 ```{r interest_rate_make}
 library("fmdates")
@@ -30,21 +34,21 @@ You can convert this rate to another rate with a different compounding/day basis
 ```{r convert}
 as_InterestRate(rate, compounding = 2)
 as_InterestRate(rate, day_basis = 'act/360')
-as_InterestRate(rate, compounding = 1000, day_basis = '30/360us')
+as_InterestRate(rate, compounding = Inf, day_basis = '30/360us')
 ```
 
 You can perform arithmetic on interest rates. Rates are implicitly converted to equivalent day basis and compounding before the operation is performed on the rates' values.
 
 ```{r rate_ops}
 rate1 <- InterestRate(0.04, 2, 'act/365')
-rate2 <- InterestRate(0.01, 1000, 'act/360')
+rate2 <- InterestRate(0.01, Inf, 'act/360')
 rate1 + rate2
 ```
 
 You can also convert interest rates into discount factors:
 
-```{r to_df}
-library (lubridate)
+```{r to_df, message=FALSE}
+library("lubridate")
 df <- as_DiscountFactor(rate, ymd(20140101), ymd(20140401))
 ```
 
