@@ -105,9 +105,9 @@ CashIndex <- function(name, currency, spot_lag, calendar, day_basis,
 #' @return a vector of shifted dates
 #' @examples
 #' library(lubridate)
-#' to_reset(ymd(20170101) + days(0:30), AUDBBSW())
-#' to_value(ymd(20170101) + days(0:30), AUDBBSW())
-#' to_maturity(ymd(20170101) + days(0:30), AUDBBSW())
+#' to_reset(ymd(20170101) + days(0:30), AUDBBSW(months(3)))
+#' to_value(ymd(20170101) + days(0:30), AUDBBSW(months(3)))
+#' to_maturity(ymd(20170101) + days(0:30), AUDBBSW(months(3)))
 #' @name indexshifters
 #' @export
 to_reset <- function(dates, index) UseMethod("to_reset", index)
@@ -173,6 +173,8 @@ print.Index <- function(x, ...) {cat(format(x), "\n"); invisible(x)}
 pretty_format_period <- function(x) {
   if (length(x@.Data) == 0)
     return("Period(0)")
+  if (x == lubridate::period(0))
+    return("0d")
   show <- vector(mode = "character")
   na <- is.na(x)
   show <- paste(x@year, "y ", x@month, "m ", x@day, "d ", x@hour,
