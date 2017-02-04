@@ -33,6 +33,6 @@ Valid compounding values are:
 24            \tab Fortnightly                   \cr
 52            \tab Weekly                        \cr
 365           \tab Daily                         \cr
-1000          \tab Continuously                  \cr
+Inf           \tab Continuously                  \cr
 }
 }
