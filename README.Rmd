@@ -22,3 +22,50 @@ interest rates and interest rate indices. You will be able to use Benchmark
 instances of these objects which have been defined using their most common
 conventions or those defined by International Swap Dealer Association (ISDA,
 http://www2.isda.org) legal documentation.
+
+You can create instances of key currencies and currency pairs (and of course create your own implementations):
+
+```{r}
+library("fmbasics")
+AUD()
+AUDUSD()
+```
+
+These come with implementations of handy methods:
+
+```{r, message = FALSE}
+library("lubridate")
+to_fx_value(dates = Sys.Date(), tenor = "spot", x = AUDUSD())
+to_fx_value(Sys.Date(), months(3), AUDUSD())
+```
+
+
+You can create instances of key IBOR or ONIA interest rate indices:
+
+```{r}
+USDLIBOR(months(3))
+EONIA()
+```
+
+These also come with implementations of handy methods:
+
+```{r}
+to_reset(dates = as.Date("2017-01-20"), index = USDLIBOR(months(3)))
+to_value(as.Date("2017-01-20"), USDLIBOR(months(3)))
+to_maturity(as.Date("2017-01-20"), USDLIBOR(months(3)))
+```
+
+
+You can create and perform basic manipulation of interest rates and discount factors:
+
+```{r}
+rr <- InterestRate(value = 0.01, compounding = Inf, day_basis = "act/365")
+as_DiscountFactor(rr, d1 = ymd(20170120), d2 = ymd(20210120))
+# Convert to different rate basis
+as_InterestRate(rr, day_basis = "act/360")
+as_InterestRate(rr, compounding = 2, day_basis = "act/360")
+dd <- DiscountFactor(0.75, d1 = ymd(20170120), d2 = ymd(20210120))
+as_InterestRate(dd, compounding = Inf, day_basis = "act/360")
+```
+
+Further details can be found in this package's help pages and vignettes (`vignette(package = "fmbasics")`) 
