@@ -91,7 +91,7 @@ as_InterestRate <- function(x, ...) UseMethod("as_InterestRate")
 #' @export
 as_InterestRate.DiscountFactor <- function(x, compounding, day_basis) {
   term <- fmdates::year_frac(x$start_date, x$end_date, day_basis)
-  is_cc <- compounding == 1000
+  is_cc <- is.infinite(compounding)
   is_simple <- compounding == 0
   is_tbill <- compounding == -1
   is_pc <- !(is_cc | is_simple | is_tbill)
@@ -110,8 +110,12 @@ as_InterestRate.InterestRate <- function(x, compounding = NULL, day_basis = NULL
     if (!is.null(compounding)) {
       compounding <- rep(compounding, length(x$compounding))
     } else {
-      # day_basis must not be null here because of nested if clauses.
+      compounding <- x$compounding
+    }
+    if (!is.null(day_basis)) {
       day_basis <- rep(day_basis, length(x$day_basis))
+    } else {
+      day_basis <- x$day_basis
     }
     return(as_InterestRate(df, compounding, day_basis))
   } else {
@@ -139,7 +143,7 @@ as_DiscountFactor.InterestRate <- function(x, d1, d2) {
   # year_frac is vectorised
   term <- fmdates::year_frac(d1, d2, x$day_basis)
   # determine compounding frequency for each x value
-  is_cc <- x$compounding == 1000
+  is_cc <- is.infinite(x$compounding)
   is_simple <- x$compounding == 0
   is_tbill <- x$compounding == -1
   is_pc <- !(is_cc | is_simple | is_tbill)
@@ -172,7 +176,7 @@ as_DiscountFactor.InterestRate <- function(x, d1, d2) {
 #'   24            \tab Fortnightly                   \cr
 #'   52            \tab Weekly                        \cr
 #'   365           \tab Daily                         \cr
-#'   1000          \tab Continuously                  \cr
+#'   Inf           \tab Continuously                  \cr
 #' }
 #'
 #' @param compounding a numeric vector representing the compounding frequency
@@ -181,7 +185,7 @@ as_DiscountFactor.InterestRate <- function(x, d1, d2) {
 #' @aliases compounding
 
 is_valid_compounding <- function(compounding) {
-  COMPOUNDINGS <- c(-1, 0, 1, 2, 3, 4, 6, 12, 24, 52, 365, 1000)
+  COMPOUNDINGS <- c(-1, 0, 1, 2, 3, 4, 6, 12, 24, 52, 365, Inf)
   all(compounding %in% COMPOUNDINGS)
 }
 
@@ -212,7 +216,7 @@ print.DiscountFactor <- function(x, ...) {cat(format(x), "\n"); invisible(x)}
 print.InterestRate <- function(x, ...) {cat(format(x), "\n"); invisible(x)}
 
 compounding_as_string <- function (compounding) {
-  all_freq <- c(-1, 0, 1, 2, 3, 4, 6, 12, 24, 52, 365, 1000)
+  all_freq <- c(-1, 0, 1, 2, 3, 4, 6, 12, 24, 52, 365, Inf)
   all_string  <- c(
     "SimpleT",
     "Simple",

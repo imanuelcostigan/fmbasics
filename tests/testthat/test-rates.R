@@ -2,13 +2,13 @@ context("Rates")
 library("lubridate")
 
 test_that("Constructor works", {
-  rate <- InterestRate(c(0.03, 0.04, 0.05), c(0, 1000), 'act/365')
+  rate <- InterestRate(c(0.03, 0.04, 0.05), c(0, Inf), 'act/365')
   expect_equal(rate$value, c(0.03, 0.04, 0.05))
-  expect_equal(rate$compounding, c(0, 1000, 0))
+  expect_equal(rate$compounding, c(0, Inf, 0))
   expect_equal(rate$day_basis, c('act/365', 'act/365', 'act/365'))
-  rate <- InterestRate(0.03, c(0, 1000), c('act/365', 'act/360', '30e/360'))
+  rate <- InterestRate(0.03, c(0, Inf), c('act/365', 'act/360', '30e/360'))
   expect_equal(rate$value, rep(0.03, 3))
-  expect_equal(rate$compounding, c(0, 1000, 0))
+  expect_equal(rate$compounding, c(0, Inf, 0))
   expect_equal(rate$day_basis, c('act/365', 'act/360', '30e/360'))
 })
 
@@ -16,7 +16,7 @@ test_that("as_DiscountFactor method works", {
   rate <- InterestRate(0.04, 0, "act/360")
   expect_equal(as_DiscountFactor(rate, ymd("20100101"), ymd("20150101"))$value,
     0.831331978570109, tolerance=1e20)
-  rate <- InterestRate(0.075, 1000, "act/365")
+  rate <- InterestRate(0.075, Inf, "act/365")
   expect_equal(as_DiscountFactor(rate, ymd("20100101"), ymd("20150101"))$value,
     0.687148069474866, tolerance=1e20)
   rate <- InterestRate(0.01, 4, "30/360us")
@@ -29,7 +29,7 @@ test_that("as_DiscountFactor method works", {
 
 test_that("convert method works", {
   rate <- InterestRate(0.04, 0, "act/360")
-  as_InterestRate(rate, 1000, "act/360")
+  as_InterestRate(rate, Inf, "act/360")
   expect_equal(rate$value, 0.0364191596790165, tolerance=1e20)
   rate <- InterestRate(0.04, 0, "act/360")
   as_InterestRate(rate, 4, "act/360")
@@ -54,7 +54,7 @@ test_that("to_rate method works", {
   df <- DiscountFactor(0.95, ymd("20100101"), ymd("20150101"))
   expect_equal(as_InterestRate(df, 2, "act/365")$value, 0.0102793669522563, tolerance=1e20)
   df <- DiscountFactor(0.95, ymd("20100101"), ymd("20150101"))
-  expect_equal(as_InterestRate(df, 1000, "act/365")$value, 0.010253040772977, tolerance=1e20)
+  expect_equal(as_InterestRate(df, Inf, "act/365")$value, 0.010253040772977, tolerance=1e20)
   df <- DiscountFactor(0.95, ymd("20100101"), ymd("20100330"))
   expect_equal(as_InterestRate(df, -1, "30/360us")$value, 0.202247191011236, tolerance=1e20)
 })
