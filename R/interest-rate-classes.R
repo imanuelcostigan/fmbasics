@@ -194,7 +194,7 @@ is_valid_compounding <- function(compounding) {
 }
 
 assertthat::on_failure(is_valid_compounding) <- function (call, env) {
-  paste0(deparse(call$compounding), " is not a valid compounding frequency.")
+  paste0(eval(deparse(call$compounding)), " is not a valid compounding frequency.")
 }
 
 #' @export
