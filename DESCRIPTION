@@ -18,7 +18,7 @@ Suggests:
     testthat,
     knitr,
     rmarkdown
-Remotes: imanuelcostigan/fmdates#4
+Remotes: imanuelcostigan/fmdates
 RoxygenNote: 6.0.0
 Roxygen: list(markdown = TRUE)
 VignetteBuilder: knitr
