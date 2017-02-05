@@ -200,3 +200,12 @@ test_that('Division works as expected', {
   expect_error(df3 / df2)
 })
 
+test_that("Comparisons work", {
+  df1 <- DiscountFactor(0.99, ymd(20130101), ymd(20140101))
+  df2 <- DiscountFactor(0.99, ymd(20130101), ymd(20150101))
+  df3 <- DiscountFactor(0.98, ymd(20130101), ymd(20150101))
+  expect_equal(df1, df1)
+  expect_type(all.equal(df1, df2), "character")
+  expect_true(df3 < df1)
+  expect_true(df1 > df3)
+})
