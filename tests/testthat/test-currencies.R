@@ -7,7 +7,7 @@ suppressPackageStartupMessages({
 
 test_that("Accessor methods work", {
   expect_equal(iso(AUD()), "AUD")
-  expect_equal(locale(AUD()), c(AUSYCalendar()))
+  expect_equal(locale(AUD()), "AUSY")
 })
 
 test_that('as.character method works', {
@@ -33,6 +33,15 @@ test_that("Initialize method works", {
   audusd <- CurrencyPair(AUD(), USD(), c(AUSYCalendar(), USNYCalendar()))
   expect_equal(iso(audusd), "AUDUSD")
 })
+
+test_that("Invert method works", {
+  expect_equal(invert(AUDUSD()), CurrencyPair(USD(), AUD()))
+})
+
+test_that("locale method for CurrencyPair works", {
+  expect_equal(locale(AUDUSD()), c("USNY", "AUSY"))
+})
+
 
 test_that("is.CurrencyPair method works", {
   expect_false(is.CurrencyPair(AUD()))
