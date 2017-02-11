@@ -26,11 +26,3 @@ Encoding: UTF-8
 LazyData: true
 URL: https://github.com/imanuelcostigan/fmbasics
 BugReports: https://github.com/imanuelcostigan/fmbasics/issues
-Collate:
-    'currency-class.R'
-    'currency-pair-class.R'
-    'fmbasics-package.r'
-    'indices-class.R'
-    'interest-rate-classes.R'
-    'interest-rate-ops.R'
-    'zzz.R'
