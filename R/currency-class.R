@@ -86,9 +86,10 @@ NOK <- function() Currency("NOK", c(NOOSCalendar()))
 #' @param x object from which to extract an ISO
 #' @return a string of the ISO
 #' @examples
+#' library("lubridate")
 #' iso(AUD())
 #' iso(AUDUSD())
-#' iso(AUDBBSW())
+#' iso(AUDBBSW(months(3)))
 #' iso(AONIA())
 #' @export
 iso <- function(x) UseMethod("iso")

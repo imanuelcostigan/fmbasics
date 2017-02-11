@@ -33,8 +33,9 @@ as if it were an attribute with name \code{iso} (e.g. \code{x$iso}). The method 
 \code{IborIndex} return the ISO of the index's currency.
 }
 \examples{
+library("lubridate")
 iso(AUD())
 iso(AUDUSD())
-iso(AUDBBSW())
+iso(AUDBBSW(months(3)))
 iso(AONIA())
 }
