@@ -40,8 +40,8 @@ IborIndex <- function(name, currency, tenor, spot_lag, calendar, day_basis,
     lubridate::is.period(tenor),
     lubridate::is.period(spot_lag),
     fmdates::is.JointCalendar(calendar),
-    fmdates:::is_valid_day_basis(day_basis),
-    fmdates:::is_valid_bdc(day_convention),
+    fmdates::is_valid_day_basis(day_basis),
+    fmdates::is_valid_bdc(day_convention),
     assertthat::is.flag(is_eom)
   )
 
@@ -76,8 +76,8 @@ CashIndex <- function(name, currency, spot_lag, calendar, day_basis,
     is.Currency(currency),
     lubridate::is.period(spot_lag),
     fmdates::is.JointCalendar(calendar),
-    fmdates:::is_valid_day_basis(day_basis),
-    fmdates:::is_valid_bdc(day_convention)
+    fmdates::is_valid_day_basis(day_basis),
+    fmdates::is_valid_bdc(day_convention)
   )
 
   make_index("Cash", name = name, currency = currency,

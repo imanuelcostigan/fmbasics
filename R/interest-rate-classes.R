@@ -58,7 +58,7 @@ DiscountFactor <- function(value, d1, d2) {
 InterestRate <- function(value, compounding, day_basis) {
   assertthat::assert_that(
     all(is.numeric(value)),
-    fmdates:::is_valid_day_basis(day_basis),
+    fmdates::is_valid_day_basis(day_basis),
     is_valid_compounding(compounding)
   )
   n <- max(NROW(value), NROW(day_basis), NROW(compounding))

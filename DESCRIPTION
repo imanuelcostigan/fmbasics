@@ -11,7 +11,7 @@ Description: Implements basic financial market objects like currencies, currency
     (ISDA, http://www2.isda.org) legal documentation.
 License: GPL-2
 Imports:
-    fmdates,
+    fmdates (>= 0.1.2),
     assertthat,
     lubridate (>= 1.6.0)
 Suggests:
