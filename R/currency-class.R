@@ -96,7 +96,7 @@ iso <- function(x) UseMethod("iso")
 #' @export
 iso.default <- function(x) x$iso
 #' @export
-locale.Currency <- function(x) x$calendar
+locale.Currency <- function(x) locale(x$calendar)
 #' @export
 as.character.Currency <- function(x, ...) iso(x)
 #' @export

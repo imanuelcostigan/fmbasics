@@ -17,7 +17,7 @@ CurrencyPair <- function (base_ccy, quote_ccy, calendar = NULL) {
   assertthat::assert_that(is.Currency(base_ccy), is.Currency(quote_ccy),
     is.null(calendar) || fmdates::is.JointCalendar(calendar))
   if (is.null(calendar)) {
-    calendar <- c(locale(base_ccy), locale(quote_ccy))
+    calendar <- c(base_ccy$calendar, quote_ccy$calendar)
   }
   structure(list(base_ccy = base_ccy, quote_ccy = quote_ccy,
     calendar = remove_usny(calendar)), class = "CurrencyPair")
@@ -143,7 +143,7 @@ is.CurrencyPair <- function(x) inherits(x, "CurrencyPair")
 #' @export
 iso.CurrencyPair <- function(x) {paste0(iso(x$base_ccy), iso(x$quote_ccy))}
 #' @export
-locale.CurrencyPair <- function(x) add_usny(x$calendar)
+locale.CurrencyPair <- function(x) locale(add_usny(x$calendar))
 #' @export
 format.CurrencyPair <- function(x, ...) {paste("<CurrencyPair>", iso(x))}
 #' @export
