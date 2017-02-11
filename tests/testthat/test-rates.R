@@ -29,14 +29,12 @@ test_that("as_DiscountFactor method works", {
 
 test_that("convert method works", {
   rate <- InterestRate(0.04, 0, "act/360")
-  as_InterestRate(rate, Inf, "act/360")
-  expect_equal(rate$value, 0.0364191596790165, tolerance=1e20)
-  rate <- InterestRate(0.04, 0, "act/360")
-  as_InterestRate(rate, 4, "act/360")
-  expect_equal(rate$value, 0.0365854583997862, tolerance=1e20)
-  rate <- InterestRate(0.04, 0, "act/360")
-  as_InterestRate(rate, 4, "act/365")
-  expect_equal(rate$value, 0.0370959387671626, tolerance=1e20)
+  rate_new <- as_InterestRate(rate, Inf, "act/360")
+  expect_equal(rate_new$value, 0.0364191596790165, tolerance=1e20)
+  rate_new <- as_InterestRate(rate, 4, "act/360")
+  expect_equal(rate_new$value, 0.0365854583997862, tolerance=1e20)
+  rate_new <- as_InterestRate(rate, 4, "act/365")
+  expect_equal(rate_new$value, 0.0370959387671626, tolerance=1e20)
 })
 
 
