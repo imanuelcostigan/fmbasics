@@ -1,3 +1,7 @@
 # Version 0.1.0
 
 - Initial version
+- Exposes basic financial market building blocks as classes. These include
+currencies, currency pairs, indices, interest rates and discount factors.
+- Implements methods to create key instances of currency, currency pairs and
+indices for major markets.
