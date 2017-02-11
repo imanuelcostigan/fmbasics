@@ -7,3 +7,4 @@
 ^appveyor\.yml$
 ^CONTRIBUTING\.md$
 ^\.github$
+^cran-comments\.md$
