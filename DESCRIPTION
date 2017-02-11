@@ -1,7 +1,7 @@
 Package: fmbasics
 Type: Package
 Title: Financial Market Building Blocks
-Version: 0.0.99
+Version: 0.1.0
 Author: Imanuel Costigan <i.costigan@me.com>
 Maintainer: Imanuel Costigan <i.costigan@me.com>
 Description: Implements basic financial market objects like currencies, currency
@@ -20,7 +20,7 @@ Suggests:
     rmarkdown,
     covr
 Remotes: imanuelcostigan/fmdates
-RoxygenNote: 6.0.0
+RoxygenNote: 6.0.1
 Roxygen: list(markdown = TRUE)
 VignetteBuilder: knitr
 Encoding: UTF-8
