@@ -154,8 +154,10 @@ is.IborIndex <- function(x) inherits(x, "IborIndex")
 #' @export
 is.CashIndex <- function(x) inherits(x, "CashIndex")
 
+#' @rdname iso
 #' @export
 iso.IborIndex <- function(x) iso(x$currency)
+#' @rdname iso
 #' @export
 iso.CashIndex <- function(x) iso(x$currency)
 #' @export

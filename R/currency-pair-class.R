@@ -139,7 +139,7 @@ invert = function (x) {
 #' @rdname CurrencyPairMethods
 #' @export
 is.CurrencyPair <- function(x) inherits(x, "CurrencyPair")
-
+#' @rdname iso
 #' @export
 iso.CurrencyPair <- function(x) {paste0(iso(x$base_ccy), iso(x$quote_ccy))}
 #' @export

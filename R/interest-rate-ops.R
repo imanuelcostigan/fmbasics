@@ -77,6 +77,7 @@ length.InterestRate <- function (x) {
   length(x$value)
 }
 
+#' @method all.equal InterestRate
 #' @export
 all.equal.InterestRate <- function (target, current, ...) {
   equal_rates <- all.equal(target$value, current$value)
@@ -229,7 +230,7 @@ length.DiscountFactor <- function (x) {
   length(x$value)
 }
 
-#' @export
+#' @method all.equal DiscountFactor
 all.equal.DiscountFactor <- function (target, current, ...) {
   equal_df <- all.equal(target$value, current$value)
   equal_d1 <- all.equal(target$start_date, current$start_date)
