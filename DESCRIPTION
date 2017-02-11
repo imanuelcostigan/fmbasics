@@ -5,20 +5,20 @@ Version: 0.1.0
 Author: Imanuel Costigan <i.costigan@me.com>
 Maintainer: Imanuel Costigan <i.costigan@me.com>
 Description: Implements basic financial market objects like currencies, currency
-    pairs, interest rates and interest rate indices. You will be able to use
-    Benchmark instances of these objects which have been defined using their most
-    common conventions or those defined by International Swap Dealer Association
-    (ISDA, http://www2.isda.org) legal documentation.
+  pairs, interest rates and interest rate indices. You will be able to use
+  Benchmark instances of these objects which have been defined using their most
+  common conventions or those defined by International Swap Dealer Association
+  (ISDA, <http://www2.isda.org>) legal documentation.
 License: GPL-2
 Imports:
-    fmdates (>= 0.1.2),
-    assertthat,
-    lubridate (>= 1.6.0)
+  fmdates (>= 0.1.2),
+  assertthat,
+  lubridate (>= 1.6.0)
 Suggests:
-    testthat,
-    knitr,
-    rmarkdown,
-    covr
+  testthat,
+  knitr,
+  rmarkdown,
+  covr
 RoxygenNote: 6.0.1
 Roxygen: list(markdown = TRUE)
 VignetteBuilder: knitr

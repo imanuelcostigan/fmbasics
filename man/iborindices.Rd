@@ -83,7 +83,7 @@ overnight USDLIBOR index uses both USNYCalendar and GBLOCalendar calendars.
 \href{http://www.bbalibor.com/technical-aspects/fixing-value-and-maturity}{BBA LIBOR}
 \href{http://www.jbatibor.or.jp/english/public/pdf/JBA\%20TIBOR\%20Operational\%20RulesE.pdf}{TIBOR}
 \href{http://www.nzfma.org/includes/download.aspx?ID=130053}{NZD BKBM}
-\href{http://www.opengamma.com/sites/default/files/interest-rate-instruments-and-market-conventions.pdf}{OpenGamma Interest Rate Instruments and Market Conventions Guide}
+\href{http://opnga.ma/conventions}{OpenGamma Interest Rate Instruments and Market Conventions Guide}
 \href{https://bank.hangseng.com/1/2/rates/hibor}{HKD HIBOR}
 }
 \seealso{
