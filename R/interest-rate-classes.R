@@ -222,9 +222,9 @@ assertthat::on_failure(is_valid_compounding) <- function (call, env) {
 }
 
 #' @export
-as.numeric.DiscountFactor <- function(x, ...) x$value
+as.double.DiscountFactor <- function(x, ...) x$value
 #' @export
-as.numeric.InterestRate <- function(x, ...) x$value
+as.double.InterestRate <- function(x, ...) x$value
 #' @export
 format.DiscountFactor <- function(x, ...) {
   paste0("<DiscountFactor> ", x$value, ', ',

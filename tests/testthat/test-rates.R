@@ -37,6 +37,9 @@ test_that("convert method works", {
   expect_equal(rate_new$value, 0.0370959387671626, tolerance=1e20)
 })
 
+test_that("Other rate methods work", {
+  expect_equal(as.numeric(InterestRate(0.04, 0, "act/360")), 0.04)
+})
 
 context("DiscountFactor")
 
@@ -46,6 +49,7 @@ test_that("Constructor works", {
   expect_equal(dfs$value, c(0.95, 0.94, 0.93))
   expect_equal(dfs$start_date, rep(ymd(20130101), 3))
   expect_equal(dfs$end_date, ymd(20140101, 20150101, 20140101))
+  expect_true(is.DiscountFactor(dfs))
 })
 
 test_that("to_rate method works", {
@@ -55,6 +59,10 @@ test_that("to_rate method works", {
   expect_equal(as_InterestRate(df, Inf, "act/365")$value, 0.010253040772977, tolerance=1e20)
   df <- DiscountFactor(0.95, ymd("20100101"), ymd("20100330"))
   expect_equal(as_InterestRate(df, -1, "30/360us")$value, 0.202247191011236, tolerance=1e20)
+})
+
+test_that("Other discount factor methods work", {
+  expect_equal(as.numeric(DiscountFactor(0.95, ymd("20100101"), ymd("20150101"))), 0.95)
 })
 
 context('Rate ops')
