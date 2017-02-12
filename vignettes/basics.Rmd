@@ -7,7 +7,7 @@ output:
     toc: true
     theme: spacelab
 vignette: >
-  %\VignetteIndexEntry{Currencies}
+  %\VignetteIndexEntry{Basic financial market building blocks}
   %\VignetteEngine{knitr::rmarkdown}
   \usepackage[utf8]{inputenc}
 ---
