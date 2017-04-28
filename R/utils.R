@@ -14,12 +14,8 @@
 
 fmdata_example <- function(file) {
   filepath <- system.file("extdata", file, package = "fmbasics")
-  if (requireNamespace("readr", quietly = TRUE)) {
-    return(suppressMessages(readr::read_csv(filepath)))
-  } else {
-    df <- utils::read.csv(filepath, header = TRUE, stringsAsFactors = FALSE)
-    return(tibble::as_tibble(df))
-  }
+  df <- utils::read.csv(filepath, header = TRUE, stringsAsFactors = FALSE)
+  return(tibble::as_tibble(df))
 }
 
 #' Build a `ZeroCurve` from example data set
