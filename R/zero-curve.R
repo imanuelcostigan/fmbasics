@@ -195,7 +195,7 @@ CubicInterpolation <- function() Interpolation("natural_cubic", "zeros")
 #' @export
 is.Interpolation <- function(x) inherits(x, "Interpolation")
 check_interpolation <- function(prefix) {
-  function(x) is(x, paste0(prefix, "Interpolation"))
+  function(x) methods::is(x, paste0(prefix, "Interpolation"))
 }
 #' @rdname is.Interpolation
 #' @export

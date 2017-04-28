@@ -17,7 +17,7 @@ fmdata_example <- function(file) {
   if (requireNamespace("readr", quietly = TRUE)) {
     return(suppressMessages(readr::read_csv(filepath)))
   } else {
-    df <- read.csv(filepath, header = TRUE, stringsAsFactors = FALSE)
+    df <- utils::read.csv(filepath, header = TRUE, stringsAsFactors = FALSE)
     return(tibble::as_tibble(df))
   }
 }

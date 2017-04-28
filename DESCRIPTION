@@ -16,7 +16,8 @@ Imports:
   lubridate (>= 1.6.0),
   tibble,
   stats,
-    utils
+  utils,
+  methods
 Suggests:
   testthat,
   knitr,
