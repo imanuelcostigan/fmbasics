@@ -13,12 +13,16 @@ License: GPL-2
 Imports:
   fmdates (>= 0.1.2),
   assertthat,
-  lubridate (>= 1.6.0)
+  lubridate (>= 1.6.0),
+  tibble,
+  stats,
+    utils
 Suggests:
   testthat,
   knitr,
   rmarkdown,
-  covr
+  covr,
+  readr
 RoxygenNote: 6.0.1
 Roxygen: list(markdown = TRUE)
 VignetteBuilder: knitr
