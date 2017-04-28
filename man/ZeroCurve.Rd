@@ -34,6 +34,11 @@ traders, and are commonly plotted on a graph. More formal mathematical
 descriptions of this relation are often called the term structure of interest
 rates. When the effect of coupons on yields are stripped away, one has a
 zero-coupon yield curve.
+
+The following interpolation schemes are supported by \code{ZeroCurve}:
+\code{ConstantInterpolation}, \code{LinearInterpolation}, \code{LogDFInterpolation} and
+\code{CubicInterpolation}. Points outside the calibration region use constant
+extrapolation on the zero rate.
 }
 \examples{
 zc_df <- fmdata_example("zerocurve.csv")
@@ -43,4 +48,7 @@ ends <- as.Date(as.character(zc_df[["end"]]), "\%Y\%m\%d")
 dfs <- DiscountFactor(values, starts, ends)
 zc <- ZeroCurve(dfs, starts[1], LogDFInterpolation())
 plot(zc$pillar_times, zc$pillar_zeros, xlab = 'Years', ylab = 'Zero')
+}
+\seealso{
+\link{Interpolation}
 }

@@ -19,6 +19,11 @@
 #' rates. When the effect of coupons on yields are stripped away, one has a
 #' zero-coupon yield curve.
 #'
+#' The following interpolation schemes are supported by `ZeroCurve`:
+#' `ConstantInterpolation`, `LinearInterpolation`, `LogDFInterpolation` and
+#' `CubicInterpolation`. Points outside the calibration region use constant
+#' extrapolation on the zero rate.
+#'
 #' @param discount_factors a [`DiscountFactor`] object. These are converted to
 #'   continuously compounded zero coupon interest rates with an `act/365` day
 #'   basis for internal storage purposes
@@ -34,13 +39,17 @@
 #' zc <- ZeroCurve(dfs, starts[1], LogDFInterpolation())
 #' plot(zc$pillar_times, zc$pillar_zeros, xlab = 'Years', ylab = 'Zero')
 #' @export
+#' @seealso [Interpolation]
 
 ZeroCurve <- function(discount_factors, reference_date, interpolation) {
 
   assertthat::assert_that(
     is.DiscountFactor(discount_factors),
     assertthat::is.date(reference_date),
-    is.Interpolation(interpolation)
+    is.ConstantInterpolation(interpolation) ||
+      is.LinearInterpolation(interpolation) ||
+      is.LogDFInterpolation(interpolation) ||
+      is.CubicInterpolation(interpolation)
   )
 
   # Will internally store zero rates are calculated using act/365 basis and
