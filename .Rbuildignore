@@ -8,3 +8,4 @@
 ^CONTRIBUTING\.md$
 ^\.github$
 ^cran-comments\.md$
+^revdep/$

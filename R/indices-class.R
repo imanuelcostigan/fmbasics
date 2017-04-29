@@ -220,7 +220,7 @@ pretty_format_period <- function(x) {
 #' overnight USDLIBOR index uses both USNYCalendar and GBLOCalendar calendars.
 #'
 #' @references
-#' \href{http://www.afma.com.au/standards/market-conventions/Bank\%20Bill\%20Swap\%20(BBSW)\%20Benchmark\%20Rate\%20Conventions.pdf}{BBSW}
+#' \href{http://www.asx.com.au/documents/products/bbsw-conventions.pdf}{BBSW}
 #' \href{http://www.emmi-benchmarks.eu/assets/files/Euribor_tech_features.pdf}{EURIBOR}
 #' \href{https://www.theice.com/iba/libor}{ICE LIBOR}
 #' \href{http://www.bbalibor.com/technical-aspects/fixing-value-and-maturity}{BBA LIBOR}
