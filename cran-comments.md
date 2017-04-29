@@ -11,9 +11,9 @@
 
 ## R CMD check results
 
-0 errors | 1 warning | 0 notes
+0 errors | 1 warning | 1 note
 
-I get the following warning when running `devtools::release()`:
+I get the following WARNING when running `devtools::release()`:
 
 > * checking top-level files ... WARNING
 > Conversion of ‘README.md’ failed:
@@ -23,6 +23,11 @@ I get the following warning when running `devtools::release()`:
 
 
 I think this error is spurious. I can successfully access the URL in my browser and it renders correctly in the README on Github (https://github.com/imanuelcostigan/fmbasics/blob/master/README.md) and on CRAN (https://cran.rstudio.com/web/packages/fmbasics/README.html).
+
+I get a NOTE about misspelling ISDA which is an abbreviation that is expanded in the DESCRIPTION file. I don't think this is an issue.
+
+> Possibly mis-spelled words in DESCRIPTION:
+>  ISDA (11:4)
 
 ## Reverse dependencies
 
