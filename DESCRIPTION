@@ -1,7 +1,7 @@
 Package: fmbasics
 Type: Package
 Title: Financial Market Building Blocks
-Version: 0.1.0-99
+Version: 0.2.0
 Author: Imanuel Costigan <i.costigan@me.com>
 Maintainer: Imanuel Costigan <i.costigan@me.com>
 Description: Implements basic financial market objects like currencies, currency
@@ -13,7 +13,11 @@ License: GPL-2
 Imports:
   fmdates (>= 0.1.2),
   assertthat,
-  lubridate (>= 1.6.0)
+  lubridate (>= 1.6.0),
+  tibble,
+  stats,
+  utils,
+  methods
 Suggests:
   testthat,
   knitr,

@@ -1,3 +1,13 @@
+# Version 0.2.0
+
+Implement `ZeroCurve` and associated interpolation schemes and methods (#1)
+
+- `ZeroCurve()` allows you to create zero curve objects from a set of discount factors and specifying the interpolation scheme to be used
+- Implement a set of lightweight interpolation schemes including `ConstantInterpolation()`, `LinearInterpolation()`, `LogDFInterpolation()` and `CubicInterpolation()`. Their behaviour is determined by the object in which they are stored
+- Implement a set of interpolation checkers `is.[X]Interpolation()`
+- Provide convenience functions that source example market data and allows you to build a zero curve from one such data set (`fmdata_example()` and `build_zero_curve()` respectively.
+
+
 # Version 0.1.0-99
 
 - Fix title of one of the vignettes
