@@ -1,5 +1,11 @@
 context("ZeroCurve")
 
+test_that("fmdata_example works", {
+  df <- fmdata_example("zerocurve.csv")
+  expect_is(df, "data.frame")
+  expect_named(df, c("start", "end", "zeros", "dfs"))
+})
+
 test_that("Interpolation checks work", {
   expect_true(is.ConstantInterpolation(ConstantInterpolation()))
   expect_true(is.LinearInterpolation(LinearInterpolation()))

@@ -32,7 +32,7 @@
 #' @return a `ZeroCurve` object
 #' @examples
 #' zc_df <- fmdata_example("zerocurve.csv")
-#' values <- zc_df$dfs
+#' values <- zc_df[["dfs"]]
 #' starts <- as.Date(as.character(zc_df[["start"]]), "%Y%m%d")
 #' ends <- as.Date(as.character(zc_df[["end"]]), "%Y%m%d")
 #' dfs <- DiscountFactor(values, starts, ends)
