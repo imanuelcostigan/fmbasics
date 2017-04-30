@@ -1,3 +1,9 @@
+## Resubmission after failing auto-tests
+
+See https://win-builder.r-project.org/incoming_pretest/170430_010421_fmbasics_020/00check.log
+
+Fixed warning about missing PNG file. 
+
 ## Summary of changes
 
 * New financial market object support and associated interpolation methods
