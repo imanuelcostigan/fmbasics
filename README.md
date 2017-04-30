@@ -75,7 +75,7 @@ zc <- ZeroCurve(dfs, starts[1], LogDFInterpolation())
 plot(zc$pillar_times, zc$pillar_zeros, xlab = 'Years', ylab = 'Zero')
 ```
 
-![](README-unnamed-chunk-7-1.png)
+![](inst/README-unnamed-chunk-7-1.png)
 
 ``` r
 interpolate(zc, 1:20)
