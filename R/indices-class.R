@@ -1,10 +1,3 @@
-
-make_index <- function(type, ...) {
-  assertthat::assert_that(is.character(type))
-  structure(list(...), class = c(paste0(type, "Index"), "Index"))
-}
-
-
 #' IborIndex class
 #'
 #' This can be used to represent IBOR like indices (e.g. LIBOR, BBSW, CDOR)
@@ -34,21 +27,12 @@ make_index <- function(type, ...) {
 IborIndex <- function(name, currency, tenor, spot_lag, calendar, day_basis,
   day_convention, is_eom) {
 
-  assertthat::assert_that(
-    assertthat::is.string(name),
-    is.Currency(currency),
-    lubridate::is.period(tenor),
-    lubridate::is.period(spot_lag),
-    fmdates::is.JointCalendar(calendar),
-    fmdates::is_valid_day_basis(day_basis),
-    fmdates::is_valid_bdc(day_convention),
-    assertthat::is.flag(is_eom)
-  )
-
-  make_index("Ibor", name = name, currency = currency, tenor = tenor,
+  x <- new_Index("Ibor", name = name, currency = currency, tenor = tenor,
     spot_lag = spot_lag, calendar = calendar, pfc_calendar = locale(calendar),
     day_basis = day_basis, day_convention = day_convention, is_eom = is_eom
   )
+
+  validate_IborIndex(x)
 
 }
 
@@ -71,21 +55,46 @@ IborIndex <- function(name, currency, tenor, spot_lag, calendar, day_basis,
 CashIndex <- function(name, currency, spot_lag, calendar, day_basis,
   day_convention) {
 
-  assertthat::assert_that(
-    assertthat::is.string(name),
-    is.Currency(currency),
-    lubridate::is.period(spot_lag),
-    fmdates::is.JointCalendar(calendar),
-    fmdates::is_valid_day_basis(day_basis),
-    fmdates::is_valid_bdc(day_convention)
-  )
-
-  make_index("Cash", name = name, currency = currency,
+  x <- new_Index("Cash", name = name, currency = currency,
     tenor = lubridate::days(1), spot_lag = spot_lag, calendar = calendar,
     pfc_calendar = locale(calendar), day_basis = day_basis,
     day_convention = day_convention, is_eom = FALSE
   )
 
+  validate_CashIndex(x)
+
+}
+
+
+new_Index <- function(type, ...) {
+  assertthat::assert_that(is.character(type))
+  structure(list(...), class = c(paste0(type, "Index"), "Index"))
+}
+
+validate_IborIndex <- function(x) {
+  assertthat::assert_that(
+    assertthat::is.string(x$name),
+    is.Currency(x$currency),
+    lubridate::is.period(x$tenor),
+    lubridate::is.period(x$spot_lag),
+    fmdates::is.JointCalendar(x$calendar),
+    fmdates::is_valid_day_basis(x$day_basis),
+    fmdates::is_valid_bdc(x$day_convention),
+    assertthat::is.flag(x$is_eom)
+  )
+  x
+}
+
+validate_CashIndex <- function(x) {
+  assertthat::assert_that(
+    assertthat::is.string(x$name),
+    is.Currency(x$currency),
+    lubridate::is.period(x$spot_lag),
+    fmdates::is.JointCalendar(x$calendar),
+    fmdates::is_valid_day_basis(x$day_basis),
+    fmdates::is_valid_bdc(x$day_convention)
+  )
+  x
 }
 
 #' Index date shifters
