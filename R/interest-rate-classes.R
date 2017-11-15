@@ -63,11 +63,10 @@ validate_DiscountFactor <- function(x) {
 #' @export
 
 InterestRate <- function(value, compounding, day_basis) {
-  assertthat::assert_that(
-    all(is.numeric(value)),
-    fmdates::is_valid_day_basis(day_basis),
-    is_valid_compounding(compounding)
-  )
+  validate_InterestRate(new_InterestRate(value, compounding, day_basis))
+}
+
+new_InterestRate <- function(value, compounding, day_basis) {
   n <- max(NROW(value), NROW(day_basis), NROW(compounding))
   structure(list(
     value = rep_len(value, n),
@@ -76,6 +75,16 @@ InterestRate <- function(value, compounding, day_basis) {
     class = "InterestRate"
   )
 }
+
+validate_InterestRate <- function(x) {
+  assertthat::assert_that(
+    all(is.numeric(x$value)),
+    fmdates::is_valid_day_basis(x$day_basis),
+    is_valid_compounding(x$compounding)
+  )
+  x
+}
+
 
 #' Coerce to InterestRate
 #'
@@ -97,6 +106,10 @@ as_InterestRate <- function(x, ...) UseMethod("as_InterestRate")
 #' @rdname as_InterestRate
 #' @export
 as_InterestRate.DiscountFactor <- function(x, compounding, day_basis, ...) {
+  assertthat::assert_that(
+    fmdates::is_valid_day_basis(day_basis),
+    is_valid_compounding(compounding)
+  )
   term <- fmdates::year_frac(x$start_date, x$end_date, day_basis)
   is_cc <- is.infinite(compounding)
   is_simple <- compounding == 0
@@ -108,7 +121,7 @@ as_InterestRate.DiscountFactor <- function(x, compounding, day_basis, ...) {
   rate[is_tbill] <- (1 - x$value) / term
   rate[is_pc] <- compounding *
     ((1 / x$value) ^ (1 / (compounding * term)) - 1)
-  InterestRate(rate, compounding, day_basis)
+  new_InterestRate(rate, compounding, day_basis)
 }
 
 #' @inheritParams InterestRate
