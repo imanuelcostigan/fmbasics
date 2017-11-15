@@ -18,9 +18,17 @@
 #' @export
 
 Currency <- function(iso, calendar) {
-  assertthat::assert_that(assertthat::is.string(iso), nchar(iso) == 3,
-    is.JointCalendar(calendar))
+  validate_Currency(new_Currency(iso, calendar))
+}
+
+new_Currency <- function(iso, calendar) {
   structure(list(iso = toupper(iso), calendar = calendar), class = "Currency")
+}
+
+validate_Currency <- function(x) {
+  assertthat::assert_that(assertthat::is.string(x$iso), nchar(x$iso) == 3,
+    is.JointCalendar(x$calendar))
+  x
 }
 
 #' Handy Currency constructors
@@ -48,31 +56,31 @@ NULL
 
 #' @rdname CurrencyConstructors
 #' @export
-AUD <- function() Currency("AUD", c(AUSYCalendar()))
+AUD <- function() new_Currency("AUD", c(AUSYCalendar()))
 #' @rdname CurrencyConstructors
 #' @export
-EUR <- function() Currency("EUR", c(EUTACalendar()))
+EUR <- function() new_Currency("EUR", c(EUTACalendar()))
 #' @rdname CurrencyConstructors
 #' @export
-GBP <- function() Currency("GBP", c(GBLOCalendar()))
+GBP <- function() new_Currency("GBP", c(GBLOCalendar()))
 #' @rdname CurrencyConstructors
 #' @export
-JPY <- function() Currency("JPY", c(JPTOCalendar()))
+JPY <- function() new_Currency("JPY", c(JPTOCalendar()))
 #' @rdname CurrencyConstructors
 #' @export
-NZD <- function() Currency("NZD", c(NZAUCalendar(), NZWECalendar()))
+NZD <- function() new_Currency("NZD", c(NZAUCalendar(), NZWECalendar()))
 #' @rdname CurrencyConstructors
 #' @export
-USD <- function() Currency("USD", c(USNYCalendar()))
+USD <- function() new_Currency("USD", c(USNYCalendar()))
 #' @rdname CurrencyConstructors
 #' @export
-CHF <- function() Currency("CHF", c(CHZHCalendar()))
+CHF <- function() new_Currency("CHF", c(CHZHCalendar()))
 #' @rdname CurrencyConstructors
 #' @export
-HKD <- function() Currency("HKD", c(HKHKCalendar()))
+HKD <- function() new_Currency("HKD", c(HKHKCalendar()))
 #' @rdname CurrencyConstructors
 #' @export
-NOK <- function() Currency("NOK", c(NOOSCalendar()))
+NOK <- function() new_Currency("NOK", c(NOOSCalendar()))
 
 
 #' ISO
