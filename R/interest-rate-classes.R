@@ -14,18 +14,15 @@
 #' @return a (vectorised) `DiscountFactor` object
 #' @examples
 #' library("lubridate")
-#' df <- DiscountFactor(c(0.95, 0.94, 0.93),
-#'         ymd(20130101), ymd(20140101, 20150101))
+#' df <- DiscountFactor(c(0.95, 0.94, 0.93), ymd(20130101), ymd(20140101, 20150101))
 #' as_InterestRate(df, 2, "act/365")
 #' @export
 
 DiscountFactor <- function(value, d1, d2) {
-  assertthat::assert_that(
-    all(is.numeric(value)),
-    all(lubridate::is.Date(d1)),
-    all(lubridate::is.Date(d2)),
-    all(value > 0), all(d1 <= d2)
-  )
+  validate_DiscountFactor(new_DiscountFactor(value, d1, d2))
+}
+
+new_DiscountFactor <- function(value, d1, d2) {
   n <- max(NROW(value), NROW(d1), NROW(d2))
   structure(list(
     value = rep(value, length.out = n),
@@ -33,6 +30,16 @@ DiscountFactor <- function(value, d1, d2) {
     end_date = rep(d2, length.out = n)),
     class = "DiscountFactor"
   )
+}
+
+validate_DiscountFactor <- function(x) {
+  assertthat::assert_that(
+    all(is.numeric(x$value)),
+    all(lubridate::is.Date(x$start_date)),
+    all(lubridate::is.Date(x$end_date)),
+    all(x$value > 0), all(x$start_date <= x$end_date)
+  )
+  x
 }
 
 #' InterestRate class
@@ -144,6 +151,10 @@ as_DiscountFactor <- function(x, ...) UseMethod("as_DiscountFactor")
 #' @rdname as_DiscountFactor
 #' @export
 as_DiscountFactor.InterestRate <- function(x, d1, d2, ...) {
+  assertthat::assert_that(
+    lubridate::is.Date(d1),
+    lubridate::is.Date(d2)
+  )
   # year_frac is vectorised
   term <- fmdates::year_frac(d1, d2, x$day_basis)
   # determine compounding frequency for each x value
@@ -158,7 +169,7 @@ as_DiscountFactor.InterestRate <- function(x, d1, d2, ...) {
   df[is_tbill] <- 1 - x$value * term
   df[is_pc] <- 1 / ((1 + x$value / x$compounding) ^
       (x$compounding * term))
-  DiscountFactor(df, d1, d2)
+  new_DiscountFactor(df, d1, d2)
 }
 
 #' Inherits from InterestRate
