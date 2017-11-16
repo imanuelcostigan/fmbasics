@@ -42,10 +42,13 @@
 #' @seealso [Interpolation]
 
 ZeroCurve <- function(discount_factors, reference_date, interpolation) {
+  validate_ZeroCurve(new_ZeroCurve(discount_factors, reference_date, interpolation))
+}
+
+
+new_ZeroCurve <- function(discount_factors, reference_date, interpolation) {
 
   assertthat::assert_that(
-    is.DiscountFactor(discount_factors),
-    assertthat::is.date(reference_date),
     is.ConstantInterpolation(interpolation) ||
       is.LinearInterpolation(interpolation) ||
       is.LogDFInterpolation(interpolation) ||
@@ -116,6 +119,14 @@ ZeroCurve <- function(discount_factors, reference_date, interpolation) {
     class = "ZeroCurve"
   )
 
+}
+
+validate_ZeroCurve <- function(x) {
+  assertthat::assert_that(
+    is.DiscountFactor(x$discount_factors),
+    assertthat::is.date(x$reference_date)
+  )
+  x
 }
 
 #' @export
