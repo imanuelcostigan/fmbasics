@@ -1,3 +1,7 @@
+# Version 0.2.99
+
+- Internal change to class structure
+
 # Version 0.2.0
 
 Implement `ZeroCurve` and associated interpolation schemes and methods (#1)
