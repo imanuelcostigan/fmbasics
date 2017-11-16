@@ -41,6 +41,7 @@ NULL
 #' @export
 c.InterestRate <- function (..., recursive = FALSE) {
   dots <- list(...)
+  assertthat::assert_that(is_atomic_list(dots, is.InterestRate))
   value <- compounding <- vector("numeric")
   day_basis <- vector("character")
   for (i in seq_along(dots)) {
@@ -48,12 +49,12 @@ c.InterestRate <- function (..., recursive = FALSE) {
     compounding <- c(compounding, dots[[i]]$compounding)
     day_basis <- c(day_basis, dots[[i]]$day_basis)
   }
-  InterestRate(value, compounding, day_basis)
+  new_InterestRate(value, compounding, day_basis)
 }
 
 #' @export
 `[.InterestRate` <- function (x, i, j, ..., drop = TRUE) {
-  InterestRate(x$value[i], x$compounding[i], x$day_basis[i])
+  new_InterestRate(x$value[i], x$compounding[i], x$day_basis[i])
 }
 
 #' @export
@@ -69,7 +70,7 @@ rep.InterestRate <- function (x, ...) {
   value <- rep(x$value, ...)
   compounding <- rep(x$compounding, ...)
   day_basis <- rep(x$day_basis, ...)
-  InterestRate(value, compounding, day_basis)
+  new_InterestRate(value, compounding, day_basis)
 }
 
 #' @export
@@ -108,7 +109,7 @@ op_ir <- function (op) {
     if (xor(is_ir[1], is_ir[2])) {
       # Only one IR. Which of e1 / e2 is IR?
       if (is_ir[1]) {
-        return(InterestRate(op(e1$value, e2), e1$compounding, e1$day_basis))
+        return(new_InterestRate(op(e1$value, e2), e1$compounding, e1$day_basis))
       } else {
         return(f(e2, e1))
       }
@@ -116,7 +117,7 @@ op_ir <- function (op) {
       # Both are IR (this function is called only if at least one IR found)
       # Convert second to same comp/daybasis as first.
       e2 <- as_InterestRate(e2, e1$compounding, e1$day_basis)
-      return(InterestRate(op(e1$value, e2$value), e1$compounding, e1$day_basis))
+      return(new_InterestRate(op(e1$value, e2$value), e1$compounding, e1$day_basis))
     }
   }
   return (f)
@@ -195,18 +196,19 @@ NULL
 #' @export
 c.DiscountFactor <- function (..., recursive = FALSE) {
   dots <- list(...)
+  assertthat::assert_that(is_atomic_list(dots, is.DiscountFactor))
   df <- d1 <- d2 <- vector("numeric", length(dots))
   for (i in seq_along(dots)) {
     df[i] <- dots[[i]]$value
     d1[i] <- dots[[i]]$start_date
     d2[i] <- dots[[i]]$end_date
   }
-  DiscountFactor(df, lubridate::as_date(d1), lubridate::as_date(d2))
+  new_DiscountFactor(df, lubridate::as_date(d1), lubridate::as_date(d2))
 }
 
 #' @export
 `[.DiscountFactor` <- function (x, i, j, ..., drop = TRUE) {
-  DiscountFactor(x$value[i], x$start_date[i], x$end_date[i])
+  new_DiscountFactor(x$value[i], x$start_date[i], x$end_date[i])
 }
 
 #' @export
@@ -222,7 +224,7 @@ rep.DiscountFactor <- function (x, ...) {
   discount_factor <- rep(x$value, ...)
   start_date <- rep(x$start_date, ...)
   end_date <- rep(x$end_date, ...)
-  DiscountFactor(discount_factor, start_date, end_date)
+  new_DiscountFactor(discount_factor, start_date, end_date)
 }
 
 #' @export
@@ -255,7 +257,8 @@ times_df <- function (e1, e2) {
   e2 <- rep(e2, length.out = n)
   assertthat::assert_that(
     any(all(e2$end_date == e1$start_date),
-    all(e1$end_date == e2$start_date)))
+    all(e1$end_date == e2$start_date))
+  )
   df <- e1$value * e2$value
   # http://adv-r.had.co.nz/Performance.html#implementation-performance
   # Use of pmin/pmax suboptimal
@@ -263,7 +266,7 @@ times_df <- function (e1, e2) {
   d1[d1 >= e2$start_date] <- e2$start_date[d1 >= e2$start_date]
   d2 <- e1$end_date
   d2[d2 <= e2$end_date] <- e2$end_date[d2 <= e2$end_date]
-  DiscountFactor(df, d1, d2)
+  new_DiscountFactor(df, d1, d2)
 }
 
 div_df <- function (e1, e2) {
@@ -276,7 +279,7 @@ div_df <- function (e1, e2) {
   d1[d1 >= e2$end_date] <- e2$end_date[d1 >= e2$end_date]
   d2 <- e1$end_date
   d2[d2 <= e2$end_date] <- e2$end_date[d2 <= e2$end_date]
-  DiscountFactor(df, d1, d2)
+  new_DiscountFactor(df, d1, d2)
 }
 
 #' @export

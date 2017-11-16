@@ -39,3 +39,12 @@ build_zero_curve <- function(interpolation = NULL) {
 }
 
 `%||%` <- function (x, y) if (is.null(x)) y else x
+
+
+is_atomic_list <- function(ll, .p) {
+  is.list(ll) && all(vapply(ll, .p, logical(1), USE.NAMES = FALSE))
+}
+
+assertthat::on_failure(is_atomic_list) <- function(call, env) {
+  "Element of the list are not all of the same class"
+}
