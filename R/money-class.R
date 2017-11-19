@@ -28,9 +28,8 @@ print.SingleCurrencyMoney <- function(x, ...) {
   cat(format(x), "\n")
 }
 
-new_MultiCurrencyMoney <- function(dates, amounts, ccys) {
+new_MultiCurrencyMoney <- function(amounts, ccys) {
   structure(tibble::tibble(
-    dates = dates,
     amounts = amounts,
     ccys = ccys),
     class = c("MultiCurrencyMoney", "tbl_df", "tbl", "data.frame")
@@ -39,15 +38,14 @@ new_MultiCurrencyMoney <- function(dates, amounts, ccys) {
 
 validate_MultiCurrencyMoney <- function(x) {
   assertthat::assert_that(
-    lubridate::is.Date(x$dates),
     is.numeric(x$amounts),
     is_atomic_list(x$ccys, is.Currency)
   )
   x
 }
 
-MultiCurrencyMoney <- function(dates, amounts, ccys) {
-  validate_MultiCurrencyMoney(new_MultiCurrencyMoney(dates, amounts, ccys))
+MultiCurrencyMoney <- function(amounts, ccys) {
+  validate_MultiCurrencyMoney(new_MultiCurrencyMoney(amounts, ccys))
 }
 
 is.MultiCurrencyMoney <- function(x) {
@@ -63,12 +61,7 @@ obj_sum.MultiCurrencyMoney <- function(x) {
 }
 
 
-# format.MultiCurrencyMoney <- function(x, ...) {
-#   paste0("<MultiCurrencyMoney>\n", paste0("  ",
-#     vapply(unclass(x), format, character(1), USE.NAMES = FALSE), collapse = "\n")
-#   )
-# }
-#
-# print.MultiCurrencyMoney <- function(x, ...) {
-#   cat(format(x), "\n")
-# }
+print.MultiCurrencyMoney <- function(x, ...) {
+  cat("<MultiCurrencyMoney>\n")
+  NextMethod()
+}
