@@ -2,15 +2,15 @@
 
 #' SingleCurrencyMoney
 #'
-#' This class associates a numeric value with a currency.
+#' This class associates a numeric vector with a currency.
 #'
-#' @param value a single numeric value
+#' @param value a numeric vector of values
 #' @param currency a single [Currency][Currency()] object
 #' @return a `SingleCurrencyMoney` object
 #' @export
 #'
 #' @examples
-#' SingleCurrencyMoney(100, AUD())
+#' SingleCurrencyMoney(1:5, AUD())
 #' @family money functions
 SingleCurrencyMoney <- function(value, currency) {
   validate_SingleCurrencyMoney(new_SingleCurrencyMoney(value, currency))
@@ -22,7 +22,7 @@ new_SingleCurrencyMoney <- function(value, currency) {
 
 validate_SingleCurrencyMoney <- function(x) {
   assertthat::assert_that(
-    assertthat::is.number(x),
+    is.numeric(x),
     is.Currency(attr(x, "currency"))
   )
   x
@@ -36,7 +36,7 @@ validate_SingleCurrencyMoney <- function(x) {
 #' @return `TRUE` if `x` inherits from the `SingleCurrencyMoney` class; otherwise `FALSE`
 #' @export
 #' @examples
-#' is.SingleCurrencyMoney(SingleCurrencyMoney(1, AUD()))
+#' is.SingleCurrencyMoney(SingleCurrencyMoney(1:5, AUD()))
 #' @family money functions
 is.SingleCurrencyMoney <- function(x) {
   inherits(x, "SingleCurrencyMoney")
@@ -72,7 +72,7 @@ iso.SingleCurrencyMoney <- function(x) {
 #'
 #' @param values a vector of numeric values
 #' @param currencies a list of [Currency][Currency()] objects with the same
-#' length as `values`
+#' length as `values` or a single object that is recycled
 #' @return a `MultiCurrencyMoney` object that extends [tibble::tibble()]
 #' @export
 #' @examples
@@ -95,7 +95,7 @@ validate_MultiCurrencyMoney <- function(x) {
   assertthat::assert_that(
     is.numeric(x$values),
     is_atomic_list(x$currencies, is.Currency),
-    length(x$values) == length(x$currencies)
+    length(x$values) == length(x$currencies) || length(x$currencies) == 1
   )
   x
 }
@@ -124,3 +124,10 @@ print.MultiCurrencyMoney <- function(x, ...) {
 obj_sum.MultiCurrencyMoney <- function(x) {
   rep("MCMoney", length(x))
 }
+
+#' @export
+as_tibble.MultiCurrencyMoney <- function(x, ...) {
+  class(x) <- tail(class(x), -1)
+  x
+}
+
