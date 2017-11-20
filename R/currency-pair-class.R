@@ -219,3 +219,7 @@ remove_usny <- function(calendar) {
   calendar[is_not_usny]
 }
 
+#' @export
+type_sum.CurrencyPair <- function(x) {
+  paste("CCYPair:", iso(x))
+}
