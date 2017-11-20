@@ -16,7 +16,7 @@ is.SingleCurrencyMoney(x)
 Checks whether object inherits from \code{SingleCurrencyMoney} class
 }
 \examples{
-is.SingleCurrencyMoney(SingleCurrencyMoney(1, AUD()))
+is.SingleCurrencyMoney(SingleCurrencyMoney(1:5, AUD()))
 }
 \seealso{
 Other money functions: \code{\link{MultiCurrencyMoney}},

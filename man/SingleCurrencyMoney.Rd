@@ -7,7 +7,7 @@
 SingleCurrencyMoney(value, currency)
 }
 \arguments{
-\item{value}{a single numeric value}
+\item{value}{a numeric vector of values}
 
 \item{currency}{a single \link[=Currency]{Currency} object}
 }
@@ -15,10 +15,10 @@ SingleCurrencyMoney(value, currency)
 a \code{SingleCurrencyMoney} object
 }
 \description{
-This class associates a numeric value with a currency.
+This class associates a numeric vector with a currency.
 }
 \examples{
-SingleCurrencyMoney(100, AUD())
+SingleCurrencyMoney(1:5, AUD())
 }
 \seealso{
 Other money functions: \code{\link{MultiCurrencyMoney}},

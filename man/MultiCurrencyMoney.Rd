@@ -10,7 +10,7 @@ MultiCurrencyMoney(values, currencies)
 \item{values}{a vector of numeric values}
 
 \item{currencies}{a list of \link[=Currency]{Currency} objects with the same
-length as \code{values}}
+length as \code{values} or a single object that is recycled}
 }
 \value{
 a \code{MultiCurrencyMoney} object that extends \code{\link[tibble:tibble]{tibble::tibble()}}
