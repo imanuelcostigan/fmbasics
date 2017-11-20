@@ -1,5 +1,3 @@
-
-
 # SingleCurrencyMoney -----------------------------------------------------
 
 #' SingleCurrencyMoney
@@ -126,4 +124,3 @@ print.MultiCurrencyMoney <- function(x, ...) {
 obj_sum.MultiCurrencyMoney <- function(x) {
   rep("MCMoney", length(x))
 }
-
