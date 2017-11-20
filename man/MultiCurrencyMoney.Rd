@@ -17,6 +17,7 @@ a \code{MultiCurrencyMoney} object that extends \code{\link[tibble:tibble]{tibbl
 }
 \description{
 This class associated a vector of numeric values with a list of currencies.
+This can be useful for example to store value of cash flows.
 }
 \examples{
 MultiCurrencyMoney(c(100, 200), list(AUD(), USD()))

@@ -15,7 +15,8 @@ SingleCurrencyMoney(value, currency)
 a \code{SingleCurrencyMoney} object
 }
 \description{
-This class associates a numeric vector with a currency.
+This class associates a numeric vector with a currency. This is useful for
+example in representing the value of a derivative.
 }
 \examples{
 SingleCurrencyMoney(1:5, AUD())

@@ -2,7 +2,8 @@
 
 #' SingleCurrencyMoney
 #'
-#' This class associates a numeric vector with a currency.
+#' This class associates a numeric vector with a currency. This is useful for
+#' example in representing the value of a derivative.
 #'
 #' @param value a numeric vector of values
 #' @param currency a single [Currency][Currency()] object
@@ -69,6 +70,7 @@ iso.SingleCurrencyMoney <- function(x) {
 #' MultiCurrencyMoney
 #'
 #' This class associated a vector of numeric values with a list of currencies.
+#' This can be useful for example to store value of cash flows.
 #'
 #' @param values a vector of numeric values
 #' @param currencies a list of [Currency][Currency()] objects with the same
@@ -130,4 +132,3 @@ as_tibble.MultiCurrencyMoney <- function(x, ...) {
   class(x) <- tail(class(x), -1)
   x
 }
-
