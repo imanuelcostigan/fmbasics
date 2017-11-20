@@ -1,5 +1,6 @@
 # Version 0.2.99
 
+- NEW: `SingleCurrencyMoney` and `MultiCurrencyMoney` classes and associated methods
 - Internal change to class structure
 
 # Version 0.2.0
