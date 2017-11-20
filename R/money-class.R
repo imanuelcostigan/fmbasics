@@ -61,6 +61,10 @@ type_sum.Currency <- function(x) {
   paste0("Currency: ", iso(x))
 }
 
+#' @export
+iso.SingleCurrencyMoney <- function(x) {
+  iso(x$currency)
+}
 
 # MultiCurrencyMoney ------------------------------------------------------
 
