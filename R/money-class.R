@@ -59,7 +59,7 @@ print.SingleCurrencyMoney <- function(x, ...) {
 #' @export
 type_sum.Currency <- function(x) {
   # Needed to print MultiCurrencyMoney properly
-  paste0("Currency: ", iso(x))
+  paste("CCY:", iso(x))
 }
 
 #' @export
@@ -119,19 +119,13 @@ is.MultiCurrencyMoney <- function(x) {
 }
 
 #' @export
-print.MultiCurrencyMoney <- function(x, ...) {
-  cat("<MultiCurrencyMoney>\n")
-  NextMethod()
-}
-
-#' @importFrom tibble obj_sum
-#' @export
-obj_sum.MultiCurrencyMoney <- function(x) {
-  rep("MCMoney", length(x))
-}
-
-#' @export
 as_tibble.MultiCurrencyMoney <- function(x, ...) {
   class(x) <- utils::tail(class(x), -1)
   x
+}
+
+#' @importFrom tibble tbl_sum
+#' @export
+tbl_sum.MultiCurrencyMoney <- function(x) {
+  paste("<MultiCurrencyMoney> of length", nrow(x))
 }

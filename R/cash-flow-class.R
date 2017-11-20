@@ -49,13 +49,13 @@ is.CashFlow <- function(x) {
 }
 
 #' @export
-print.CashFlow <- function(x, ...) {
-  cat("<CashFlow>\n")
-  NextMethod()
-}
-
-#' @export
 as_tibble.CashFlow <- function(x, ...) {
   class(x) <- utils::tail(class(x), -1)
   x
+}
+
+#' @importFrom tibble tbl_sum
+#' @export
+tbl_sum.CashFlow <- function(x) {
+  paste("<CashFlow> of length", nrow(x))
 }
