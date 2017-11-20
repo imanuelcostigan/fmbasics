@@ -54,6 +54,8 @@ print.SingleCurrencyMoney <- function(x, ...) {
   cat(format(x), "\n")
 }
 
+
+#' @importFrom tibble type_sum
 #' @export
 type_sum.Currency <- function(x) {
   # Needed to print MultiCurrencyMoney properly
@@ -122,6 +124,7 @@ print.MultiCurrencyMoney <- function(x, ...) {
   NextMethod()
 }
 
+#' @importFrom tibble obj_sum
 #' @export
 obj_sum.MultiCurrencyMoney <- function(x) {
   rep("MCMoney", length(x))
@@ -129,6 +132,6 @@ obj_sum.MultiCurrencyMoney <- function(x) {
 
 #' @export
 as_tibble.MultiCurrencyMoney <- function(x, ...) {
-  class(x) <- tail(class(x), -1)
+  class(x) <- utils::tail(class(x), -1)
   x
 }

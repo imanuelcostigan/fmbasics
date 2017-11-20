@@ -56,6 +56,6 @@ print.CashFlow <- function(x, ...) {
 
 #' @export
 as_tibble.CashFlow <- function(x, ...) {
-  class(x) <- tail(class(x), -1)
+  class(x) <- utils::tail(class(x), -1)
   x
 }
