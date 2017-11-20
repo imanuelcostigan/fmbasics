@@ -26,6 +26,13 @@ is.FXRates <- function(x) {
   inherits(x, "FXRates")
 }
 
+#' @importFrom tibble as_tibble
+#' @export
+as_tibble.FXRates <- function(x) {
+  class(x) <- utils::tail(class(x), -1)
+  x
+}
+
 #' @importFrom tibble tbl_sum
 #' @export
 tbl_sum.FXRates <- function(x) {
