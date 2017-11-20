@@ -61,7 +61,7 @@ type_sum.Currency <- function(x) {
 
 #' @export
 iso.SingleCurrencyMoney <- function(x) {
-  iso(x$currency)
+  iso(attr(x, "currency"))
 }
 
 # MultiCurrencyMoney ------------------------------------------------------
