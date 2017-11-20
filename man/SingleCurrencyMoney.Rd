@@ -22,7 +22,9 @@ example in representing the value of a derivative.
 SingleCurrencyMoney(1:5, AUD())
 }
 \seealso{
-Other money functions: \code{\link{MultiCurrencyMoney}},
+Other money functions: \code{\link{CashFlow}},
+  \code{\link{MultiCurrencyMoney}},
+  \code{\link{is.CashFlow}},
   \code{\link{is.MultiCurrencyMoney}},
   \code{\link{is.SingleCurrencyMoney}}
 }

@@ -23,7 +23,9 @@ This can be useful for example to store value of cash flows.
 MultiCurrencyMoney(c(100, 200), list(AUD(), USD()))
 }
 \seealso{
-Other money functions: \code{\link{SingleCurrencyMoney}},
+Other money functions: \code{\link{CashFlow}},
+  \code{\link{SingleCurrencyMoney}},
+  \code{\link{is.CashFlow}},
   \code{\link{is.MultiCurrencyMoney}},
   \code{\link{is.SingleCurrencyMoney}}
 }

@@ -19,7 +19,9 @@ Checks whether object inherits from \code{MultiCurrencyMoney} class
 is.MultiCurrencyMoney(MultiCurrencyMoney(1, list(AUD())))
 }
 \seealso{
-Other money functions: \code{\link{MultiCurrencyMoney}},
+Other money functions: \code{\link{CashFlow}},
+  \code{\link{MultiCurrencyMoney}},
   \code{\link{SingleCurrencyMoney}},
+  \code{\link{is.CashFlow}},
   \code{\link{is.SingleCurrencyMoney}}
 }
