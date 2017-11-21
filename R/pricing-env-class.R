@@ -80,6 +80,15 @@ validate_ZeroCurves <- function(x) {
   x
 }
 
+as_tibble.ZeroCurves <- function(x) {
+  class(x) <- utils::tail(class(x), -2)
+  x
+}
+
+tbl_sum.ZeroCurves <- function(x) {
+  paste("<ZeroCurves> of length", nrow(x))
+}
+
 
 get_fx_rate <- function(fx_rates, ccy_pair) {
   res <- fx_rates[fx_rates$isos == iso(ccy_pair), ][["rates"]]
