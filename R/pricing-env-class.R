@@ -47,7 +47,7 @@ is.FXRates <- function(x) {
 #' @importFrom tibble as_tibble
 #' @export
 as_tibble.FXRates <- function(x) {
-  class(x) <- utils::tail(class(x), -1)
+  class(x) <- utils::tail(class(x), -2)
   x
 }
 
@@ -58,20 +58,24 @@ tbl_sum.FXRates <- function(x) {
 }
 
 
-ZeroCurves <- function(x) {
-  validate_ZeroCurves(new_ZeroCurves(x))
+ZeroCurves <- function(names, curves) {
+  validate_ZeroCurves(new_ZeroCurves(names, curves))
 }
 
-new_ZeroCurves <- function(x) {
-  structure(x, class = c("ZeroCurves", "PricingEnv"))
+new_ZeroCurves <- function(names, curves) {
+  structure(tibble::tibble(
+    names = names,
+    curves = curves),
+    class = c("ZeroCurves", "PricingEnv", "tbl_df", "tbl", "data.frame")
+  )
 }
 
 validate_ZeroCurves <- function(x) {
   assertthat::assert_that(
-    !is.null(names(x)),
-    anyDuplicated(names(x)) == 0,
-    is_atomic_list(unclass(x), is.ZeroCurve),
-    length(unique(vapply(x, "[[", numeric(1), "reference_date"))) == 1
+    is.character(x$names),
+    anyDuplicated(x$names) == 0,
+    is_atomic_list(x$curves, is.ZeroCurve),
+    length(unique(vapply(x$curves, "[[", numeric(1), "reference_date"))) == 1
   )
   x
 }
