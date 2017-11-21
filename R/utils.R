@@ -55,6 +55,11 @@ build_zero_curves <- function(interpolation = NULL) {
 }
 
 
+build_fx_rates <- function() {
+  rates <- fmdata_example("fx.csv")
+  FXRates(rates$pair, rates$rate)
+}
+
 `%||%` <- function (x, y) if (is.null(x)) y else x
 
 

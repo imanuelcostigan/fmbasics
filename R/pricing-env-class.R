@@ -16,12 +16,11 @@
 
 
 new_FXRates <- function(currency_pairs, rates) {
+new_FXRates <- function(isos, rates) {
   # Store ISOs as an index on which to search
-  isos <- vapply(currency_pairs, iso, character(1), USE.NAMES = FALSE)
   structure(tibble::tibble(
-    rates = rates,
-    currency_pairs = currency_pairs,
-    isos = isos),
+    isos = isos,
+    rates = rates),
     class = c("FXRates", "PricingEnv", "tbl_df", "tbl", "data.frame")
   )
 }
@@ -29,15 +28,15 @@ new_FXRates <- function(currency_pairs, rates) {
 validate_FXRates <- function(x) {
   assertthat::assert_that(
     is.numeric(x$rates),
-    is_atomic_list(x$currency_pairs, is.CurrencyPair),
+    is.character(x$isos),
     anyDuplicated(x$isos) == 0,
     length(x$isos) == length(x$rates)
   )
   x
 }
 
-FXRates <- function(currency_pairs, rates) {
-  validate_FXRates(new_FXRates(currency_pairs, rates))
+FXRates <- function(isos, rates) {
+  validate_FXRates(new_FXRates(isos, rates))
 }
 
 is.FXRates <- function(x) {
