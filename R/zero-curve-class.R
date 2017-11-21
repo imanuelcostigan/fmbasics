@@ -284,3 +284,9 @@ interpolate.ZeroCurve <- function(x, at, ...) {
   assertthat::assert_that(is.numeric(at), all(at >= 0))
   x$interpolator(at)
 }
+
+#' @importFrom tibble type_sum
+#' @export
+type_sum.ZeroCurve <- function(x) {
+  "ZeroCurve"
+}
