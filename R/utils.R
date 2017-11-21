@@ -38,6 +38,23 @@ build_zero_curve <- function(interpolation = NULL) {
   ZeroCurve(dfs, starts[1], interpolation %||% LogDFInterpolation())
 }
 
+
+build_zero_curves <- function(interpolation = NULL) {
+  zc_dfs <- fmdata_example("zerocurves.csv")
+  zc_dfs[["start"]] <- as.Date(as.character(zc_dfs[["start"]]), "%Y%m%d")
+  zc_dfs[["end"]] <- as.Date(as.character(zc_dfs[["end"]]), "%Y%m%d")
+  curve_names <- unique(zc_dfs$name)
+  res <- setNames(vector("list", length(curve_names)), curve_names)
+  for(name in curve_names) {
+    zc_df <- subset(zc_dfs, name == name)
+    dfs <- DiscountFactor(zc_df$dfs, zc_df$start, zc_df$end)
+    res[[name]] <- ZeroCurve(dfs, as.Date("2016-12-30"),
+      interpolation %||% LogDFInterpolation())
+  }
+  ZeroCurves(res)
+}
+
+
 `%||%` <- function (x, y) if (is.null(x)) y else x
 
 

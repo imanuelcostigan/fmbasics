@@ -285,3 +285,20 @@ interpolate.ZeroCurve <- function(x, at, ...) {
   x$interpolator(at)
 }
 
+ZeroCurves <- function(x) {
+  validate_ZeroCurves(new_ZeroCurves(x))
+}
+
+new_ZeroCurves <- function(x) {
+  structure(x, class = c("ZeroCurves", "PricingEnv"))
+}
+
+validate_ZeroCurves <- function(x) {
+  assertthat::assert_that(
+    !is.null(names(x)),
+    anyDuplicated(names(x)) == 0,
+    is_atomic_list(unclass(x), is.ZeroCurve),
+    length(unique(vapply(x, "[[", numeric(1), "reference_date"))) == 1
+  )
+  x
+}
