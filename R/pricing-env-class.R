@@ -208,16 +208,15 @@ tbl_sum.ZeroCurves <- function(x) {
 #'   corresponds to the `PricingEnv` field names which are currently
 #'   `zero_curves` and `fx_rates`.
 #' @param ... other parameters to full specify the pricing element to extract.
-#'   For `zero_curves` this includes the parameters `currency` and `index` which
-#'   when concatenated with an underscore separator specifies the name of the
-#'   `ZeroCurve` to extract. For `fx_rates` this includes `iso` which specifies
-#'   the ISO code of the currency pair of the FX rate (numeric) that is to be
-#'   extracted.
+#'   For `zero_curves` this includes the parameter `name` which  specifies the
+#'   name of the `ZeroCurve` to extract. For `fx_rates` this includes `iso`
+#'   which specifies the ISO code of the currency pair of the FX rate (numeric)
+#'   that is to be extracted.
 #' @return a `ZeroCurve` when `what` is "zero_curves" and a number when `what`
 #'   is "fx_rates".
 #' @examples
 #' pe <- build_pricing_env()
-#' pick(pe, "zero_curves", "CC1", "3M")
+#' pick(pe, "zero_curves", "CC1_3M")
 #' pick(pe, "fx_rates", "AUDUSD")
 #' @export
 #' @family pricing environments
@@ -232,8 +231,7 @@ picker.FXRates <- function(x, iso, ...) {
   if(length(res) == 0) return(NA_real_) else return(res)
 }
 
-picker.ZeroCurves <- function(x, currency, index, ...) {
-  name <- paste0(currency, "_", index)
+picker.ZeroCurves <- function(x, name, ...) {
   selector <- which(x$names == name)
   if (length(selector) == 0) return(NA) else x$curves[[selector]]
 }
