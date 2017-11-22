@@ -1,7 +1,10 @@
 # Version 0.2.99
 
-- NEW: `SingleCurrencyMoney` and `MultiCurrencyMoney` classes and associated methods
-- NEW: `CashFlow` class and associated methods
+- NEW: `SingleCurrencyMoney()` and `MultiCurrencyMoney()` allows you to create single and multi-currency money objects that are not date dependent
+- NEW: `CashFlow()` allows you to create date dependent cash flows
+- NEW: `FXRates()` and `ZeroCurves()` allows you to create tables of FX rates and zero curves for use in pricing.
+- NEW: `PricingEnv()` allows you to wrap up `FXRates` and `ZeroCurves` into a single container with `pick()` allowing you select particular pricing elements.
+- NEW: `build_fx_rates()`, `build_zero_curves()` and `build_pricing_env()` to enable the creation of associated objects using example market data
 - Internal change to class structure
 
 # Version 0.2.0
