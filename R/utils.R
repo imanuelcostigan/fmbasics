@@ -39,6 +39,16 @@ build_zero_curve <- function(interpolation = NULL) {
 }
 
 
+#' Build `ZeroCurves` pricing environment
+#'
+#' This creates a `ZeroCurves` object from the example data set `zerocurves.csv`.
+#'
+#' @inheritParams build_zero_curve
+#' @return a `ZeroCurves` object using data from `zerocurves.csv`
+#' @examples
+#' build_zero_curves(LogDFInterpolation())
+#' @export
+#' @seealso [fmdata_example()]
 build_zero_curves <- function(interpolation = NULL) {
   zc_dfs <- fmdata_example("zerocurves.csv")
   zc_dfs[["start"]] <- as.Date(as.character(zc_dfs[["start"]]), "%Y%m%d")
