@@ -192,18 +192,18 @@ tbl_sum.ZeroCurves <- function(x) {
 # PricingEnv methods ------------------------------------------------------
 
 
-pricing_element <- function(env, type, ...) {
-  getter(env[[type]], ...)
+pick <- function(from, what, ...) {
+  picker(from[[what]], ...)
 }
 
-getter <- function(x, ...) UseMethod("getter")
+picker <- function(x, ...) UseMethod("picker")
 
-getter.FXRates <- function(x, iso, ...) {
+picker.FXRates <- function(x, iso, ...) {
   res <- x[x$isos == iso, ][["rates"]]
   if(length(res) == 0) return(NA_real_) else return(res)
 }
 
-getter.ZeroCurves <- function(x, currency, index, ...) {
+picker.ZeroCurves <- function(x, currency, index, ...) {
   name <- paste0(currency, "_", index)
   selector <- which(x$names == name)
   if (length(selector) == 0) return(NA) else x$curves[[selector]]
