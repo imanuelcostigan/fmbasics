@@ -72,10 +72,6 @@ as_tibble.FXRates <- function(x) {
   x
 }
 
-print.FXRates <- function(x, ...) {
-  print(as_tibble(x))
-}
-
 #' @importFrom tibble tbl_sum
 #' @export
 tbl_sum.FXRates <- function(x) {
@@ -112,10 +108,6 @@ is.ZeroCurves <- function(x) {
 as_tibble.ZeroCurves <- function(x) {
   class(x) <- utils::tail(class(x), -2)
   x
-}
-
-print.ZeroCurves <- function(x, ...) {
-  print(as_tibble(x))
 }
 
 tbl_sum.ZeroCurves <- function(x) {
