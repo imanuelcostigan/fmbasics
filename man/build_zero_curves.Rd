@@ -13,11 +13,15 @@ build_zero_curves(interpolation = NULL)
 a \code{ZeroCurves} object using data from \code{zerocurves.csv}
 }
 \description{
-This creates a \code{ZeroCurves} object from the example data set \code{zerocurves.csv}.
+This creates a \code{\link{ZeroCurves}} object from the example data set
+\code{zerocurves.csv}.
 }
 \examples{
 build_zero_curves(LogDFInterpolation())
 }
 \seealso{
-\code{\link[=fmdata_example]{fmdata_example()}}
+Other build object helpers: \code{\link{build_fx_rates}},
+  \code{\link{build_pricing_env}},
+  \code{\link{build_zero_curve}},
+  \code{\link{fmdata_example}}
 }

@@ -18,11 +18,19 @@ The following files are supplied by the package:
 \item \code{zerocurve.csv} has four fields for one curve: \code{start}, \code{end}, \code{zeros} and
 \code{dfs} representing the start and end dates of the pillar instruments and
 semi-annually compounded zero coupon rates and discount factors
+\item \code{zerocurves.csv} has five fields for curve sets associated with two
+currencies: \code{start}, \code{end}, \code{zeros} and \code{dfs} as above as well as \code{name}
+representing the name of the curve. The name of the curve is specified as
+\code{CCY_INDEX} where \code{CCY} is the ISO code of the curve's currency and \code{INDEX} is
+the index associated with the curve.
 }
 }
 \examples{
 fmdata_example("zerocurve.csv")
 }
 \seealso{
-\code{\link[=build_zero_curve]{build_zero_curve()}}
+Other build object helpers: \code{\link{build_fx_rates}},
+  \code{\link{build_pricing_env}},
+  \code{\link{build_zero_curves}},
+  \code{\link{build_zero_curve}}
 }
