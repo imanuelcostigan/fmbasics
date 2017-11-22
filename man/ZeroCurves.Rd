@@ -22,3 +22,9 @@ curves.
 \examples{
 build_zero_curves()
 }
+\seealso{
+Other pricing environments: \code{\link{FXRates}},
+  \code{\link{PricingEnv}}, \code{\link{is.FXRates}},
+  \code{\link{is.PricingEnv}}, \code{\link{is.ZeroCurves}},
+  \code{\link{pick}}
+}

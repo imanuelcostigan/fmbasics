@@ -18,3 +18,9 @@ Checks whether object inherits from \code{FXRates} class
 \examples{
 is.FXRates(build_fx_rates())
 }
+\seealso{
+Other pricing environments: \code{\link{FXRates}},
+  \code{\link{PricingEnv}}, \code{\link{ZeroCurves}},
+  \code{\link{is.PricingEnv}}, \code{\link{is.ZeroCurves}},
+  \code{\link{pick}}
+}

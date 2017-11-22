@@ -23,3 +23,9 @@ pair ISOs and their associated values (usually spot FX).
 \examples{
 build_fx_rates()
 }
+\seealso{
+Other pricing environments: \code{\link{PricingEnv}},
+  \code{\link{ZeroCurves}}, \code{\link{is.FXRates}},
+  \code{\link{is.PricingEnv}}, \code{\link{is.ZeroCurves}},
+  \code{\link{pick}}
+}

@@ -29,3 +29,9 @@ valuation of financial market contracts. Supported pricing objects include:
 \examples{
 build_pricing_env()
 }
+\seealso{
+Other pricing environments: \code{\link{FXRates}},
+  \code{\link{ZeroCurves}}, \code{\link{is.FXRates}},
+  \code{\link{is.PricingEnv}}, \code{\link{is.ZeroCurves}},
+  \code{\link{pick}}
+}

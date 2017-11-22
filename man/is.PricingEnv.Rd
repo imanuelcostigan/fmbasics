@@ -18,3 +18,9 @@ Checks whether object inherits from \code{PricingEnv} class
 \examples{
 is.PricingEnv(build_pricing_env())
 }
+\seealso{
+Other pricing environments: \code{\link{FXRates}},
+  \code{\link{PricingEnv}}, \code{\link{ZeroCurves}},
+  \code{\link{is.FXRates}}, \code{\link{is.ZeroCurves}},
+  \code{\link{pick}}
+}

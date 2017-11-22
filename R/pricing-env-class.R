@@ -16,6 +16,7 @@
 #' @examples
 #' build_pricing_env()
 #' @export
+#' @family pricing environments
 PricingEnv <- function(zero_curves, fx_rates, reference_date = NULL) {
   validate_PricingEnv(new_PricingEnv(zero_curves, fx_rates, reference_date))
 }
@@ -47,6 +48,7 @@ validate_PricingEnv <- function(x) {
 #' @examples
 #' is.PricingEnv(build_pricing_env())
 #' @export
+#' @family pricing environments
 is.PricingEnv <- function(x) {
   inherits(x, "PricingEnv")
 }
@@ -78,6 +80,7 @@ print.PricingEnv <- function(x, ...) {
 #' @examples
 #' build_fx_rates()
 #' @export
+#' @family pricing environments
 FXRates <- function(isos, rates) {
   validate_FXRates(new_FXRates(isos, rates))
 }
@@ -110,6 +113,7 @@ validate_FXRates <- function(x) {
 #' @examples
 #' is.FXRates(build_fx_rates())
 #' @export
+#' @family pricing environments
 is.FXRates <- function(x) {
   inherits(x, "FXRates")
 }
@@ -139,6 +143,7 @@ tbl_sum.FXRates <- function(x) {
 #' @examples
 #' build_zero_curves()
 #' @export
+#' @family pricing environments
 
 ZeroCurves <- function(names, curves) {
   validate_ZeroCurves(new_ZeroCurves(names, curves))
@@ -171,6 +176,7 @@ validate_ZeroCurves <- function(x) {
 #' @examples
 #' is.ZeroCurves(build_zero_curves())
 #' @export
+#' @family pricing environments
 is.ZeroCurves <- function(x) {
   inherits(x, "ZeroCurves")
 }
@@ -192,6 +198,29 @@ tbl_sum.ZeroCurves <- function(x) {
 # PricingEnv methods ------------------------------------------------------
 
 
+#' Pick out element from PricingEnv
+#'
+#' This will allow you to pick an element out of a [PricingEnv][PricingEnv] given
+#' a set of parameters.
+#'
+#' @param from a [PricingEnv][PricingEnv]
+#' @param what a string specifying where the pricing element can be found. This
+#'   corresponds to the `PricingEnv` field names which are currently
+#'   `zero_curves` and `fx_rates`.
+#' @param ... other parameters to full specify the pricing element to extract.
+#'   For `zero_curves` this includes the parameters `currency` and `index` which
+#'   when concatenated with an underscore separator specifies the name of the
+#'   `ZeroCurve` to extract. For `fx_rates` this includes `iso` which specifies
+#'   the ISO code of the currency pair of the FX rate (numeric) that is to be
+#'   extracted.
+#' @return a `ZeroCurve` when `what` is "zero_curves" and a number when `what`
+#'   is "fx_rates".
+#' @examples
+#' pe <- build_pricing_env()
+#' pick(pe, "zero_curves", "CC1", "3M")
+#' pick(pe, "fx_rates", "AUDUSD")
+#' @export
+#' @family pricing environments
 pick <- function(from, what, ...) {
   picker(from[[what]], ...)
 }
