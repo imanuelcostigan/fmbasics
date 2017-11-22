@@ -47,7 +47,7 @@ new_FXRates <- function(isos, rates) {
   structure(tibble::tibble(
     isos = isos,
     rates = rates),
-    class = c("FXRates", "PricingEnv", "tbl_df", "tbl", "data.frame")
+    class = c("FXRates", "tbl_df", "tbl", "data.frame")
   )
 }
 
@@ -91,7 +91,7 @@ new_ZeroCurves <- function(names, curves) {
   structure(tibble::tibble(
     names = names,
     curves = curves),
-    class = c("ZeroCurves", "PricingEnv", "tbl_df", "tbl", "data.frame")
+    class = c("ZeroCurves", "tbl_df", "tbl", "data.frame")
   )
 }
 
