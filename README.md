@@ -3,7 +3,7 @@
 fmbasics - Financial Market Building Blocks
 ===========================================
 
-[![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/fmbasics)](https://cran.r-project.org/package=fmbasics) [![Travis-CI Build Status](https://travis-ci.org/imanuelcostigan/fmbasics.svg?branch=master)](https://travis-ci.org/imanuelcostigan/fmbasics) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/imanuelcostigan/fmbasics?branch=master&svg=true)](https://ci.appveyor.com/project/imanuelcostigan/fmbasics) [![Coverage Status](https://img.shields.io/codecov/c/github/imanuelcostigan/fmbasics/master.svg)](https://codecov.io/github/imanuelcostigan/fmbasics?branch=master)
+[![CRAN\_Status\_Badge](https://www.r-pkg.org/badges/version/fmbasics)](https://cran.r-project.org/package=fmbasics) [![Travis-CI Build Status](https://travis-ci.org/imanuelcostigan/fmbasics.svg?branch=master)](https://travis-ci.org/imanuelcostigan/fmbasics) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/imanuelcostigan/fmbasics?branch=master&svg=true)](https://ci.appveyor.com/project/imanuelcostigan/fmbasics) [![Coverage Status](https://img.shields.io/codecov/c/github/imanuelcostigan/fmbasics/master.svg)](https://codecov.io/github/imanuelcostigan/fmbasics?branch=master)
 
 Implements basic financial market objects like currencies, currency pairs, interest rates and interest rate indices. You will be able to use Benchmark instances of these objects which have been defined using their most common conventions or those defined by International Swap Dealer Association (ISDA, <http://www2.isda.org>) legal documentation.
 
@@ -22,9 +22,9 @@ These come with implementations of handy methods:
 ``` r
 library("lubridate")
 to_fx_value(dates = Sys.Date(), tenor = "spot", x = AUDUSD())
-#> [1] "2017-05-02"
+#> [1] "2017-11-27"
 to_fx_value(Sys.Date(), months(3), AUDUSD())
-#> [1] "2017-08-02"
+#> [1] "2018-02-27"
 ```
 
 You can create instances of key IBOR or ONIA interest rate indices:
@@ -83,6 +83,15 @@ interpolate(zc, 1:20)
 #>  [7] 0.02500574 0.02602505 0.02696769 0.02783101 0.02862813 0.02929467
 #> [13] 0.02990451 0.03042819 0.03088204 0.03131674 0.03170140 0.03204332
 #> [19] 0.03234925 0.03262458
+```
+
+You will be able to create pricing environments (basically containers of pricing structures) using `FXRates()`, `ZeroCurves()` (note the plural form) and `PricingEnv()`:
+
+``` r
+build_pricing_env()
+#> <PricingEnv> @ 2016-12-30
+#>   Zero Curves: CC1_1M, CC1_3M, CC1_6M, CC1_CC1_CSA, CC1_CC2_CSA, CC2_CC2_CSA, CC2_NON_CSA, CC2_1M, CC2_3M, CC2_6M
+#>   FX rates: AUDUSD, EURUSD, GBPUSD, NZDUSD, USDCAD, USDCHF, USDCNH, USDCNY, USDJPY, USDNOK, USDSGD
 ```
 
 Further details can be found in this package's help pages and vignettes (`vignette(package = "fmbasics")`)
