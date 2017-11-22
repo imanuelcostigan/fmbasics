@@ -63,7 +63,7 @@ build_zero_curves <- function(interpolation = NULL) {
   curve_names <- unique(zc_dfs$name)
   res <- vector("list", length(curve_names))
   for(i in seq_along(res)) {
-    zc_df <- subset(zc_dfs, name == curve_names[i])
+    zc_df <- zc_dfs[zc_dfs$name == curve_names[i], ]
     dfs <- DiscountFactor(zc_df$dfs, zc_df$start, zc_df$end)
     res[[i]] <- ZeroCurve(dfs, as.Date("2016-12-30"),
       interpolation %||% LogDFInterpolation())
