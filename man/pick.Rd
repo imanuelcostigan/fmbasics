@@ -14,11 +14,10 @@ corresponds to the \code{PricingEnv} field names which are currently
 \code{zero_curves} and \code{fx_rates}.}
 
 \item{...}{other parameters to full specify the pricing element to extract.
-For \code{zero_curves} this includes the parameters \code{currency} and \code{index} which
-when concatenated with an underscore separator specifies the name of the
-\code{ZeroCurve} to extract. For \code{fx_rates} this includes \code{iso} which specifies
-the ISO code of the currency pair of the FX rate (numeric) that is to be
-extracted.}
+For \code{zero_curves} this includes the parameter \code{name} which  specifies the
+name of the \code{ZeroCurve} to extract. For \code{fx_rates} this includes \code{iso}
+which specifies the ISO code of the currency pair of the FX rate (numeric)
+that is to be extracted.}
 }
 \value{
 a \code{ZeroCurve} when \code{what} is "zero_curves" and a number when \code{what}
@@ -30,7 +29,7 @@ a set of parameters.
 }
 \examples{
 pe <- build_pricing_env()
-pick(pe, "zero_curves", "CC1", "3M")
+pick(pe, "zero_curves", "CC1_3M")
 pick(pe, "fx_rates", "AUDUSD")
 }
 \seealso{
