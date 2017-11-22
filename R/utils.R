@@ -60,6 +60,10 @@ build_fx_rates <- function() {
   FXRates(rates$pair, rates$rate)
 }
 
+build_pricing_env <- function() {
+  PricingEnv(build_zero_curves(), build_fx_rates())
+}
+
 `%||%` <- function (x, y) if (is.null(x)) y else x
 
 
