@@ -62,12 +62,7 @@ new_ZeroCurve <- function(discount_factors, reference_date, interpolation) {
   cp <- Inf
 
   dt <- fmdates::year_frac(reference_date, discount_factors$end_date, db)
-  assertthat::assert_that(all(dt >= 0))
   r <- as_InterestRate(discount_factors, cp, db)$value
-  # Sort into ascending order as this is assumed in code below.
-  index <- order(dt, decreasing = FALSE)
-  dt <- dt[index]
-  r  <- r[index]
 
   f <- function(t) {
 
@@ -123,8 +118,10 @@ new_ZeroCurve <- function(discount_factors, reference_date, interpolation) {
 
 validate_ZeroCurve <- function(x) {
   assertthat::assert_that(
+    all(x$reference_date <= x$discount_factors$end_date),
     is.DiscountFactor(x$discount_factors),
-    assertthat::is.date(x$reference_date)
+    assertthat::is.date(x$reference_date),
+    !is.unsorted(x$discount_factors$end_date)
   )
   x
 }
