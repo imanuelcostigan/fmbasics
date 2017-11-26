@@ -272,7 +272,7 @@ interpolate <- function(x, ...) UseMethod("interpolate")
 #' @param at a non-negative numeric vector representing the years at which to
 #'   interpolate the zero curve
 #' @param ... unused in this method
-#' @return a numeric vector of zero rates
+#' @return a numeric vector of zero rates (continuously compounded, act/365)
 #' @examples
 #' zc <- build_zero_curve(LogDFInterpolation())
 #' interpolate(zc, c(1.5, 3))

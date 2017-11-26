@@ -15,7 +15,7 @@ interpolate the zero curve}
 \item{...}{unused in this method}
 }
 \value{
-a numeric vector of zero rates
+a numeric vector of zero rates (continuously compounded, act/365)
 }
 \description{
 There are two key interpolation schemes available in the \code{stats} package:
