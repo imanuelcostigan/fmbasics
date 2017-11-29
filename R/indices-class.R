@@ -28,7 +28,7 @@ IborIndex <- function(name, currency, tenor, spot_lag, calendar, day_basis,
   day_convention, is_eom) {
 
   x <- new_Index("Ibor", name = name, currency = currency, tenor = tenor,
-    spot_lag = spot_lag, calendar = calendar, pfc_calendar = locale(calendar),
+    spot_lag = spot_lag, calendar = calendar, pfc_calendar = currency$calendar,
     day_basis = day_basis, day_convention = day_convention, is_eom = is_eom
   )
 
@@ -57,7 +57,7 @@ CashIndex <- function(name, currency, spot_lag, calendar, day_basis,
 
   x <- new_Index("Cash", name = name, currency = currency,
     tenor = lubridate::days(1), spot_lag = spot_lag, calendar = calendar,
-    pfc_calendar = locale(calendar), day_basis = day_basis,
+    pfc_calendar = currency$calendar, day_basis = day_basis,
     day_convention = day_convention, is_eom = FALSE
   )
 
