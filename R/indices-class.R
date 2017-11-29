@@ -78,6 +78,7 @@ validate_IborIndex <- function(x) {
     lubridate::is.period(x$tenor),
     lubridate::is.period(x$spot_lag),
     fmdates::is.JointCalendar(x$calendar),
+    fmdates::is.JointCalendar(x$pfc_calendar),
     fmdates::is_valid_day_basis(x$day_basis),
     fmdates::is_valid_bdc(x$day_convention),
     assertthat::is.flag(x$is_eom)
@@ -91,6 +92,7 @@ validate_CashIndex <- function(x) {
     is.Currency(x$currency),
     lubridate::is.period(x$spot_lag),
     fmdates::is.JointCalendar(x$calendar),
+    fmdates::is.JointCalendar(x$pfc_calendar),
     fmdates::is_valid_day_basis(x$day_basis),
     fmdates::is_valid_bdc(x$day_convention)
   )
