@@ -4,13 +4,10 @@
 \alias{MultiCurrencyMoney}
 \title{MultiCurrencyMoney}
 \usage{
-MultiCurrencyMoney(values, currencies)
+MultiCurrencyMoney(monies)
 }
 \arguments{
-\item{values}{a vector of numeric values}
-
-\item{currencies}{a list of \link[=Currency]{Currency} objects with the same
-length as \code{values} or a single object that is recycled}
+\item{monies}{a list of \link[=SingleCurrencyMoney]{SingleCurrencyMoney}}
 }
 \value{
 a \code{MultiCurrencyMoney} object that extends \code{\link[tibble:tibble]{tibble::tibble()}}
@@ -20,7 +17,10 @@ This class associated a vector of numeric values with a list of currencies.
 This can be useful for example to store value of cash flows.
 }
 \examples{
-MultiCurrencyMoney(c(100, 200), list(AUD(), USD()))
+MultiCurrencyMoney(list(
+  SingleCurrencyMoney(1, AUD()),
+  SingleCurrencyMoney(2, USD())
+))
 }
 \seealso{
 Other money functions: \code{\link{CashFlow}},
