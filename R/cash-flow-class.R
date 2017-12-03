@@ -8,7 +8,9 @@
 #' @return a `CashFlow` object that extends [tibble::tibble()]
 #' @export
 #' @examples
-#' CashFlow(as.Date("2017-11-15"), MultiCurrencyMoney(1, list(AUD())))
+#' CashFlow(as.Date("2017-11-15"),
+#'   MultiCurrencyMoney(list(SingleCurrencyMoney(1, AUD())))
+#' )
 #' @family money functions
 CashFlow <- function(dates, monies) {
   assertthat::assert_that(is.MultiCurrencyMoney(monies))
@@ -42,7 +44,7 @@ validate_CashFlow <- function(x) {
 #' @export
 #' @examples
 #' is.CashFlow(CashFlow(as.Date("2017-11-15"),
-#'   MultiCurrencyMoney(1, list(AUD()))))
+#'   MultiCurrencyMoney(list(SingleCurrencyMoney(1, AUD())))))
 #' @family money functions
 is.CashFlow <- function(x) {
   inherits(x, "CashFlow")

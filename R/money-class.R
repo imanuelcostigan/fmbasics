@@ -116,7 +116,7 @@ validate_MultiCurrencyMoney <- function(x) {
 #' @return `TRUE` if `x` inherits from the `MultiCurrencyMoney` class; otherwise `FALSE`
 #' @export
 #' @examples
-#' is.MultiCurrencyMoney(MultiCurrencyMoney(1, list(AUD())))
+#' is.MultiCurrencyMoney(MultiCurrencyMoney(list(SingleCurrencyMoney(1, AUD()))))
 #' @family money functions
 is.MultiCurrencyMoney <- function(x) {
   inherits(x, "MultiCurrencyMoney")
