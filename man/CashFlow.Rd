@@ -19,7 +19,9 @@ a \code{CashFlow} object that extends \code{\link[tibble:tibble]{tibble::tibble(
 This allows you to create a \code{CashFlow} object.
 }
 \examples{
-CashFlow(as.Date("2017-11-15"), MultiCurrencyMoney(1, list(AUD())))
+CashFlow(as.Date("2017-11-15"),
+  MultiCurrencyMoney(list(SingleCurrencyMoney(1, AUD())))
+)
 }
 \seealso{
 Other money functions: \code{\link{MultiCurrencyMoney}},

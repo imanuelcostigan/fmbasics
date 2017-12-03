@@ -17,7 +17,7 @@ Checks whether object inherits from \code{CashFlow} class
 }
 \examples{
 is.CashFlow(CashFlow(as.Date("2017-11-15"),
-  MultiCurrencyMoney(1, list(AUD()))))
+  MultiCurrencyMoney(list(SingleCurrencyMoney(1, AUD())))))
 }
 \seealso{
 Other money functions: \code{\link{CashFlow}},

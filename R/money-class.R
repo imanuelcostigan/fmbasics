@@ -74,20 +74,24 @@ iso.SingleCurrencyMoney <- function(x) {
 #' This class associated a vector of numeric values with a list of currencies.
 #' This can be useful for example to store value of cash flows.
 #'
-#' @param values a vector of numeric values
-#' @param currencies a list of [Currency][Currency()] objects with the same
-#' length as `values` or a single object that is recycled
+#' @param monies a list of [SingleCurrencyMoney][SingleCurrencyMoney()]
 #' @return a `MultiCurrencyMoney` object that extends [tibble::tibble()]
 #' @export
 #' @examples
-#' MultiCurrencyMoney(c(100, 200), list(AUD(), USD()))
+#' MultiCurrencyMoney(list(
+#'   SingleCurrencyMoney(1, AUD()),
+#'   SingleCurrencyMoney(2, USD())
+#' ))
 #' @family money functions
 
-MultiCurrencyMoney <- function(values, currencies) {
-  validate_MultiCurrencyMoney(new_MultiCurrencyMoney(values, currencies))
+MultiCurrencyMoney <- function(monies) {
+  validate_MultiCurrencyMoney(new_MultiCurrencyMoney(monies))
 }
 
-new_MultiCurrencyMoney <- function(values, currencies) {
+new_MultiCurrencyMoney <- function(monies) {
+  assertthat::assert_that(is_atomic_list(monies, is.SingleCurrencyMoney))
+  values <- vapply(monies, as.numeric, numeric(1), "value", USE.NAMES = FALSE)
+  currencies <- lapply(monies, attr, "currency")
   structure(tibble::tibble(
     values = values,
     currencies = currencies),
@@ -112,7 +116,7 @@ validate_MultiCurrencyMoney <- function(x) {
 #' @return `TRUE` if `x` inherits from the `MultiCurrencyMoney` class; otherwise `FALSE`
 #' @export
 #' @examples
-#' is.MultiCurrencyMoney(MultiCurrencyMoney(1, list(AUD())))
+#' is.MultiCurrencyMoney(MultiCurrencyMoney(list(SingleCurrencyMoney(1, AUD()))))
 #' @family money functions
 is.MultiCurrencyMoney <- function(x) {
   inherits(x, "MultiCurrencyMoney")
