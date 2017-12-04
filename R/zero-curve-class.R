@@ -255,8 +255,8 @@ print.Interpolation <- function(x, ...) cat(format(x), "\n")
 #' Interpolate a `ZeroCurve`
 #'
 #' There are two key interpolation schemes available in the `stats` package:
-#' constant and linear interpolation via `[stats::approxfun()]` and
-#' spline interpolation via `[stats::splinefun()]`. The `interpolate()` method
+#' constant and linear interpolation via [stats::approxfun()] and
+#' spline interpolation via [stats::splinefun()]. The `interpolate()` method
 #' is a simple wrapper around these methods that are useful for the purposes
 #' of interpolation financial market objects like zero coupon interest rate
 #' curves.

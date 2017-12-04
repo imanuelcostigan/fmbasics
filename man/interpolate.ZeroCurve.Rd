@@ -19,8 +19,8 @@ a numeric vector of zero rates (continuously compounded, act/365)
 }
 \description{
 There are two key interpolation schemes available in the \code{stats} package:
-constant and linear interpolation via \code{[stats::approxfun()]} and
-spline interpolation via \code{[stats::splinefun()]}. The \code{interpolate()} method
+constant and linear interpolation via \code{\link[stats:approxfun]{stats::approxfun()}} and
+spline interpolation via \code{\link[stats:splinefun]{stats::splinefun()}}. The \code{interpolate()} method
 is a simple wrapper around these methods that are useful for the purposes
 of interpolation financial market objects like zero coupon interest rate
 curves.
