@@ -77,4 +77,49 @@ to_maturity.default <- function(dates, index) {
 #' @param ... other parameters that defines how to interpolate the object
 #' @return an interpolated value or set of values
 #' @export
+#' @family interpolate functions
 interpolate <- function(x, ...) UseMethod("interpolate")
+
+
+
+#' Interpolate zeros
+#'
+#' This interpolates zero rates from either a [ZeroCurve][ZeroCurve()] or some
+#' other object that contains such an object (e.g. a [PricingEnv][PricingEnv()])
+#'
+#' @param x the object to interpolate
+#' @param at a numeric vector representing the time at which to interpolate a
+#'   value
+#' @param compounding a valid [compounding][is_valid_compounding()] string.
+#'   Defaults to `NULL` which uses the curve's native compounding basis
+#' @param day_basis a valid [day basis][fmdates::is_valid_day_basis()] string.
+#'   Defaults to `NULL` which uses the curve's native day basis.
+#' @return an [InterestRate][InterestRate()] object of interpolated zero rates
+#'   with the `compounnding` and `day_basis` requested.
+#' @export
+#' @family interpolate functions
+
+interpolate_zeros <- function(x, at, compounding = NULL, day_basis = NULL, ...) {
+  UseMethod("interpolate_zeros")
+}
+
+
+#' Interpolate forward rates and discount factors
+#'
+#' This interpolates forward rates and forward discount factors from either a
+#' [ZeroCurve][ZeroCurve()] or some other object that contains such an object
+#' (e.g. a [PricingEnv][PricingEnv()])
+#'
+#' @param x the object to interpolate
+#' @param from a [Date] vector representing the start of the forward period
+#' @param to a [Date] vector representing the end of the forward period
+#' @return `interpolate_dfs` returns a [DiscountFactor][DiscountFactor()] object
+#'   of forward discount factors while `interpolate_fwds` returns an
+#'   [InterestRate][InterestRate()] object of interpolated forward rates.
+#' @export
+#' @family interpolate functions
+interpolate_dfs <- function(x, from, to, ...) UseMethod("interpolate_dfs")
+
+#' @export
+#' @rdname interpolate_dfs
+interpolate_fwds <- function(x, from, to, ...) UseMethod("interpolate_fwds")

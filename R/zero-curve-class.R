@@ -270,6 +270,7 @@ print.Interpolation <- function(x, ...) cat(format(x), "\n")
 #' zc <- build_zero_curve(LogDFInterpolation())
 #' interpolate(zc, c(1.5, 3))
 #' @export
+#' @family interpolate functions
 interpolate.ZeroCurve <- function(x, at, ...) {
   assertthat::assert_that(is.numeric(at), all(at >= 0))
   x$interpolator(at)
