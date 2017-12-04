@@ -17,3 +17,8 @@ an interpolated value or set of values
 \description{
 Interpolate values from an object
 }
+\seealso{
+Other interpolate functions: \code{\link{interpolate.ZeroCurve}},
+  \code{\link{interpolate_dfs}},
+  \code{\link{interpolate_zeros}}
+}

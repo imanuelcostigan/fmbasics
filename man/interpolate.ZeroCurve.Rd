@@ -29,3 +29,8 @@ curves.
 zc <- build_zero_curve(LogDFInterpolation())
 interpolate(zc, c(1.5, 3))
 }
+\seealso{
+Other interpolate functions: \code{\link{interpolate_dfs}},
+  \code{\link{interpolate_zeros}},
+  \code{\link{interpolate}}
+}
