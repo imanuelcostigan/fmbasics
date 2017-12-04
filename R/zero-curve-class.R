@@ -286,6 +286,7 @@ type_sum.ZeroCurve <- function(x) {
 
 # Curve methods -----------------------------------------------------------
 
+#' @rdname interpolate_zeros
 #' @export
 interpolate_zeros.ZeroCurve <- function(x, at, compounding = NULL, day_basis = NULL) {
 
@@ -304,6 +305,7 @@ interpolate_zeros.ZeroCurve <- function(x, at, compounding = NULL, day_basis = N
   }
 }
 
+#' @rdname interpolate_dfs
 #' @export
 interpolate_fwds.ZeroCurve <- function(x, from, to) {
   assertthat::assert_that(
@@ -316,6 +318,7 @@ interpolate_fwds.ZeroCurve <- function(x, from, to) {
   as_InterestRate(forward_dfs, x$day_basis)
 }
 
+#' @rdname interpolate_dfs
 #' @export
 interpolate_dfs.ZeroCurve <- function(x, from, to) {
   assertthat::assert_that(

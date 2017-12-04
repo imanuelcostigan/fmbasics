@@ -118,6 +118,7 @@ interpolate_zeros <- function(x, at, compounding = NULL, day_basis = NULL, ...) 
 #'   of forward discount factors while `interpolate_fwds` returns an
 #'   [InterestRate][InterestRate()] object of interpolated forward rates.
 #' @export
+#' @aliases interpolate_fwds
 #' @family interpolate functions
 interpolate_dfs <- function(x, from, to, ...) UseMethod("interpolate_dfs")
 
