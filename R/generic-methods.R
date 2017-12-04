@@ -117,7 +117,8 @@ interpolate_zeros <- function(x, at, compounding = NULL, day_basis = NULL, ...) 
 #' @param ... further arguments passed to specific methods
 #' @return `interpolate_dfs` returns a [DiscountFactor][DiscountFactor()] object
 #'   of forward discount factors while `interpolate_fwds` returns an
-#'   [InterestRate][InterestRate()] object of interpolated forward rates.
+#'   [InterestRate][InterestRate()] object of interpolated simply compounded
+#'   forward rates.
 #' @export
 #' @aliases interpolate_fwds
 #' @family interpolate functions
