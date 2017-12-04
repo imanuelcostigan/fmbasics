@@ -7,9 +7,9 @@
 PricingEnv(zero_curves, fx_rates, reference_date = NULL)
 }
 \arguments{
-\item{zero_curves}{a \code{\link{ZeroCurves}} object}
+\item{zero_curves}{a \code{\link{ZeroCurves}} object or \code{NULL}}
 
-\item{fx_rates}{a \code{\link{FXRates}} object}
+\item{fx_rates}{a \code{\link{FXRates}} object or \code{NULL}}
 
 \item{reference_date}{the \code{Date} on which these pricing objects are snapped.
 Defaults to \code{NULL} in which case this evaluates to the \code{reference_date} of

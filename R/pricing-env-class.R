@@ -7,8 +7,8 @@
 #' * [`ZeroCurves`][ZeroCurves] and
 #' * [`FXRates`][FXRates]
 #'
-#' @param zero_curves a [`ZeroCurves`][ZeroCurves] object
-#' @param fx_rates a [`FXRates`][FXRates] object
+#' @param zero_curves a [`ZeroCurves`][ZeroCurves] object or `NULL`
+#' @param fx_rates a [`FXRates`][FXRates] object or `NULL`
 #' @param reference_date the `Date` on which these pricing objects are snapped.
 #' Defaults to `NULL` in which case this evaluates to the `reference_date` of
 #' the first zero curve in `zero_curves`.
@@ -33,8 +33,8 @@ new_PricingEnv <- function(zero_curves, fx_rates, reference_date) {
 validate_PricingEnv <- function(x) {
   assertthat::assert_that(
     lubridate::is.Date(x$reference_date),
-    is.ZeroCurves(x$zero_curves),
-    is.FXRates(x$fx_rates)
+    is.null(x$zero_curves) || is.ZeroCurves(x$zero_curves),
+    is.null(x$fx_rates) || is.FXRates(x$fx_rates)
   )
   x
 }
