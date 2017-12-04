@@ -289,3 +289,47 @@ interpolate.ZeroCurve <- function(x, at, ...) {
 type_sum.ZeroCurve <- function(x) {
   "ZeroCurve"
 }
+
+
+
+# Curve methods -----------------------------------------------------------
+
+interpolate_zeros <- function(x, at, compounding = NULL, day_basis = NULL) {
+  assertthat::assert_that(
+    is.ZeroCurve(x),
+    is.numeric(at),
+    is.null(compounding) || is_valid_compounding(compounding),
+    is.null(day_basis) || fmdates::is_valid_day_basis(day_basis)
+  )
+  zr <- InterestRate(interpolate(x, at), x$compounding, x$day_basis)
+  if (is.null(compounding) && is.null(day_basis)) {
+    return(zc)
+  } else {
+    as_InterestRate(zc, compounding = compounding, day_basis = day_basis)
+  }
+}
+
+interpolate_fwds <- function(x, from, to) {
+  assertthat::assert_that(
+    is.ZeroCurve(x),
+    assertthat::is.date(from),
+    assertthat::is.date(to),
+    all(from < to)
+  )
+  forward_dfs <- interpolate_dfs(x, from, to)
+  as_InterestRate(forward_dfs, x$day_basis)
+}
+
+interpolate_dfs <- function(x, from, to) {
+  assertthat::assert_that(
+    is.ZeroCurve(x),
+    assertthat::is.date(from),
+    assertthat::is.date(to),
+    all(from <= to)
+  )
+  r1 <- interpolate_zeros(x, from)
+  r2 <- interpolate_zeros(x, to)
+  df_start <- as_DiscountFactor(r1, x$reference_date, from)
+  df_end <- as_DiscountFactor(r2, x$reference_date, to)
+  df_end / df_start
+}
