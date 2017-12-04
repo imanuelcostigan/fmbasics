@@ -292,16 +292,17 @@ interpolate_zeros.ZeroCurve <- function(x, at, compounding = NULL, day_basis = N
 
   assertthat::assert_that(
     is.ZeroCurve(x),
-    is.numeric(at),
+    assertthat::is.date(at),
     is.null(compounding) || is_valid_compounding(compounding),
     is.null(day_basis) || fmdates::is_valid_day_basis(day_basis)
   )
 
-  zr <- InterestRate(interpolate(x, at), x$compounding, x$day_basis)
+  tt <- year_frac(x$reference_date, at, x$day_basis)
+  zr <- InterestRate(interpolate(x, tt), x$compounding, x$day_basis)
   if (is.null(compounding) && is.null(day_basis)) {
-    return(zc)
+    return(zr)
   } else {
-    as_InterestRate(zc, compounding = compounding, day_basis = day_basis)
+    as_InterestRate(zr, compounding = compounding, day_basis = day_basis)
   }
 }
 

@@ -12,9 +12,9 @@ interpolate_dfs(x, from, to, ...)
 
 interpolate_fwds(x, from, to, ...)
 
-\method{interpolate_fwds}{ZeroCurve}(x, from, to)
+\method{interpolate_fwds}{ZeroCurve}(x, from, to, ...)
 
-\method{interpolate_dfs}{ZeroCurve}(x, from, to)
+\method{interpolate_dfs}{ZeroCurve}(x, from, to, ...)
 }
 \arguments{
 \item{x}{the object to interpolate}

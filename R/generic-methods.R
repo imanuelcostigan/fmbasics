@@ -88,7 +88,7 @@ interpolate <- function(x, ...) UseMethod("interpolate")
 #' other object that contains such an object (e.g. a [PricingEnv][PricingEnv()])
 #'
 #' @param x the object to interpolate
-#' @param at a numeric vector representing the time at which to interpolate a
+#' @param at a [Date] vector representing the date at which to interpolate a
 #'   value
 #' @param compounding a valid [compounding][is_valid_compounding()] string.
 #'   Defaults to `NULL` which uses the curve's native compounding basis
