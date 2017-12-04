@@ -288,7 +288,7 @@ type_sum.ZeroCurve <- function(x) {
 
 #' @rdname interpolate_zeros
 #' @export
-interpolate_zeros.ZeroCurve <- function(x, at, compounding = NULL, day_basis = NULL) {
+interpolate_zeros.ZeroCurve <- function(x, at, compounding = NULL, day_basis = NULL, ...) {
 
   assertthat::assert_that(
     is.ZeroCurve(x),
@@ -307,28 +307,28 @@ interpolate_zeros.ZeroCurve <- function(x, at, compounding = NULL, day_basis = N
 
 #' @rdname interpolate_dfs
 #' @export
-interpolate_fwds.ZeroCurve <- function(x, from, to) {
+interpolate_fwds.ZeroCurve <- function(x, from, to, ...) {
   assertthat::assert_that(
     is.ZeroCurve(x),
     assertthat::is.date(from),
     assertthat::is.date(to),
     all(from < to)
   )
-  forward_dfs <- interpolate_dfs(x, from, to)
-  as_InterestRate(forward_dfs, x$day_basis)
+  forward_dfs <- interpolate_dfs(x, from, to, ...)
+  as_InterestRate(forward_dfs, 0, x$day_basis)
 }
 
 #' @rdname interpolate_dfs
 #' @export
-interpolate_dfs.ZeroCurve <- function(x, from, to) {
+interpolate_dfs.ZeroCurve <- function(x, from, to, ...) {
   assertthat::assert_that(
     is.ZeroCurve(x),
     assertthat::is.date(from),
     assertthat::is.date(to),
     all(from <= to)
   )
-  r1 <- interpolate_zeros(x, from)
-  r2 <- interpolate_zeros(x, to)
+  r1 <- interpolate_zeros(x, from, ...)
+  r2 <- interpolate_zeros(x, to, ...)
   df_start <- as_DiscountFactor(r1, x$reference_date, from)
   df_end <- as_DiscountFactor(r2, x$reference_date, to)
   df_end / df_start
