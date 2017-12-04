@@ -113,6 +113,7 @@ interpolate_zeros <- function(x, at, compounding = NULL, day_basis = NULL, ...) 
 #' @param x the object to interpolate
 #' @param from a [Date] vector representing the start of the forward period
 #' @param to a [Date] vector representing the end of the forward period
+#' @param ... further arguments passed to specific methods
 #' @return `interpolate_dfs` returns a [DiscountFactor][DiscountFactor()] object
 #'   of forward discount factors while `interpolate_fwds` returns an
 #'   [InterestRate][InterestRate()] object of interpolated forward rates.
