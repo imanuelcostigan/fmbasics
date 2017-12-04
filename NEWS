@@ -1,5 +1,6 @@
 # Version 0.2.99
 
+- NEW: `interpolate_dfs()`, `interpolate_fwds()` and `interpolate_zeros()` build on the lower level `interpolate()` for `ZeroCurve` objects.
 - NEW: `SingleCurrencyMoney()` and `MultiCurrencyMoney()` allows you to create single and multi-currency money objects that are not date dependent
 - NEW: `CashFlow()` allows you to create date dependent cash flows
 - NEW: `FXRates()` and `ZeroCurves()` allows you to create tables of FX rates and zero curves for use in pricing.
