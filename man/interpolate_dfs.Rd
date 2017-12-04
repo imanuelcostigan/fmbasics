@@ -28,7 +28,8 @@ interpolate_fwds(x, from, to, ...)
 \value{
 \code{interpolate_dfs} returns a \link[=DiscountFactor]{DiscountFactor} object
 of forward discount factors while \code{interpolate_fwds} returns an
-\link[=InterestRate]{InterestRate} object of interpolated forward rates.
+\link[=InterestRate]{InterestRate} object of interpolated simply compounded
+forward rates.
 }
 \description{
 This interpolates forward rates and forward discount factors from either a
