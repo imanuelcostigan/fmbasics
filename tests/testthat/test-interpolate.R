@@ -42,3 +42,14 @@ test_that("Interpolation works", {
     c(head(zc$pillar_zeros, 1), sf(c(4, 6)), tail(zc$pillar_zeros, 1)))
 
 })
+
+
+test_that("Higher level interpolation works", {
+  zc <- build_zero_curve(ConstantInterpolation())
+  expect_is(interpolate_zeros(zc, lubridate::ymd(20161231, 20171231)),
+    "InterestRate")
+  expect_is(interpolate_dfs(zc, lubridate::ymd(20151231), lubridate::ymd(20161231)),
+    "DiscountFactor")
+  expect_is(interpolate_fwds(zc, lubridate::ymd(20151231), lubridate::ymd(20161231)),
+    "InterestRate")
+})
