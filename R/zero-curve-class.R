@@ -110,7 +110,9 @@ new_ZeroCurve <- function(discount_factors, reference_date, interpolation) {
     discount_factors = discount_factors,
     pillar_times = dt,
     pillar_zeros = r,
-    interpolator = f),
+    interpolator = f,
+    day_basis = db,
+    compounding = cp),
     class = "ZeroCurve"
   )
 
