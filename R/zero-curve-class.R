@@ -252,15 +252,6 @@ format.Interpolation <- function(x, ...) paste0("<", class(x)[1], ">")
 #' @export
 print.Interpolation <- function(x, ...) cat(format(x), "\n")
 
-
-#' Interpolate values from an object
-#'
-#' @param x the object to interpolate.
-#' @param ... other parameters that defines how to interpolate the object
-#' @return an interpolated value or set of values
-#' @export
-interpolate <- function(x, ...) UseMethod("interpolate")
-
 #' Interpolate a `ZeroCurve`
 #'
 #' There are two key interpolation schemes available in the `stats` package:
