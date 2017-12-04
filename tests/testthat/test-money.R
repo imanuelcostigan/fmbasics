@@ -17,6 +17,13 @@ test_that("SingleCurrencyMoney assertion works:", {
   )
 })
 
+test_that("SingleCurrencyMoney concatenation works:", {
+  expect_is(c(SingleCurrencyMoney(1, AUD()), SingleCurrencyMoney(1, USD())),
+    "MultiCurrencyMoney")
+  expect_error(c(SingleCurrencyMoney(1, AUD()),
+    MultiCurrencyMoney(list(SingleCurrencyMoney(1, AUD())))))
+})
+
 test_that("MultiCurrencyMoney created:", {
   expect_error(MultiCurrencyMoney(list(
     SingleCurrencyMoney(1, AUD()))), NA)
