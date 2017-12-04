@@ -16,10 +16,13 @@ a \code{SingleCurrencyMoney} object
 }
 \description{
 This class associates a numeric vector with a currency. This is useful for
-example in representing the value of a derivative.
+example in representing the value of a derivative. You can concatenate a set
+\code{SingleCurrencyMoney} objects and return a
+\link[=MultiCurrencyMoney]{MultiCurrencyMoney} object (see example below)
 }
 \examples{
 SingleCurrencyMoney(1:5, AUD())
+c(SingleCurrencyMoney(1, AUD()), SingleCurrencyMoney(100, USD()))
 }
 \seealso{
 Other money functions: \code{\link{CashFlow}},

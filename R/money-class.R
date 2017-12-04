@@ -3,7 +3,9 @@
 #' SingleCurrencyMoney
 #'
 #' This class associates a numeric vector with a currency. This is useful for
-#' example in representing the value of a derivative.
+#' example in representing the value of a derivative. You can concatenate a set
+#' `SingleCurrencyMoney` objects and return a
+#' [MultiCurrencyMoney][MultiCurrencyMoney()] object (see example below)
 #'
 #' @param value a numeric vector of values
 #' @param currency a single [Currency][Currency()] object
@@ -12,6 +14,7 @@
 #'
 #' @examples
 #' SingleCurrencyMoney(1:5, AUD())
+#' c(SingleCurrencyMoney(1, AUD()), SingleCurrencyMoney(100, USD()))
 #' @family money functions
 SingleCurrencyMoney <- function(value, currency) {
   validate_SingleCurrencyMoney(new_SingleCurrencyMoney(value, currency))
@@ -67,21 +70,31 @@ iso.SingleCurrencyMoney <- function(x) {
   iso(attr(x, "currency"))
 }
 
+#' @export
+c.SingleCurrencyMoney <- function(...) {
+  assertthat::assert_that(is_atomic_list(list(...), is.SingleCurrencyMoney))
+  new_MultiCurrencyMoney(list(...))
+}
+
 # MultiCurrencyMoney ------------------------------------------------------
 
 #' MultiCurrencyMoney
 #'
-#' This class associated a vector of numeric values with a list of currencies.
-#' This can be useful for example to store value of cash flows.
+#' This class associates a vector of numeric values with a list of currencies.
+#' This can be useful for example to store value of cash flows. Internally it
+#' represents this information as an extension to a [tibble][tibble::tibble()].
+#' You are able to bind `MultiCurrencyMoney` objects by using [rbind()] (see
+#' example below).
 #'
 #' @param monies a list of [SingleCurrencyMoney][SingleCurrencyMoney()]
 #' @return a `MultiCurrencyMoney` object that extends [tibble::tibble()]
 #' @export
 #' @examples
-#' MultiCurrencyMoney(list(
+#' mcm <- MultiCurrencyMoney(list(
 #'   SingleCurrencyMoney(1, AUD()),
 #'   SingleCurrencyMoney(2, USD())
 #' ))
+#' rbind(mcm, mcm)
 #' @family money functions
 
 MultiCurrencyMoney <- function(monies) {

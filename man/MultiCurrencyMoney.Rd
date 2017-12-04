@@ -13,14 +13,18 @@ MultiCurrencyMoney(monies)
 a \code{MultiCurrencyMoney} object that extends \code{\link[tibble:tibble]{tibble::tibble()}}
 }
 \description{
-This class associated a vector of numeric values with a list of currencies.
-This can be useful for example to store value of cash flows.
+This class associates a vector of numeric values with a list of currencies.
+This can be useful for example to store value of cash flows. Internally it
+represents this information as an extension to a \link[tibble:tibble]{tibble}.
+You are able to bind \code{MultiCurrencyMoney} objects by using \code{\link[=rbind]{rbind()}} (see
+example below).
 }
 \examples{
-MultiCurrencyMoney(list(
+mcm <- MultiCurrencyMoney(list(
   SingleCurrencyMoney(1, AUD()),
   SingleCurrencyMoney(2, USD())
 ))
+rbind(mcm, mcm)
 }
 \seealso{
 Other money functions: \code{\link{CashFlow}},
