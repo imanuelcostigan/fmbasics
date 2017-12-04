@@ -8,12 +8,12 @@
 interpolate_zeros(x, at, compounding = NULL, day_basis = NULL, ...)
 
 \method{interpolate_zeros}{ZeroCurve}(x, at, compounding = NULL,
-  day_basis = NULL)
+  day_basis = NULL, ...)
 }
 \arguments{
 \item{x}{the object to interpolate}
 
-\item{at}{a numeric vector representing the time at which to interpolate a
+\item{at}{a \link{Date} vector representing the date at which to interpolate a
 value}
 
 \item{compounding}{a valid \link[=is_valid_compounding]{compounding} string.
