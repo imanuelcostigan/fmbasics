@@ -94,6 +94,7 @@ interpolate <- function(x, ...) UseMethod("interpolate")
 #'   Defaults to `NULL` which uses the curve's native compounding basis
 #' @param day_basis a valid [day basis][fmdates::is_valid_day_basis()] string.
 #'   Defaults to `NULL` which uses the curve's native day basis.
+#' @param ... further arguments passed to specific methods
 #' @return an [InterestRate][InterestRate()] object of interpolated zero rates
 #'   with the `compounnding` and `day_basis` requested.
 #' @export

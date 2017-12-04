@@ -21,6 +21,8 @@ Defaults to \code{NULL} which uses the curve's native compounding basis}
 
 \item{day_basis}{a valid \link[fmdates:is_valid_day_basis]{day basis} string.
 Defaults to \code{NULL} which uses the curve's native day basis.}
+
+\item{...}{further arguments passed to specific methods}
 }
 \value{
 an \link[=InterestRate]{InterestRate} object of interpolated zero rates
