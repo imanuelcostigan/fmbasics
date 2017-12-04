@@ -286,13 +286,15 @@ type_sum.ZeroCurve <- function(x) {
 
 # Curve methods -----------------------------------------------------------
 
-interpolate_zeros <- function(x, at, compounding = NULL, day_basis = NULL) {
+interpolate_zeros.ZeroCurve <- function(x, at, compounding = NULL, day_basis = NULL) {
+
   assertthat::assert_that(
     is.ZeroCurve(x),
     is.numeric(at),
     is.null(compounding) || is_valid_compounding(compounding),
     is.null(day_basis) || fmdates::is_valid_day_basis(day_basis)
   )
+
   zr <- InterestRate(interpolate(x, at), x$compounding, x$day_basis)
   if (is.null(compounding) && is.null(day_basis)) {
     return(zc)
@@ -301,7 +303,7 @@ interpolate_zeros <- function(x, at, compounding = NULL, day_basis = NULL) {
   }
 }
 
-interpolate_fwds <- function(x, from, to) {
+interpolate_fwds.ZeroCurve <- function(x, from, to) {
   assertthat::assert_that(
     is.ZeroCurve(x),
     assertthat::is.date(from),
@@ -312,7 +314,7 @@ interpolate_fwds <- function(x, from, to) {
   as_InterestRate(forward_dfs, x$day_basis)
 }
 
-interpolate_dfs <- function(x, from, to) {
+interpolate_dfs.ZeroCurve <- function(x, from, to) {
   assertthat::assert_that(
     is.ZeroCurve(x),
     assertthat::is.date(from),
