@@ -201,14 +201,14 @@ NULL
 #' @rdname iborindices
 #' @export
 AUDBBSW <- function (tenor) {
-  IborIndex("AUDBBSW", AUD(), tenor, lubridate::days(0),
+  IborIndex("BBSW", AUD(), tenor, lubridate::days(0),
     c(AUSYCalendar()), "act/365", "ms", FALSE)
 }
 
 #' @rdname iborindices
 #' @export
 AUDBBSW1b <- function (tenor) {
-  IborIndex("AUDBBSW1b", AUD(), tenor, lubridate::days(1),
+  IborIndex("BBSW1b", AUD(), tenor, lubridate::days(1),
     c(AUSYCalendar()), "act/365", "ms", FALSE)
 }
 
@@ -227,7 +227,7 @@ GBPLIBOR <- function (tenor) {
   } else {
     day_convention <- "mf"
   }
-  IborIndex("GBPLIBOR", GBP(), tenor, lubridate::days(0),
+  IborIndex("LIBOR", GBP(), tenor, lubridate::days(0),
     c(GBLOCalendar()), "act/365", day_convention, TRUE)
 }
 
@@ -243,7 +243,7 @@ JPYLIBOR <- function (tenor) {
   } else {
     day_convention <- "mf"
   }
-  IborIndex("JPYLIBOR", JPY(), tenor, spot_lag,
+  IborIndex("LIBOR", JPY(), tenor, spot_lag,
     c(GBLOCalendar()), "act/360", day_convention, TRUE)
 }
 
@@ -259,14 +259,14 @@ JPYTIBOR <- function (tenor) {
   } else {
     day_convention <- "mf"
   }
-  IborIndex("JPYTIBOR", JPY(), tenor, spot_lag,
+  IborIndex("TIBOR", JPY(), tenor, spot_lag,
     c(JPTOCalendar()), "act/365", day_convention, FALSE)
 }
 
 #' @rdname iborindices
 #' @export
 NZDBKBM <- function (tenor) {
-  IborIndex("NZDBKBM", NZD(), tenor, lubridate::days(0),
+  IborIndex("BKBM", NZD(), tenor, lubridate::days(0),
     c(NZAUCalendar(), NZWECalendar()), "act/365", "mf", FALSE)
 }
 
@@ -286,7 +286,7 @@ USDLIBOR <- function (tenor) {
     day_convention <- "mf"
     calendar <- c(GBLOCalendar())
   }
-  IborIndex("USDLIBOR", USD(), tenor, spot_lag,
+  IborIndex("LIBOR", USD(), tenor, spot_lag,
     calendar, "act/360", day_convention, TRUE)
 }
 
@@ -305,12 +305,12 @@ CHFLIBOR <- function (tenor) {
     spot_lag <- lubridate::days(2)
     day_convention <- "mf"
   }
-  IborIndex("CHFLIBOR", CHF(), tenor, spot_lag, c(GBLOCalendar()),
+  IborIndex("LIBOR", CHF(), tenor, spot_lag, c(GBLOCalendar()),
     "act/360", day_convention, TRUE)
 }
 
 CHFLIBOR3mF <- function () {
-  IborIndex("CHFLIBOR", CHF(), months(3), lubridate::days(1),
+  IborIndex("LIBOR", CHF(), months(3), lubridate::days(1),
     c(GBLOCalendar()), "act/360", "mf", TRUE)
 }
 
@@ -323,7 +323,7 @@ HKDHIBOR <- function (tenor) {
   } else {
     day_convention <- "mf"
   }
-  IborIndex("HKDHIBOR", HKD(), tenor, lubridate::days(0),
+  IborIndex("HIBOR", HKD(), tenor, lubridate::days(0),
     c(HKHKCalendar()), "act/365", day_convention, FALSE)
 }
 
@@ -344,7 +344,7 @@ NOKNIBOR <- function (tenor) {
     spot_lag <- lubridate::days(2)
     day_convention <- "mf"
   }
-  IborIndex("NOKNIBOR", NOK(), tenor, spot_lag,
+  IborIndex("NIBOR", NOK(), tenor, spot_lag,
     c(NOOSCalendar()), "act/360", day_convention, FALSE)
 }
 
