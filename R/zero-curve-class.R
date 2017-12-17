@@ -52,7 +52,8 @@ new_ZeroCurve <- function(discount_factors, reference_date, interpolation) {
     is.ConstantInterpolation(interpolation) ||
       is.LinearInterpolation(interpolation) ||
       is.LogDFInterpolation(interpolation) ||
-      is.CubicInterpolation(interpolation)
+      is.CubicInterpolation(interpolation) ||
+      is.MonotoneConvexInterpolation(interpolation)
   )
 
   # Will internally store zero rates are calculated using act/365 basis and
@@ -102,6 +103,10 @@ new_ZeroCurve <- function(discount_factors, reference_date, interpolation) {
       res[after_last] <- utils::tail(r, 1)
       res[in_support] <- g(t[in_support])
       return(res)
+    }
+
+    if (is.MonotoneConvexInterpolation(interpolation)) {
+      g <- monotone_convex(dt, r)
     }
   }
 
@@ -200,7 +205,8 @@ Interpolation <- function(method, what) {
     constant_zeros = "Constant",
     constant_forwards = "LogDF",
     linear_zeros = "Linear",
-    natural_cubic_zeros = "Cubic"
+    natural_cubic_zeros = "Cubic",
+    monotone_convex = "MonotoneConvex"
   )
   structure(list(),
     class = c(paste0(prefix, "Interpolation"), "Interpolation"))
@@ -218,6 +224,9 @@ LinearInterpolation <- function() Interpolation("linear", "zeros")
 #' @rdname Interpolation
 #' @export
 CubicInterpolation <- function() Interpolation("natural_cubic", "zeros")
+#' @rdname Interpolation
+#' @export
+MonotoneConvexInterpolation <- function() Interpolation("monotone_convex", "zeros")
 
 #' Check Interpolation class
 #'
@@ -245,6 +254,9 @@ is.LinearInterpolation <- check_interpolation("Linear")
 #' @rdname is.Interpolation
 #' @export
 is.CubicInterpolation <- check_interpolation("Cubic")
+#' @rdname is.Interpolation
+#' @export
+is.MonotoneConvexInterpolation <- check_interpolation("MonotoneConvex")
 #' @export
 format.Interpolation <- function(x, ...) paste0("<", class(x)[1], ">")
 #' @export
@@ -286,4 +298,20 @@ interpolate.ZeroCurve <- function(x, at, ...) {
 #' @export
 type_sum.ZeroCurve <- function(x) {
   "ZeroCurve"
+}
+
+
+monotone_convex <- function(dt, r) {
+  dx <- diff(dt)
+  xt <- utils::tail(dt, -1)
+  rt <- utils::tail(r, -1)
+  xh <- utils::head(dt, -1)
+  yh <- utils::head(r, -1)
+  fd <- (xt * rt  - xh * yh) / dx
+  fdh <- head(fd, -1)
+  fdt <- tail(fd, -1)
+  f <- (xt  * fdh +  xh * fdt) / diff(dt, 2)
+  f0 <- fd[1] - (f[1] - fd[1]) / 2
+  fn <- tail(fd, 1) - (tail(f, 1) - tail(fd, 1)) / 2
+  f <- c(f0, f, fn)
 }
