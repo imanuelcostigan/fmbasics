@@ -26,6 +26,7 @@ http://www2.isda.org) legal documentation.
 You can create instances of key currencies and currency pairs (and of course create your own implementations):
 
 ```{r}
+library("fmdates")
 library("fmbasics")
 AUD()
 AUDUSD()
@@ -35,8 +36,8 @@ These come with implementations of handy methods:
 
 ```{r, message = FALSE}
 library("lubridate")
-to_fx_value(dates = Sys.Date(), tenor = "spot", x = AUDUSD())
-to_fx_value(Sys.Date(), months(3), AUDUSD())
+to_fx_value(dates = ymd(20171230), tenor = "spot", x = AUDUSD())
+to_fx_value(ymd(20171230), months(3), AUDUSD())
 ```
 
 
@@ -78,7 +79,10 @@ ends <- as.Date(as.character(zc_df[["end"]]), "%Y%m%d")
 dfs <- DiscountFactor(values, starts, ends)
 zc <- ZeroCurve(dfs, starts[1], LogDFInterpolation())
 plot(zc$pillar_times, zc$pillar_zeros, xlab = 'Years', ylab = 'Zero')
-interpolate(zc, 1:20)
+interpolate(zc, year_frac(starts[1], ends[3], "act/365"))
+interpolate_zeros(zc, ends[3])
+interpolate_fwds(zc, ymd(20170331), ymd(20170630))
+interpolate_dfs(zc, ymd(20170331), ymd(20170630))
 ```
 
 You will be able to create pricing environments (basically containers of pricing structures) using `FXRates()`, `ZeroCurves()` (note the plural form) and `PricingEnv()`:

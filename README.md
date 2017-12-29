@@ -10,6 +10,7 @@ Implements basic financial market objects like currencies, currency pairs, inter
 You can create instances of key currencies and currency pairs (and of course create your own implementations):
 
 ``` r
+library("fmdates")
 library("fmbasics")
 AUD()
 #> <Currency> AUD
@@ -21,17 +22,17 @@ These come with implementations of handy methods:
 
 ``` r
 library("lubridate")
-to_fx_value(dates = Sys.Date(), tenor = "spot", x = AUDUSD())
-#> [1] "2017-11-27"
-to_fx_value(Sys.Date(), months(3), AUDUSD())
-#> [1] "2018-02-27"
+to_fx_value(dates = ymd(20171230), tenor = "spot", x = AUDUSD())
+#> [1] "2018-01-03"
+to_fx_value(ymd(20171230), months(3), AUDUSD())
+#> [1] "2018-04-03"
 ```
 
 You can create instances of key IBOR or ONIA interest rate indices:
 
 ``` r
 USDLIBOR(months(3))
-#> <IborIndex> 3m USD USDLIBOR
+#> <IborIndex> 3m USD LIBOR
 EONIA()
 #> <CashIndex> EONIA
 ```
@@ -78,11 +79,14 @@ plot(zc$pillar_times, zc$pillar_zeros, xlab = 'Years', ylab = 'Zero')
 ![](inst/README-unnamed-chunk-7-1.png)
 
 ``` r
-interpolate(zc, 1:20)
-#>  [1] 0.01886025 0.01875951 0.01957137 0.02077059 0.02226385 0.02370676
-#>  [7] 0.02500574 0.02602505 0.02696769 0.02783101 0.02862813 0.02929467
-#> [13] 0.02990451 0.03042819 0.03088204 0.03131674 0.03170140 0.03204332
-#> [19] 0.03234925 0.03262458
+interpolate(zc, year_frac(starts[1], ends[3], "act/365"))
+#> [1] 0.02530432
+interpolate_zeros(zc, ends[3])
+#> <InterestRate> 2.530432%, CONTINUOUS, ACT/365
+interpolate_fwds(zc, ymd(20170331), ymd(20170630))
+#> <InterestRate> 1.837274%, SIMPLE, ACT/365
+interpolate_dfs(zc, ymd(20170331), ymd(20170630))
+#> <DiscountFactor> 0.995440285935839, 2017-03-31--2017-06-30
 ```
 
 You will be able to create pricing environments (basically containers of pricing structures) using `FXRates()`, `ZeroCurves()` (note the plural form) and `PricingEnv()`:
