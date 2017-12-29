@@ -8,7 +8,9 @@ Description: Implements basic financial market objects like currencies, currency
   pairs, interest rates and interest rate indices. You will be able to use
   Benchmark instances of these objects which have been defined using their most
   common conventions or those defined by International Swap Dealer Association
-  (ISDA, <http://www2.isda.org>) legal documentation.
+  (ISDA, <http://www2.isda.org>) legal documentation. Foundational pricing 
+  objects can also be created including zero curves and tables of FX rates. These
+  pricing objects can be brought together into a pricing environment.
 License: GPL-2
 Imports:
   fmdates (>= 0.1.2),
