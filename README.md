@@ -7,6 +7,9 @@ fmbasics - Financial Market Building Blocks
 
 Implements basic financial market objects like currencies, currency pairs, interest rates and interest rate indices. You will be able to use Benchmark instances of these objects which have been defined using their most common conventions or those defined by International Swap Dealer Association (ISDA, <http://www2.isda.org>) legal documentation.
 
+Basic objects
+-------------
+
 You can create instances of key currencies and currency pairs (and of course create your own implementations):
 
 ``` r
@@ -48,6 +51,9 @@ to_maturity(as.Date("2017-01-20"), USDLIBOR(months(3)))
 #> [1] "2017-04-20"
 ```
 
+Interest rates and discount factors
+-----------------------------------
+
 You can create and perform basic manipulation of interest rates and discount factors:
 
 ``` r
@@ -63,6 +69,9 @@ dd <- DiscountFactor(0.75, d1 = ymd(20170120), d2 = ymd(20210120))
 as_InterestRate(dd, compounding = Inf, day_basis = "act/360")
 #> <InterestRate> 7.088675%, CONTINUOUS, ACT/360
 ```
+
+Pricing objects and environments
+--------------------------------
 
 It is also possible to create and interpolate on zero coupon interest rate curves:
 
