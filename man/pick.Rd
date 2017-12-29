@@ -4,12 +4,12 @@
 \alias{pick}
 \title{Pick out element from PricingEnv}
 \usage{
-pick(from, what, ...)
+pick(from, type, ...)
 }
 \arguments{
 \item{from}{a \link{PricingEnv}}
 
-\item{what}{a string specifying where the pricing element can be found. This
+\item{type}{a string specifying where the pricing element can be found. This
 corresponds to the \code{PricingEnv} field names which are currently
 \code{zero_curves} and \code{fx_rates}.}
 
@@ -20,7 +20,7 @@ which specifies the ISO code of the currency pair of the FX rate (numeric)
 that is to be extracted.}
 }
 \value{
-a \code{ZeroCurve} when \code{what} is "zero_curves" and a number when \code{what}
+a \code{ZeroCurve} when \code{type} is "zero_curves" and a number when \code{type}
 is "fx_rates".
 }
 \description{

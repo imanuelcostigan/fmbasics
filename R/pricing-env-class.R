@@ -204,7 +204,7 @@ tbl_sum.ZeroCurves <- function(x) {
 #' a set of parameters.
 #'
 #' @param from a [PricingEnv][PricingEnv]
-#' @param what a string specifying where the pricing element can be found. This
+#' @param type a string specifying where the pricing element can be found. This
 #'   corresponds to the `PricingEnv` field names which are currently
 #'   `zero_curves` and `fx_rates`.
 #' @param ... other parameters to full specify the pricing element to extract.
@@ -212,7 +212,7 @@ tbl_sum.ZeroCurves <- function(x) {
 #'   name of the `ZeroCurve` to extract. For `fx_rates` this includes `iso`
 #'   which specifies the ISO code of the currency pair of the FX rate (numeric)
 #'   that is to be extracted.
-#' @return a `ZeroCurve` when `what` is "zero_curves" and a number when `what`
+#' @return a `ZeroCurve` when `type` is "zero_curves" and a number when `type`
 #'   is "fx_rates".
 #' @examples
 #' pe <- build_pricing_env()
@@ -220,8 +220,8 @@ tbl_sum.ZeroCurves <- function(x) {
 #' pick(pe, "fx_rates", "AUDUSD")
 #' @export
 #' @family pricing environments
-pick <- function(from, what, ...) {
-  picker(from[[what]], ...)
+pick <- function(from, type, ...) {
+  picker(from[[type]], ...)
 }
 
 picker <- function(x, ...) UseMethod("picker")
