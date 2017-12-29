@@ -64,7 +64,7 @@ interpolate_dfs(zc, ymd(20170331), ymd(20170630))
 ```
 
 
-## Pricing objects
+## Pricing environments
 
 A set of zero curves can be bundled together into a `ZeroCurves` object:
 
