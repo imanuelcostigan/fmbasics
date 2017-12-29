@@ -92,10 +92,33 @@ interpolate_dfs(zc, ymd(20170331), ymd(20170630))
 You will be able to create pricing environments (basically containers of pricing structures) using `FXRates()`, `ZeroCurves()` (note the plural form) and `PricingEnv()`:
 
 ``` r
-build_pricing_env()
+(pe <- build_pricing_env())
 #> <PricingEnv> @ 2016-12-30
 #>   Zero Curves: CC1_1M, CC1_3M, CC1_6M, CC1_CC1_CSA, CC1_CC2_CSA, CC2_CC2_CSA, CC2_NON_CSA, CC2_1M, CC2_3M, CC2_6M
 #>   FX rates: AUDUSD, EURUSD, GBPUSD, NZDUSD, USDCAD, USDCHF, USDCNH, USDCNY, USDJPY, USDNOK, USDSGD
+```
+
+The constituent objects can be extracted via the `pick()` method:
+
+``` r
+pick(pe, "zero_curves", "CC1_3M")
+#> <ZeroCurve> @ 30 December 2016 
+#> # A tibble: 23 x 2
+#>    Years  Zeros
+#>    <dbl>  <dbl>
+#>  1 0.258 0.0189
+#>  2 0.438 0.0323
+#>  3 0.688 0.0511
+#>  4 0.937 0.0706
+#>  5 1.19  0.0908
+#>  6 1.44  0.112 
+#>  7 1.68  0.134 
+#>  8 1.95  0.159 
+#>  9 2.20  0.182 
+#> 10 3.01  0.0217
+#> # ... with 13 more rows
+pick(pe, "fx_rates", "AUDUSD")
+#> [1] 0.72335
 ```
 
 Further details can be found in this package's help pages and vignettes (`vignette(package = "fmbasics")`)
