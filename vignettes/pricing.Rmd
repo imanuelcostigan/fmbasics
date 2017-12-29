@@ -1,0 +1,97 @@
+---
+title: "Pricing objects"
+author: "Imanuel Costigan"
+date: "`r Sys.Date()`"
+output: 
+  rmarkdown::html_document:
+    toc: true
+    theme: spacelab
+vignette: >
+  %\VignetteIndexEntry{Pricing objects}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+A basic prerequisite of financial market modelling is a set of pricing objects against which financial contracts can be valued. These pricing objects can include zero coupon interest rate curves (zero curves for short), spot FX rate (FX rates for short) and volatility surfaces and are typically built on the basis of a well defined set of benchmark financial contracts. Zero rates are typically "bootstrapped" from a set of benchmark interest rate deposits, futures and swaps while FX rates represent the price of exchanging cash in two different currencies into the spot market (usually two days after trade execution).
+
+## Zero curves
+
+You can create zero curves using the `ZeroCurve()` method:
+
+```{r}
+library(lubridate)
+library(fmdates)
+library(fmbasics)
+# Load some data from a text file
+zc_df <- fmdata_example("zerocurve.csv")
+values <- zc_df$dfs
+starts <- ymd(as.character(zc_df[["start"]]))
+ends <- ymd(as.character(zc_df[["end"]]))
+dfs <- DiscountFactor(values, starts, ends)
+# Build the ZeroCurve object
+zc <- ZeroCurve(dfs, starts[1], LogDFInterpolation())
+```
+
+Different interpolation schemes are available including piecewise constant zeros (`ConstantInterpolation()`), linear on log discount factors (`LogDFInterpolation()` or constant instantaneous forward rates), linear on zero rates (`LinearInterpolation()`) and (natural) cubic splines on zero rates (`CubicSplineInterpolation()`).
+
+The default print methods wraps around a `tibble::as_tibble()` implementation for `ZeroCurve`:
+
+```{r}
+zc
+```
+
+Plotting a zero curve can be done by accessing its field values:
+
+```{r}
+plot(zc$pillar_times, zc$pillar_zeros, xlab = 'Years', ylab = 'Zero')
+```
+
+
+You can interpolate on the zero curve object using either the lower level `interpolate()` implementation for `ZeroCurve` objects that returns a numeric vector or higher level `interpolate_dfs()`, `interpolate_zeros()` or `interpolate_fwds()` functions that return `DiscountFactor` for the first or `InterestRate` objects for the latter two.
+
+```{r}
+interpolate(zc, year_frac(starts[1], ends[3], "act/365"))
+interpolate_zeros(zc, ends[3])
+interpolate_fwds(zc, ymd(20170331), ymd(20170630))
+interpolate_dfs(zc, ymd(20170331), ymd(20170630))
+```
+
+
+## Pricing objects
+
+A set of zero curves can be bundled together into a `ZeroCurves` object:
+
+```{r}
+(zcs <- build_zero_curves())
+```
+
+A set of FX rates can be bundled together into an `FXRates` object:
+
+```{r}
+(fxr <- build_fx_rates())
+```
+
+`ZeroCurves` and `FXRates` can be bundled together into a pricing environment:
+
+```{r}
+(pe <- PricingEnv(zcs, fxr) )
+```
+
+This infers the pricing date from the reference date of the first zero curve in the set of `ZeroCurves` or from the date you provide.
+
+You can pick particular pricing objects from this pricing environment using `pick()`:
+
+```{r}
+pick(pe, "zero_curves", "CC1_3M")
+pick(pe, "fx_rates", "AUDUSD")
+```
+
+
+

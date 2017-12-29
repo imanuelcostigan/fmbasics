@@ -8,6 +8,7 @@
 - NEW: `build_fx_rates()`, `build_zero_curves()` and `build_pricing_env()` to enable the creation of associated objects using example market data
 - FIXED: `pfc_calendar` field of `IborIndex` and `CashIndex` fields must now inherit from `Calendar` (#8). CashIndex and IborIndex constructors now support this.
 - FIXED: The names of key indices are no longer prefixed by the associated currency ISO.
+- Added a vignette to describe pricing objects introduced in v0.2 and in this version.
 - Internal change to class structure
 
 # Version 0.2.0
