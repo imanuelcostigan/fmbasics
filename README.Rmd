@@ -73,7 +73,7 @@ as_InterestRate(dd, compounding = Inf, day_basis = "act/360")
 ```
 
 
-## Pricing objects and environments
+## Pricing objects
 
 It is also possible to create and interpolate on zero coupon interest rate curves:
 
@@ -90,20 +90,5 @@ interpolate_zeros(zc, ends[3])
 interpolate_fwds(zc, ymd(20170331), ymd(20170630))
 interpolate_dfs(zc, ymd(20170331), ymd(20170630))
 ```
-
-You will be able to create pricing environments (basically containers of pricing structures) using `FXRates()`, `ZeroCurves()` (note the plural form) and `PricingEnv()`:
-
-```{r}
-(pe <- build_pricing_env())
-```
-
-The constituent objects can be extracted via the `pick()` method:
-
-```{r}
-pick(pe, "zero_curves", "CC1_3M")
-pick(pe, "fx_rates", "AUDUSD")
-```
-
-
 
 Further details can be found in this package's help pages and vignettes (`vignette(package = "fmbasics")`) 
