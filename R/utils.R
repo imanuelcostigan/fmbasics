@@ -44,62 +44,6 @@ build_zero_curve <- function(interpolation = NULL) {
   ZeroCurve(dfs, starts[1], interpolation %||% LogDFInterpolation())
 }
 
-
-#' Build `ZeroCurves` pricing environment
-#'
-#' This creates a [`ZeroCurves`][ZeroCurves] object from the example data set
-#' `zerocurves.csv`.
-#'
-#' @inheritParams build_zero_curve
-#' @return a `ZeroCurves` object using data from `zerocurves.csv`
-#' @examples
-#' build_zero_curves(LogDFInterpolation())
-#' @export
-#' @family build object helpers
-build_zero_curves <- function(interpolation = NULL) {
-  zc_dfs <- fmdata_example("zerocurves.csv")
-  zc_dfs[["start"]] <- as.Date(as.character(zc_dfs[["start"]]), "%Y%m%d")
-  zc_dfs[["end"]] <- as.Date(as.character(zc_dfs[["end"]]), "%Y%m%d")
-  curve_names <- unique(zc_dfs$name)
-  res <- vector("list", length(curve_names))
-  for(i in seq_along(res)) {
-    zc_df <- zc_dfs[zc_dfs$name == curve_names[i], ]
-    dfs <- DiscountFactor(zc_df$dfs, zc_df$start, zc_df$end)
-    res[[i]] <- ZeroCurve(dfs, as.Date("2016-12-30"),
-      interpolation %||% LogDFInterpolation())
-  }
-  ZeroCurves(curve_names, res)
-}
-
-#' Build `FXRates` pricing environment
-#'
-#' This creates a [`FXRates`][FXRates] object from the example data set
-#' `zerocurves.csv`.
-#'
-#' @return a `FXRates` object using data from `fx.csv`
-#' @examples
-#' build_fx_rates()
-#' @export
-#' @family build object helpers
-build_fx_rates <- function() {
-  rates <- fmdata_example("fx.csv")
-  FXRates(rates$pair, rates$rate)
-}
-
-#' Build a pricing environment
-#'
-#' This creates a [`PricingEnv`][PricingEnv] object from the example data sets
-#' `zerocurves.csv` and `fx.csv`.
-#'
-#' @return a `PricingEnv` object using example data
-#' @examples
-#' build_pricing_env()
-#' @export
-#' @family build object helpers
-build_pricing_env <- function() {
-  PricingEnv(build_zero_curves(), build_fx_rates())
-}
-
 `%||%` <- function (x, y) if (is.null(x)) y else x
 
 
