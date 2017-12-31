@@ -20,8 +20,5 @@ This creates a \code{\link{ZeroCurve}} object from the example data set
 build_zero_curve(LogDFInterpolation())
 }
 \seealso{
-Other build object helpers: \code{\link{build_fx_rates}},
-  \code{\link{build_pricing_env}},
-  \code{\link{build_zero_curves}},
-  \code{\link{fmdata_example}}
+Other build object helpers: \code{\link{fmdata_example}}
 }

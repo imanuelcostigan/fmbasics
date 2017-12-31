@@ -29,8 +29,5 @@ the index associated with the curve.
 fmdata_example("zerocurve.csv")
 }
 \seealso{
-Other build object helpers: \code{\link{build_fx_rates}},
-  \code{\link{build_pricing_env}},
-  \code{\link{build_zero_curves}},
-  \code{\link{build_zero_curve}}
+Other build object helpers: \code{\link{build_zero_curve}}
 }
