@@ -85,7 +85,7 @@ interpolate <- function(x, ...) UseMethod("interpolate")
 #' Interpolate zeros
 #'
 #' This interpolates zero rates from either a [ZeroCurve][ZeroCurve()] or some
-#' other object that contains such an object (e.g. a [PricingEnv][PricingEnv()])
+#' other object that contains such an object.
 #'
 #' @param x the object to interpolate
 #' @param at a [Date] vector representing the date at which to interpolate a
@@ -108,8 +108,7 @@ interpolate_zeros <- function(x, at, compounding = NULL, day_basis = NULL, ...) 
 #' Interpolate forward rates and discount factors
 #'
 #' This interpolates forward rates and forward discount factors from either a
-#' [ZeroCurve][ZeroCurve()] or some other object that contains such an object
-#' (e.g. a [PricingEnv][PricingEnv()])
+#' [ZeroCurve][ZeroCurve()] or some other object that contains such an object.
 #'
 #' @param x the object to interpolate
 #' @param from a [Date] vector representing the start of the forward period

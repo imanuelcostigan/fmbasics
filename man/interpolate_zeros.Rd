@@ -30,7 +30,7 @@ with the \code{compounnding} and \code{day_basis} requested.
 }
 \description{
 This interpolates zero rates from either a \link[=ZeroCurve]{ZeroCurve} or some
-other object that contains such an object (e.g. a \link[=PricingEnv]{PricingEnv})
+other object that contains such an object.
 }
 \seealso{
 Other interpolate functions: \code{\link{interpolate.ZeroCurve}},

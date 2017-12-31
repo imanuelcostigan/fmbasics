@@ -33,8 +33,7 @@ forward rates.
 }
 \description{
 This interpolates forward rates and forward discount factors from either a
-\link[=ZeroCurve]{ZeroCurve} or some other object that contains such an object
-(e.g. a \link[=PricingEnv]{PricingEnv})
+\link[=ZeroCurve]{ZeroCurve} or some other object that contains such an object.
 }
 \seealso{
 Other interpolate functions: \code{\link{interpolate.ZeroCurve}},
