@@ -131,18 +131,13 @@ dd &lt;-<span class="st"> </span><span class="kw"><a href="reference/DiscountFac
 <h2 class="hasAnchor">
 <a href="#pricing-objects" class="anchor"></a>Pricing objects</h2>
 <p>It is also possible to create and interpolate on zero coupon interest rate curves:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">zc_df &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/fmbasics/topics/fmdata_example">fmdata_example</a></span>(<span class="st">"zerocurve.csv"</span>)
-values &lt;-<span class="st"> </span>zc_df<span class="op">$</span>dfs
-starts &lt;-<span class="st"> </span><span class="kw">as.Date</span>(<span class="kw">as.character</span>(zc_df[[<span class="st">"start"</span>]]), <span class="st">"%Y%m%d"</span>)
-ends &lt;-<span class="st"> </span><span class="kw">as.Date</span>(<span class="kw">as.character</span>(zc_df[[<span class="st">"end"</span>]]), <span class="st">"%Y%m%d"</span>)
-dfs &lt;-<span class="st"> </span><span class="kw"><a href="reference/DiscountFactor.html">DiscountFactor</a></span>(values, starts, ends)
-zc &lt;-<span class="st"> </span><span class="kw"><a href="reference/ZeroCurve.html">ZeroCurve</a></span>(dfs, starts[<span class="dv">1</span>], <span class="kw"><a href="reference/Interpolation.html">LogDFInterpolation</a></span>())
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">zc &lt;-<span class="st"> </span><span class="kw"><a href="reference/build_zero_curve.html">build_zero_curve</a></span>()
 <span class="kw">plot</span>(zc<span class="op">$</span>pillar_times, zc<span class="op">$</span>pillar_zeros, <span class="dt">xlab =</span> <span class="st">'Years'</span>, <span class="dt">ylab =</span> <span class="st">'Zero'</span>)</code></pre></div>
 <p><img src="inst/README-unnamed-chunk-7-1.png" width="672"></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="reference/interpolate.html">interpolate</a></span>(zc, <span class="kw"><a href="http://imanuelcostigan.github.io/fmdates/reference/year_frac.html">year_frac</a></span>(starts[<span class="dv">1</span>], ends[<span class="dv">3</span>], <span class="st">"act/365"</span>))
-<span class="co">#&gt; [1] 0.02530432</span>
-<span class="kw"><a href="reference/interpolate_zeros.html">interpolate_zeros</a></span>(zc, ends[<span class="dv">3</span>])
-<span class="co">#&gt; &lt;InterestRate&gt; 2.530432%, CONTINUOUS, ACT/365</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="reference/interpolate.html">interpolate</a></span>(zc, <span class="kw"><a href="http://imanuelcostigan.github.io/fmdates/reference/year_frac.html">year_frac</a></span>(zc<span class="op">$</span>reference_date, <span class="kw"><a href="http://www.rdocumentation.org/packages/lubridate/topics/ymd">ymd</a></span>(<span class="dv">20170331</span>), <span class="st">"act/365"</span>))
+<span class="co">#&gt; [1] 0.0187453</span>
+<span class="kw"><a href="reference/interpolate_zeros.html">interpolate_zeros</a></span>(zc, <span class="kw"><a href="http://www.rdocumentation.org/packages/lubridate/topics/ymd">ymd</a></span>(<span class="dv">20170331</span>))
+<span class="co">#&gt; &lt;InterestRate&gt; 1.87453%, CONTINUOUS, ACT/365</span>
 <span class="kw"><a href="http://www.rdocumentation.org/packages/fmbasics/topics/interpolate_dfs">interpolate_fwds</a></span>(zc, <span class="kw"><a href="http://www.rdocumentation.org/packages/lubridate/topics/ymd">ymd</a></span>(<span class="dv">20170331</span>), <span class="kw"><a href="http://www.rdocumentation.org/packages/lubridate/topics/ymd">ymd</a></span>(<span class="dv">20170630</span>))
 <span class="co">#&gt; &lt;InterestRate&gt; 1.837274%, SIMPLE, ACT/365</span>
 <span class="kw"><a href="reference/interpolate_dfs.html">interpolate_dfs</a></span>(zc, <span class="kw"><a href="http://www.rdocumentation.org/packages/lubridate/topics/ymd">ymd</a></span>(<span class="dv">20170331</span>), <span class="kw"><a href="http://www.rdocumentation.org/packages/lubridate/topics/ymd">ymd</a></span>(<span class="dv">20170630</span>))
