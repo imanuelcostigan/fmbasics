@@ -1,32 +1,32 @@
-Package: fmbasics
 Type: Package
+Package: fmbasics
 Title: Financial Market Building Blocks
 Version: 0.2.99
-Author: Imanuel Costigan <i.costigan@me.com>
-Maintainer: Imanuel Costigan <i.costigan@me.com>
+Authors@R: person("Imanuel", "Costigan", email = "icostigan@westpac.com.au", 
+                  role = c("aut", "cre"))
 Description: Implements basic financial market objects like currencies, currency
   pairs, interest rates and interest rate indices. You will be able to use
   Benchmark instances of these objects which have been defined using their most
   common conventions or those defined by International Swap Dealer Association
   (ISDA, <http://www2.isda.org>) legal documentation. 
 License: GPL-2
-Imports:
-  fmdates (>= 0.1.2),
+URL: https://github.com/imanuelcostigan/fmbasics
+BugReports: https://github.com/imanuelcostigan/fmbasics/issues
+Imports: 
   assertthat,
+  fmdates (>= 0.1.2),
   lubridate (>= 1.6.0),
-  tibble,
+  methods,
   stats,
-  utils,
-  methods
-Suggests:
-  testthat,
+  tibble,
+  utils
+Suggests: 
+  covr,
   knitr,
   rmarkdown,
-  covr
-RoxygenNote: 6.0.1
-Roxygen: list(markdown = TRUE)
+  testthat
 VignetteBuilder: knitr
 Encoding: UTF-8
 LazyData: true
-URL: https://github.com/imanuelcostigan/fmbasics
-BugReports: https://github.com/imanuelcostigan/fmbasics/issues
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 6.0.1
