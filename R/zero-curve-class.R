@@ -31,13 +31,7 @@
 #' @param interpolation an [`Interpolation`] object
 #' @return a `ZeroCurve` object
 #' @examples
-#' zc_df <- fmdata_example("zerocurve.csv")
-#' values <- zc_df[["dfs"]]
-#' starts <- as.Date(as.character(zc_df[["start"]]), "%Y%m%d")
-#' ends <- as.Date(as.character(zc_df[["end"]]), "%Y%m%d")
-#' dfs <- DiscountFactor(values, starts, ends)
-#' zc <- ZeroCurve(dfs, starts[1], LogDFInterpolation())
-#' plot(zc$pillar_times, zc$pillar_zeros, xlab = 'Years', ylab = 'Zero')
+#' build_zero_curve()
 #' @export
 #' @seealso [Interpolation]
 
@@ -135,13 +129,7 @@ validate_ZeroCurve <- function(x) {
 #' @param x an R object
 #' @return `TRUE` if `x` inherits from the `ZeroCurve` class; otherwise `FALSE`
 #' @examples
-#' zc_df <- fmdata_example("zerocurve.csv")
-#' values <- zc_df[["dfs"]]
-#' starts <- as.Date(as.character(zc_df[["start"]]), "%Y%m%d")
-#' ends <- as.Date(as.character(zc_df[["end"]]), "%Y%m%d")
-#' dfs <- DiscountFactor(values, starts, ends)
-#' zc <- ZeroCurve(dfs, starts[1], LogDFInterpolation())
-#' is.ZeroCurve(zc)
+#' is.ZeroCurve(build_zero_curve())
 #' @export
 is.ZeroCurve <- function(x) {
   inherits(x, "ZeroCurve")

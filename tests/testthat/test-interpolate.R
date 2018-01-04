@@ -1,9 +1,7 @@
 context("ZeroCurve")
 
-test_that("fmdata_example works", {
-  df <- fmdata_example("zerocurve.csv")
-  expect_is(df, "data.frame")
-  expect_named(df, c("start", "end", "zeros", "dfs"))
+test_that("build_zero_curve works", {
+  expect_is(build_zero_curve(), "ZeroCurve")
 })
 
 test_that("Interpolation checks work", {

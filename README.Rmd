@@ -78,15 +78,10 @@ as_InterestRate(dd, compounding = Inf, day_basis = "act/360")
 It is also possible to create and interpolate on zero coupon interest rate curves:
 
 ```{r}
-zc_df <- fmdata_example("zerocurve.csv")
-values <- zc_df$dfs
-starts <- as.Date(as.character(zc_df[["start"]]), "%Y%m%d")
-ends <- as.Date(as.character(zc_df[["end"]]), "%Y%m%d")
-dfs <- DiscountFactor(values, starts, ends)
-zc <- ZeroCurve(dfs, starts[1], LogDFInterpolation())
+zc <- build_zero_curve()
 plot(zc$pillar_times, zc$pillar_zeros, xlab = 'Years', ylab = 'Zero')
-interpolate(zc, year_frac(starts[1], ends[3], "act/365"))
-interpolate_zeros(zc, ends[3])
+interpolate(zc, year_frac(zc$reference_date, ymd(20170331), "act/365"))
+interpolate_zeros(zc, ymd(20170331))
 interpolate_fwds(zc, ymd(20170331), ymd(20170630))
 interpolate_dfs(zc, ymd(20170331), ymd(20170630))
 ```

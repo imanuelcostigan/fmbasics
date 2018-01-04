@@ -13,8 +13,7 @@
 build_zero_curve <- function(interpolation = NULL) {
   filepath <- system.file("extdata", "zerocurve.csv", package = "fmbasics")
   df <- utils::read.csv(filepath, header = TRUE, stringsAsFactors = FALSE)
-  return(tibble::as_tibble(df))
-  zc_df <- fmdata_example("zerocurve.csv")
+  zc_df <- tibble::as_tibble(df)
   values <- zc_df$dfs
   starts <- as.Date(as.character(zc_df[["start"]]), "%Y%m%d")
   ends <- as.Date(as.character(zc_df[["end"]]), "%Y%m%d")
