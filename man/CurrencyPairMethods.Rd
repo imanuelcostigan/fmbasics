@@ -10,7 +10,6 @@
 \alias{to_tomorrow}
 \alias{to_fx_value}
 \alias{invert}
-\alias{is.CurrencyPair}
 \title{CurrencyPair methods}
 \usage{
 is_t1(x)
@@ -28,8 +27,6 @@ to_tomorrow(dates, x)
 to_fx_value(dates, tenor, x)
 
 invert(x)
-
-is.CurrencyPair(x)
 }
 \arguments{
 \item{x}{a \code{CurrencyPair} object}
