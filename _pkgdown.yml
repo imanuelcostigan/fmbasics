@@ -1,0 +1,72 @@
+url: http://imanuelcostigan.github.io/fmbasics
+
+template:
+  params:
+    bootswatch: simplex
+
+reference:
+  - title: "Interest rates"
+    desc: "Working with interest rates including their discount factor cousins"
+    contents:
+      - InterestRate
+      - is.InterestRate
+      - as_InterestRate
+      - InterestRate-operators
+      - is_valid_compounding
+      - DiscountFactor
+      - is.DiscountFactor
+      - as_DiscountFactor
+      - DiscountFactor-operators
+  - title: "Currencies"
+    desc: "Creating currencies"
+    contents:
+      - Currency
+      - is.Currency
+      - iso
+  - title: "Currency pairs"
+    desc: "Creating and working with currency pairs"
+    contents:
+      - CurrencyPair
+      - is.CurrencyPair
+      - CurrencyPairMethods
+      - iso
+  - title: "Indices"
+    desc: "Creating and working with interest rate indices"
+    contents:
+      - CashIndex
+      - is.CashIndex
+      - IborIndex
+      - is.IborIndex
+      - indexshifters
+      - iso
+  - title: "Money"
+    desc: "Creating and working with different classes of money"
+    contents:
+      - SingleCurrencyMoney
+      - is.SingleCurrencyMoney
+      - MultiCurrencyMoney
+      - is.MultiCurrencyMoney
+      - CashFlow
+      - is.CashFlow
+  - title: "Zero curves"
+    desc: "Creating and working with zero curves"
+    contents:
+      - ZeroCurve
+      - is.ZeroCurve
+      - interpolate.ZeroCurve
+      - interpolate_zeros
+      - interpolate_dfs
+      - interpolate_fwds
+      - as_tibble.ZeroCurve
+  - title: "Interpolation schemes"
+    desc: "Light weight classes that define interpolation schemes"
+    contents:
+      - ends_with("Interpolation")
+  - title: "Canned basics objects"
+    desc: "Examples of basic financial market objects"
+    contents:
+      - CurrencyConstructors
+      - CurrencyPairConstructors
+      - oniaindices
+      - iborindices
+      - build_zero_curve

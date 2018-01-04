@@ -1,0 +1,7 @@
+urls:
+  reference: http://imanuelcostigan.github.io/fmbasics/reference
+  article: http://imanuelcostigan.github.io/fmbasics/articles
+articles:
+  basics: basics.html
+  rates: rates.html
+
