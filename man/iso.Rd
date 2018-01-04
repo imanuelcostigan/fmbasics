@@ -7,7 +7,7 @@
 \alias{iso.default}
 \alias{iso.IborIndex}
 \alias{iso.CashIndex}
-\title{ISO}
+\title{Get ISO}
 \usage{
 \method{iso}{CurrencyPair}(x)
 
@@ -26,11 +26,11 @@ iso(x)
 a string of the ISO
 }
 \description{
-Get ISO from an object. The default method assumes the ISO can be accessed
-as if it were an attribute with name \code{iso} (e.g. \code{x$iso}). The method for
-\code{CurrencyPair} concatenates the ISOs of the constituent currencies (e.g.
-\code{iso(AUDUSD())} returns "AUDUSD") while the methods for \code{CashIndex} and
-\code{IborIndex} return the ISO of the index's currency.
+The default method assumes the ISO can be accessed as if it were an attribute
+with name \code{iso} (e.g. \code{x$iso}). The method for \code{CurrencyPair} concatenates
+the ISOs of the constituent currencies (e.g. \code{iso(AUDUSD())} returns
+"AUDUSD") while the methods for \code{CashIndex} and \code{IborIndex} return the ISO of
+the index's currency.
 }
 \examples{
 library("lubridate")

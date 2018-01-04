@@ -1,10 +1,10 @@
-#' ISO
+#' Get ISO
 #'
-#' Get ISO from an object. The default method assumes the ISO can be accessed
-#' as if it were an attribute with name `iso` (e.g. `x$iso`). The method for
-#' `CurrencyPair` concatenates the ISOs of the constituent currencies (e.g.
-#' `iso(AUDUSD())` returns "AUDUSD") while the methods for `CashIndex` and
-#' `IborIndex` return the ISO of the index's currency.
+#' The default method assumes the ISO can be accessed as if it were an attribute
+#' with name `iso` (e.g. `x$iso`). The method for `CurrencyPair` concatenates
+#' the ISOs of the constituent currencies (e.g. `iso(AUDUSD())` returns
+#' "AUDUSD") while the methods for `CashIndex` and `IborIndex` return the ISO of
+#' the index's currency.
 #'
 #' @param x object from which to extract an ISO
 #' @return a string of the ISO
