@@ -1,28 +1,3 @@
-#' Source supplied financial market data
-#'
-#' The following files are supplied by the package:
-#' * `zerocurve.csv` has four fields for one curve: `start`, `end`, `zeros` and
-#' `dfs` representing the start and end dates of the pillar instruments and
-#' semi-annually compounded zero coupon rates and discount factors
-#' * `zerocurves.csv` has five fields for curve sets associated with two
-#' currencies: `start`, `end`, `zeros` and `dfs` as above as well as `name`
-#' representing the name of the curve. The name of the curve is specified as
-#' `CCY_INDEX` where `CCY` is the ISO code of the curve's currency and `INDEX` is
-#' the index associated with the curve.
-#'
-#' @param file the name of the file containing the data set.
-#' @return a `tibble`
-#' @examples
-#' fmdata_example("zerocurve.csv")
-#' @export
-#' @family build object helpers
-
-fmdata_example <- function(file) {
-  filepath <- system.file("extdata", file, package = "fmbasics")
-  df <- utils::read.csv(filepath, header = TRUE, stringsAsFactors = FALSE)
-  return(tibble::as_tibble(df))
-}
-
 #' Build a `ZeroCurve` from example data set
 #'
 #' This creates a [`ZeroCurve`][ZeroCurve] object from the example data set
@@ -36,6 +11,9 @@ fmdata_example <- function(file) {
 #' @family build object helpers
 
 build_zero_curve <- function(interpolation = NULL) {
+  filepath <- system.file("extdata", "zerocurve.csv", package = "fmbasics")
+  df <- utils::read.csv(filepath, header = TRUE, stringsAsFactors = FALSE)
+  return(tibble::as_tibble(df))
   zc_df <- fmdata_example("zerocurve.csv")
   values <- zc_df$dfs
   starts <- as.Date(as.character(zc_df[["start"]]), "%Y%m%d")
