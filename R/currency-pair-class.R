@@ -144,9 +144,16 @@ invert = function (x) {
   new_CurrencyPair(x$quote_ccy, x$base_ccy, x$calendar)
 }
 
-#' @rdname CurrencyPairMethods
+#' Inherits from `CurrencyPair` class
+#'
+#' @param x an R object
+#' @return `TRUE` if `x` inherits from the `CurrencyPair` class; otherwise `FALSE`
+#' @examples
+#' is.CurrencyPair(AUDUSD())
 #' @export
 is.CurrencyPair <- function(x) inherits(x, "CurrencyPair")
+
+
 #' @rdname iso
 #' @export
 iso.CurrencyPair <- function(x) {paste0(iso(x$base_ccy), iso(x$quote_ccy))}
