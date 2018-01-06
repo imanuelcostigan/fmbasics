@@ -99,16 +99,16 @@
 <span class="kw"><a href="reference/CurrencyPairMethods.html">to_fx_value</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/lubridate/topics/ymd">ymd</a></span>(<span class="dv">20171230</span>), <span class="kw">months</span>(<span class="dv">3</span>), <span class="kw"><a href="reference/CurrencyPairConstructors.html">AUDUSD</a></span>())
 <span class="co">#&gt; [1] "2018-04-03"</span></code></pre></div>
 <p>You can create instances of key IBOR or ONIA interest rate indices:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="http://www.rdocumentation.org/packages/fmbasics/topics/iborindices">USDLIBOR</a></span>(<span class="kw">months</span>(<span class="dv">3</span>))
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="http://imanuelcostigan.github.io/fmbasics/reference/iborindices.html">USDLIBOR</a></span>(<span class="kw">months</span>(<span class="dv">3</span>))
 <span class="co">#&gt; &lt;IborIndex&gt; 3m USD LIBOR</span>
-<span class="kw"><a href="http://www.rdocumentation.org/packages/fmbasics/topics/oniaindices">EONIA</a></span>()
+<span class="kw"><a href="http://imanuelcostigan.github.io/fmbasics/reference/oniaindices.html">EONIA</a></span>()
 <span class="co">#&gt; &lt;CashIndex&gt; EONIA</span></code></pre></div>
 <p>These also come with implementations of handy methods:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="reference/indexshifters.html">to_reset</a></span>(<span class="dt">dates =</span> <span class="kw">as.Date</span>(<span class="st">"2017-01-20"</span>), <span class="dt">index =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/fmbasics/topics/iborindices">USDLIBOR</a></span>(<span class="kw">months</span>(<span class="dv">3</span>)))
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="reference/indexshifters.html">to_reset</a></span>(<span class="dt">dates =</span> <span class="kw">as.Date</span>(<span class="st">"2017-01-20"</span>), <span class="dt">index =</span> <span class="kw"><a href="http://imanuelcostigan.github.io/fmbasics/reference/iborindices.html">USDLIBOR</a></span>(<span class="kw">months</span>(<span class="dv">3</span>)))
 <span class="co">#&gt; [1] "2017-01-18"</span>
-<span class="kw"><a href="reference/indexshifters.html">to_value</a></span>(<span class="kw">as.Date</span>(<span class="st">"2017-01-20"</span>), <span class="kw"><a href="http://www.rdocumentation.org/packages/fmbasics/topics/iborindices">USDLIBOR</a></span>(<span class="kw">months</span>(<span class="dv">3</span>)))
+<span class="kw"><a href="reference/indexshifters.html">to_value</a></span>(<span class="kw">as.Date</span>(<span class="st">"2017-01-20"</span>), <span class="kw"><a href="http://imanuelcostigan.github.io/fmbasics/reference/iborindices.html">USDLIBOR</a></span>(<span class="kw">months</span>(<span class="dv">3</span>)))
 <span class="co">#&gt; [1] "2017-01-24"</span>
-<span class="kw"><a href="reference/indexshifters.html">to_maturity</a></span>(<span class="kw">as.Date</span>(<span class="st">"2017-01-20"</span>), <span class="kw"><a href="http://www.rdocumentation.org/packages/fmbasics/topics/iborindices">USDLIBOR</a></span>(<span class="kw">months</span>(<span class="dv">3</span>)))
+<span class="kw"><a href="reference/indexshifters.html">to_maturity</a></span>(<span class="kw">as.Date</span>(<span class="st">"2017-01-20"</span>), <span class="kw"><a href="http://imanuelcostigan.github.io/fmbasics/reference/iborindices.html">USDLIBOR</a></span>(<span class="kw">months</span>(<span class="dv">3</span>)))
 <span class="co">#&gt; [1] "2017-04-20"</span></code></pre></div>
 </div>
 <div id="interest-rates-and-discount-factors" class="section level2">
@@ -138,7 +138,7 @@ dd &lt;-<span class="st"> </span><span class="kw"><a href="reference/DiscountFac
 <span class="co">#&gt; [1] 0.0187453</span>
 <span class="kw"><a href="reference/interpolate_zeros.html">interpolate_zeros</a></span>(zc, <span class="kw"><a href="http://www.rdocumentation.org/packages/lubridate/topics/ymd">ymd</a></span>(<span class="dv">20170331</span>))
 <span class="co">#&gt; &lt;InterestRate&gt; 1.87453%, CONTINUOUS, ACT/365</span>
-<span class="kw"><a href="http://www.rdocumentation.org/packages/fmbasics/topics/interpolate_dfs">interpolate_fwds</a></span>(zc, <span class="kw"><a href="http://www.rdocumentation.org/packages/lubridate/topics/ymd">ymd</a></span>(<span class="dv">20170331</span>), <span class="kw"><a href="http://www.rdocumentation.org/packages/lubridate/topics/ymd">ymd</a></span>(<span class="dv">20170630</span>))
+<span class="kw"><a href="http://imanuelcostigan.github.io/fmbasics/reference/interpolate_dfs.html">interpolate_fwds</a></span>(zc, <span class="kw"><a href="http://www.rdocumentation.org/packages/lubridate/topics/ymd">ymd</a></span>(<span class="dv">20170331</span>), <span class="kw"><a href="http://www.rdocumentation.org/packages/lubridate/topics/ymd">ymd</a></span>(<span class="dv">20170630</span>))
 <span class="co">#&gt; &lt;InterestRate&gt; 1.837274%, SIMPLE, ACT/365</span>
 <span class="kw"><a href="reference/interpolate_dfs.html">interpolate_dfs</a></span>(zc, <span class="kw"><a href="http://www.rdocumentation.org/packages/lubridate/topics/ymd">ymd</a></span>(<span class="dv">20170331</span>), <span class="kw"><a href="http://www.rdocumentation.org/packages/lubridate/topics/ymd">ymd</a></span>(<span class="dv">20170630</span>))
 <span class="co">#&gt; &lt;DiscountFactor&gt; 0.995440285935839, 2017-03-31--2017-06-30</span></code></pre></div>
