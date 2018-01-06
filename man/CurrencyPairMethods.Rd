@@ -41,7 +41,7 @@ invert(x)
 A collection of methods related to currency pairs.
 }
 \details{
-The methods are sumarised as follows:
+The methods are summarised as follows:
 \itemize{
 \item \code{is_t1}: Returns \code{TRUE} if the currency pair settles one good day after
 trade. This includes the following currencies crossed with the USD: CAD, TRY,
