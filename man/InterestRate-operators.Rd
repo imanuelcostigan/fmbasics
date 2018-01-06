@@ -15,7 +15,7 @@ The operations are:
 \item \code{[}: extract parts of a \code{InterestRate} vector
 \item \code{[<-}: replace parts of a \code{InterestRate} vector
 \item \code{rep}: repeat a \code{InterestRate} object
-\item \code{length}: determiens the length of a \code{InterestRate} vector
+\item \code{length}: determines the length of a \code{InterestRate} vector
 \item \code{+, -}: addition/subtraction of \code{InterestRate} objects. Where
 two \code{InterestRate} objects are added/subtracted, the second is first
 converted to have the same compounding and day basis frequency as the first.

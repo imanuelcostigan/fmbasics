@@ -15,7 +15,7 @@ The operations are:
 \item \code{[}: extract parts of a \code{DiscountFactor} vector
 \item \code{[<-}: replace parts of a \code{DiscountFactor} vector
 \item \code{rep}: repeat a \code{DiscountFactor} object
-\item \code{length}: determiens the length of a \code{DiscountFactor} vector
+\item \code{length}: determines the length of a \code{DiscountFactor} vector
 \item \code{*}: multiplication of \code{DiscountFactor} objects. The end
 date of the first discount factor object must be equivalent to the start
 date of the second (or vice versa). Arguments are recycled as necessary.

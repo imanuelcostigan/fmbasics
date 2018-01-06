@@ -10,7 +10,7 @@
 #' \item \code{[}: extract parts of a \code{InterestRate} vector
 #' \item \code{[<-}: replace parts of a \code{InterestRate} vector
 #' \item \code{rep}: repeat a \code{InterestRate} object
-#' \item \code{length}: determiens the length of a \code{InterestRate} vector
+#' \item \code{length}: determines the length of a \code{InterestRate} vector
 #' \item \code{+, -}: addition/subtraction of \code{InterestRate} objects. Where
 #' two \code{InterestRate} objects are added/subtracted, the second is first
 #' converted to have the same compounding and day basis frequency as the first.
@@ -180,7 +180,7 @@ compare_rate <- function(op) {
 #' \item \code{[}: extract parts of a \code{DiscountFactor} vector
 #' \item \code{[<-}: replace parts of a \code{DiscountFactor} vector
 #' \item \code{rep}: repeat a \code{DiscountFactor} object
-#' \item \code{length}: determiens the length of a \code{DiscountFactor} vector
+#' \item \code{length}: determines the length of a \code{DiscountFactor} vector
 #' \item \code{*}: multiplication of \code{DiscountFactor} objects. The end
 #' date of the first discount factor object must be equivalent to the start
 #' date of the second (or vice versa). Arguments are recycled as necessary.
