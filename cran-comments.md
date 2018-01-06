@@ -1,26 +1,18 @@
-## Resubmission after failing auto-tests
-
-See https://win-builder.r-project.org/incoming_pretest/170430_010421_fmbasics_020/00check.log
-
-Fixed warning about missing PNG file. 
-
 ## Summary of changes
 
-* New financial market object support and associated interpolation methods
-* No backward incompatible changes
+* New functions, bug fixes and one deprecation
 
 ## Test environments
 
-* travis-ci based ubuntu 12.04 running R 3.3.3, 3.4.0 and r72638 
-* travis-ci based macOS 10.12.1 running R 3.4.0
-* appveyor based Windows 3.3.3 patched (r72556)
+* travis-ci based ubuntu 14.04 running R 3.3.3, 3.4.2 and r74038 
+* travis-ci based macOS 10.12.1 running R 3.4.2
+* local macOS 10.13.2 running R 3.4.3
+* appveyor based Windows Server 2012 R2 x64 running 3.4.3 patched (r74023)
 
 ## R CMD check results
 
-0 errors | 0 warning | 1 note
-
-I get a NOTE about misspelling ISDA and indices. The former is an abbreviation that is expanded in the DESCRIPTION file while the latter is not a misspelt word.
+0 errors | 0 warnings | 0 notes
 
 ## Reverse dependencies
 
-No reverse dependency issues
+This package has no reverse dependencies
