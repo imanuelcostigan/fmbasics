@@ -1,13 +1,20 @@
 # Version 0.2.99
 
-- NEW: `interpolate_dfs()`, `interpolate_fwds()` and `interpolate_zeros()` build on the lower level `interpolate()` for `ZeroCurve` objects.
-- NEW: `SingleCurrencyMoney()` and `MultiCurrencyMoney()` allows you to create single and multi-currency money objects that are not date dependent
-- NEW: `CashFlow()` allows you to create date dependent cash flows
-- FIXED: `pfc_calendar` field of `IborIndex` and `CashIndex` fields must now inherit from `Calendar` (#8). CashIndex and IborIndex constructors now support this.
-- FIXED: The names of key indices are no longer prefixed by the associated currency ISO.
-- REMOVED: `fmdata_example()` as only one data file is likely to be used in this package and this is to be used internally for the purposes of `build_zero_curve()`
+NEW:
+
+- `interpolate_dfs()`, `interpolate_fwds()` and `interpolate_zeros()` build on the lower level `interpolate()` for `ZeroCurve` objects.
+- `SingleCurrencyMoney()` and `MultiCurrencyMoney()` allows you to create single and multi-currency money objects that are not date dependent
+- `CashFlow()` allows you to create date dependent cash flows
 - Added a vignette to describe pricing objects introduced in v0.2 and in this version.
-- Internal change to class structure
+
+FIXED:
+
+- `pfc_calendar` field of `IborIndex` and `CashIndex` fields must now inherit from `Calendar` (#8). CashIndex and IborIndex constructors now support this.
+- The names of key indices are no longer prefixed by the associated currency ISO.
+
+REMOVED:
+
+- `fmdata_example()` as only one data file is likely to be used in this package and this is to be used internally for the purposes of `build_zero_curve()`
 
 # Version 0.2.0
 
