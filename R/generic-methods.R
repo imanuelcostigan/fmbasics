@@ -71,7 +71,7 @@ to_maturity.default <- function(dates, index) {
 }
 
 
-#' Interpolate values from an object
+#' Interpolate (& extrapolates) values from an object: Extending stat::approx()
 #'
 #' @param x the object to interpolate.
 #' @param ... other parameters that defines how to interpolate the object
@@ -80,7 +80,82 @@ to_maturity.default <- function(dates, index) {
 #' @family interpolate functions
 interpolate <- function(x, ...) UseMethod("interpolate")
 
+#' Interpolation method for an object of class DiscountFactor
+#'
+#' @param x DiscountFactor
+#' @param dates_out output dates
+#'
+#' @return interpolated discount factors on dates_out
+#' @export
+#'
+#' @examples
+#'
+#' df <- fmbasics::DiscountFactor(c(0.95, 0.94, 0.93), ymd(20130101),
+#' ymd(20140101, 20150101, 20160101))
+#'
+#' interpolate(x = df, dates_out = ymd(20150201))
+#'
+#'
+interpolate.DiscountFactor <- function(x, dates_out){
+  assertthat::assert_that(lubridate::is.Date(dates_out))
 
+  df_intrp <- exp(Hmisc::approxExtrap(
+    as.numeric(x$value_date),
+    log(x$value),
+    xout = as.numeric(dates_out)
+  )$y)
+
+  out_makt_date <- x$market_date[1:length(dates_out)]
+  return(DiscountFactor(df_intrp, out_makt_date, dates_out))
+}
+
+#' Interpolation method for an object of class InterestRate
+#'
+#' @param x InterestRate
+#' @param dates_in Input dates
+#' @param market_date Current market date
+#' @param dates_out Output dates
+#' @param compounding Compunding Frequency
+#' @param day_basis Day basis
+#'
+#' @return
+#' @export
+#'
+#' @examples
+#' ir <- InterestRate(c(0.04, 0.05), c(2, 4), 'act/365')
+
+#' interpolate(ir,dates_in = c(ymd(20100101), ymd(20100303)),
+#'  market_date = ymd(20091202), dates_out = ymd(20100201), compounding = c(2,4),
+#'  day_basis = "act/365")
+
+
+interpolate.InterestRate <- function(x, dates_in, market_date,
+                                     dates_out, compounding, day_basis){
+  if(missing(dates_in))
+    stop("An InterestRate requires the dates_in, specified as the date of tenor points")
+
+  if(missing(market_date))
+    stop("An InterestRate requires the market_date, specified as current market date")
+
+  if(missing(compounding))
+    stop("An InterestRate requires the compounding, expressed numerically.")
+
+  if(missing(day_basis))
+    stop("An InterestRate requires valid day_basis.")
+
+  assertthat::assert_that(lubridate::is.Date(dates_in),
+                            lubridate::is.Date(dates_out),
+                            lubridate::is.Date(market_date),
+                            is.double(compounding),
+                            fmdates::is_valid_day_basis(day_basis))
+
+  df <- as_DiscountFactor(x,market_date, dates_in)
+
+  df_intrp <- suppressMessages(interpolate(x = df, dates_out = dates_out))
+
+  return(as_InterestRate(df_intrp, compounding, day_basis))
+
+}
 
 #' Interpolate zeros
 #'

@@ -26,8 +26,8 @@ new_DiscountFactor <- function(value, d1, d2) {
   n <- max(NROW(value), NROW(d1), NROW(d2))
   structure(list(
     value = rep(value, length.out = n),
-    start_date = rep(d1, length.out = n),
-    end_date = rep(d2, length.out = n)),
+    market_date = rep(d1, length.out = n),
+    value_date = rep(d2, length.out = n)),
     class = "DiscountFactor"
   )
 }
@@ -35,9 +35,9 @@ new_DiscountFactor <- function(value, d1, d2) {
 validate_DiscountFactor <- function(x) {
   assertthat::assert_that(
     all(is.numeric(x$value)),
-    all(lubridate::is.Date(x$start_date)),
-    all(lubridate::is.Date(x$end_date)),
-    all(x$value > 0), all(x$start_date <= x$end_date)
+    all(lubridate::is.Date(x$market_date)),
+    all(lubridate::is.Date(x$value_date)),
+    all(x$value > 0)
   )
   x
 }
@@ -110,7 +110,7 @@ as_InterestRate.DiscountFactor <- function(x, compounding, day_basis, ...) {
     fmdates::is_valid_day_basis(day_basis),
     is_valid_compounding(compounding)
   )
-  term <- fmdates::year_frac(x$start_date, x$end_date, day_basis)
+  term <- fmdates::year_frac(x$market_date, x$value_date, day_basis)
   is_cc <- is.infinite(compounding)
   is_simple <- compounding == 0
   is_tbill <- compounding == -1
@@ -252,7 +252,7 @@ as.double.InterestRate <- function(x, ...) x$value
 #' @export
 format.DiscountFactor <- function(x, ...) {
   paste0("<DiscountFactor> ", x$value, ', ',
-    x$start_date, '--', x$end_date, collapse = '\n')
+    x$market_date, '--', x$value_date, collapse = '\n')
 }
 #' @export
 format.InterestRate <- function(x, ...) {
