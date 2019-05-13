@@ -190,7 +190,8 @@ Interpolation <- function(method, what) {
     constant_zeros = "Constant",
     constant_forwards = "LogDF",
     linear_zeros = "Linear",
-    natural_cubic_zeros = "Cubic"
+    natural_cubic_zeros = "Cubic",
+    linear_time_variance = "Linear"
   )
   structure(list(),
     class = c(paste0(prefix, "Interpolation"), "Interpolation"))
@@ -208,6 +209,9 @@ LinearInterpolation <- function() Interpolation("linear", "zeros")
 #' @rdname Interpolation
 #' @export
 CubicInterpolation <- function() Interpolation("natural_cubic", "zeros")
+#' @rdname Interpolation
+#' @export
+LinearTimeVarInterpolation <- function() Interpolation("linear", "time_variance")
 
 #' Check Interpolation class
 #'
@@ -235,6 +239,8 @@ is.LinearInterpolation <- check_interpolation("Linear")
 #' @rdname is.Interpolation
 #' @export
 is.CubicInterpolation <- check_interpolation("Cubic")
+#' @export
+is.LinearTimeVarInterpolation <- check_interpolation("Linear")
 #' @export
 format.Interpolation <- function(x, ...) paste0("<", class(x)[1], ">")
 #' @export

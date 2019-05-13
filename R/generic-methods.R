@@ -126,3 +126,19 @@ interpolate_dfs <- function(x, from, to, ...) UseMethod("interpolate_dfs")
 #' @export
 #' @rdname interpolate_dfs
 interpolate_fwds <- function(x, from, to, ...) UseMethod("interpolate_fwds")
+
+
+
+#' Interpolate volatility surface
+#'
+#' This interpolates a vol surface from the class [VolsSurface] at a date and a strike
+#' @param x the object to interpolate
+#' @param date a vetor of type date with the dates to interpolate at
+#' @param strike a vector of stikes to interpolate at with the same length as `date` vector
+#' @return Returns a numeric vector of the same length as `date` parameter containing the interpolated
+#' implied volatilities at each couple of `(date, strike)`.
+#' @export
+#' @aliases interpolate_vol
+interpolate_vol <- function(x, maturity, strike, ...) UseMethod("interpolate_vol")
+
+

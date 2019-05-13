@@ -29,3 +29,66 @@ interpolated_fwds <- interpolate_fwds(x = zero_curve,from = fr_interpolation_dat
 
 
 interpolated_zeros <- fmbasics::interpolate_zeros(x = zero_curve, at = fr_interpolation_data$X__1, compounding = Inf, day_basis = "act/365"  )
+
+
+
+
+####VolSurface tesing script
+
+reference_date <- as.Date("2019-04-26")
+
+
+
+
+src_file <-  "V:/19 Reviews/Markets/Self-Funding Instalment Warrants - SFI/02 Work Performed/SFI_validation/Validation inputs-Mx rprt/Murex reports/mxCompleteVolSurface_26042019.csv"
+vols_src <- read.csv(file = src_file, header = T )
+rio_spot <- 97.62
+vol_rio <- vols_src[which(vols_src$Code == "RIO ASX"), ]
+tenors <- lubridate::ymd(vol_rio$Date)
+strikes <- seq(from = 0.05, to = 2.55, by= 0.05)*rio_spot
+vol_quotes <- vol_rio[,-c(1:4) ]
+colnames(vol_quotes) <- strikes
+rownames(vol_quotes) <- tenors
+vol_quotes <- t(vol_quotes)
+
+
+
+
+vol_interp <- LinearTimeVarInterpolation()
+vol_obj <- fmbasics::VolSurface(reference_date = reference_date, vol_quotes = vol_quotes,
+                                ticker = "RIOASX", surface_type = "strike/tenor", interpolation = vol_interp)
+
+
+
+dates_str <- c(
+  "25/07/2019",
+  "23/10/2019",
+  "21/01/2020",
+  "20/04/2020",
+  "19/07/2020",
+  "17/10/2020",
+  "15/01/2021",
+  "15/04/2021",
+  "14/07/2021",
+  "12/10/2021",
+  "10/01/2022",
+  "10/04/2022",
+  "9/07/2022",
+  "7/10/2022",
+  "5/01/2023",
+  "5/04/2023",
+  "4/07/2023",
+  "2/10/2023",
+  "31/12/2023",
+  "30/03/2024",
+  "28/06/2024",
+  "26/09/2024",
+  "25/12/2024",
+  "25/03/2025",
+  "23/06/2025")
+
+maturity <- lubridate::as_date(dates_str , format = "%d/%m/%Y", tz = "Australia/Sydney" )
+strike <- c(62,66,70,74,78,82,86,90,94,98,102,106,110,114,118, 122,126,130,134,138,142,146,150,154,158)
+
+
+interpolated_vols <- fmbasics::interpolate_vol(x = vol_obj, maturity = maturity, strike = strike)
