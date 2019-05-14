@@ -31,3 +31,54 @@ is_atomic_list <- function(ll, .p) {
 assertthat::on_failure(is_atomic_list) <- function(call, env) {
   "Element of the list are not all of the same class"
 }
+
+
+#'Build a `VolSurface` from an example date set
+#'
+#'This creates a [`VolSurface`][`VolSurface`] object from the example data set
+#' `volsurface.csv`.
+#'
+#' @param interpolation an interpolation object
+#' @return a `VolSurface` object using data from `volsurface.csv`
+#' @examples build_vol_surface(LinearTimeVarInterpolation())
+#' @export
+#' @family build object helpers
+
+build_vol_surface <- function(){
+
+  filepath <- system.file("extdata", "volsurface.csv", package = "fmbasics")
+  vols <- read.csv(file = filepath, header = T )
+  spot <- 97.62
+#  vol <- vols_src[which(vols_src$Code == "RIO ASX"), ]
+  tenors <- lubridate::ymd(vol$Date)
+  strikes <- seq(from = 0.05, to = 2.55, by= 0.05)*spot
+  vol_quotes <- vol[,-c(1:4) ]
+  colnames(vol_quotes) <- strikes
+  rownames(vol_quotes) <- tenors
+  vol_quotes <- t(vol_quotes)
+
+  vol_interp <- fmbasics::LinearTimeVarInterpolation()
+  vol_obj <- fmbasics::VolSurface(reference_date = reference_date, vol_quotes = vol_quotes,
+                                  ticker = "RIOASX", surface_type = "strike/tenor", interpolation = vol_interp)
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
