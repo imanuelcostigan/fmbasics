@@ -19,7 +19,8 @@ Imports:
   methods,
   stats,
   tibble,
-  utils
+  utils,
+  credule
 Suggests: 
   covr,
   knitr,
