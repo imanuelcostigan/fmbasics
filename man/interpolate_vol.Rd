@@ -12,14 +12,16 @@ interpolate_vol(x, maturity, strike, ...)
 \arguments{
 \item{x}{the object to interpolate}
 
+\item{maturity}{a vetor of type date with the dates to interpolate at}
+
 \item{strike}{a vector of stikes to interpolate at with the same length as \code{date} vector}
 
-\item{date}{a vetor of type date with the dates to interpolate at}
+\item{...}{other parameters used in the interpolation}
 }
 \value{
 Returns a numeric vector of the same length as \code{date} parameter containing the interpolated
 implied volatilities at each couple of \code{(date, strike)}.
 }
 \description{
-This interpolates a vol surface from the class \link{VolsSurface} at a date and a strike
+This interpolates a vol surface from the class \link{VolSurface} at a date and a strike
 }

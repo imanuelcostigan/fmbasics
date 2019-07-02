@@ -25,3 +25,4 @@ Other money functions: \code{\link{CashFlow}},
   \code{\link{is.CashFlow}},
   \code{\link{is.SingleCurrencyMoney}}
 }
+\concept{money functions}

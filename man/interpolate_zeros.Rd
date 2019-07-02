@@ -36,3 +36,4 @@ other object that contains such an object.
 Other interpolate functions: \code{\link{interpolate.ZeroCurve}},
   \code{\link{interpolate_dfs}}, \code{\link{interpolate}}
 }
+\concept{interpolate functions}

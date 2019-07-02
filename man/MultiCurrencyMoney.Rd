@@ -33,3 +33,4 @@ Other money functions: \code{\link{CashFlow}},
   \code{\link{is.MultiCurrencyMoney}},
   \code{\link{is.SingleCurrencyMoney}}
 }
+\concept{money functions}

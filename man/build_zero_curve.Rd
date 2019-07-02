@@ -22,3 +22,4 @@ build_zero_curve(LogDFInterpolation())
 \seealso{
 Other build object helpers: \code{\link{build_vol_surface}}
 }
+\concept{build object helpers}

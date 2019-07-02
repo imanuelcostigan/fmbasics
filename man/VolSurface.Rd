@@ -4,18 +4,24 @@
 \alias{VolSurface}
 \title{VolSurface class}
 \usage{
-VolSurface(reference_date, vol_quotes, ticker, surface_type, interpolation)
+VolSurface(reference_date, surface_type, vol_quotes, dim1, dim2, ticker,
+  interpolation)
 }
 \arguments{
-\item{reference_date}{a \code{Date} value that represents the as of date}
+\item{reference_date}{\code{Date} value that represents the as of date}
 
-\item{vol_quotes}{a numeric matrix holding the vol values}
+\item{surface_type}{type of the vol dimentions. Available types: "strike/term"}
 
-\item{ticker}{a label for the vol object, this should be the ticker of the underlying index}
+\item{vol_quotes}{\code{matrix} of class \code{numeric} holding the vol values.}
 
-\item{surface_type}{the type of the vol dimentions: "strike/term", "delta/term" or "moneyness/term"}
+\item{dim1}{\code{numeric} vector containing the surface strikes, deltas or
+moneyness depending on the surface type.}
 
-\item{interpolation}{a object of type interpolation \code{\link[fmbasics:Interpolation]{fmbasics::Interpolation()}}}
+\item{dim2}{\code{Date} vector containing the tenors of the surface.}
+
+\item{ticker}{label for the vol object, this should be the ticker of the underlying index}
+
+\item{interpolation}{object of type interpolation \code{\link[fmbasics:Interpolation]{fmbasics::Interpolation()}}}
 }
 \description{
 The `VolSurface`` class is designed to represent volatility surfaces.

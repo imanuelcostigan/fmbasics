@@ -4,8 +4,8 @@
 \alias{IborIndex}
 \title{IborIndex class}
 \usage{
-IborIndex(name, currency, tenor, spot_lag, calendar, day_basis, day_convention,
-  is_eom)
+IborIndex(name, currency, tenor, spot_lag, calendar, day_basis,
+  day_convention, is_eom)
 }
 \arguments{
 \item{name}{the name of the index as a string}

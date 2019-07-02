@@ -6,9 +6,6 @@
 \usage{
 build_vol_surface()
 }
-\arguments{
-\item{interpolation}{an interpolation object}
-}
 \value{
 a \code{VolSurface} object using data from \code{volsurface.csv}
 }
@@ -17,8 +14,9 @@ This creates a \code{\link{VolSurface}} object from the example data set
 \code{volsurface.csv}.
 }
 \examples{
-build_vol_surface(LinearTimeVarInterpolation())
+build_vol_surface()
 }
 \seealso{
 Other build object helpers: \code{\link{build_zero_curve}}
 }
+\concept{build object helpers}

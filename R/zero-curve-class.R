@@ -239,6 +239,7 @@ is.LinearInterpolation <- check_interpolation("Linear")
 #' @rdname is.Interpolation
 #' @export
 is.CubicInterpolation <- check_interpolation("Cubic")
+#' @rdname is.Interpolation
 #' @export
 is.LinearTimeVarInterpolation <- check_interpolation("Linear")
 #' @export
