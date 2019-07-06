@@ -3,13 +3,14 @@
 #' This class will enable you to specify CDS curves. It is used by
 #' [SurvivalProbCurve()] and [HazardRate()].
 #'
-#' @param rank Seniority of the debt issuance. Possible options are "SNR" for
-#'   Senior, "SubTier3" for Subordinate Tier 3, "SubUpperTier2" for
-#'   Subordinate Upper Tier 2, "SubLowerTier2" for Subordinate Lower Tier 2
-#'   "SubTier1" for Subordinate Tier 1
-#'
+#' @param rank Seniority of the reference debt. Must be one of the following
+#'   options: "SNR" for Senior, "SubTier3" for Subordinate Tier 3,
+#'   "SubUpperTier2" for Subordinate Upper Tier 2, "SubLowerTier2" for
+#'   Subordinate Lower Tier 2 "SubTier1" for Subordinate Tier 1
+#' @param ... parameters passed to other `CDSSpecs` constructors
+#' @param subclass the name of a `CDSSpecs` subclass. Defaults to `NULL`
 #' @return Object of type `CDSSpecs`
-#'
+#' @export
 #' @examples
 #' CDSSpecs(rank = "SubTier3")
 #'
