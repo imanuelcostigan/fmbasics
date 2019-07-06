@@ -179,17 +179,23 @@ validate_CDSCurve <- function(x) {
 
 #' Builds a `SurvivalProbCurve`
 #'
-#' @param reference_date Curves's reference date
-#' @param tenors pillar points expressed in year fraction
-#' @param probabilities Survival Probabilities
-#' @param specs An input of type CDSSpec. Contains curve specifications.
+#' This will allow you to create a survival probability curve. This will
+#' typically be bootstrapped from a [CDSCurve()].
 #'
+#' @inheritParams CDSCurve
+#' @param probabilities a vector of survival probabilities corresponding to each
+#'   time step in `tenors`.
 #' @return returns an object of type `SurvivalProbCurve`
-#'
+#' @export
 #' @examples
-#' curve_specs <- CDSMarkitSpecs(rating = "AAA", region = "Japan", sector = "Utilities")
+#' curve_specs <- CDSMarkitSpecs(
+#'   rating = "AAA",
+#'   region = "Japan",
+#'   sector = "Utilities"
+#' )
 #'
-#' sp_curve <- SurvivalProbCurve(as.Date("2019-06-29"),
+#' SurvivalProbCurve(
+#'   reference_date = as.Date("2019-06-29"),
 #'   tenors = c(1, 3, 5, 7),
 #'   probabilities = c(0.99, 0.99, 0.99, 0.99),
 #'   specs = curve_specs
