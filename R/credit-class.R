@@ -107,59 +107,69 @@ valitate_CDSMarkitSpecs <- function(x) {
 }
 
 
-#' builds an CDSCurve object
+#' Builds an CDSCurve object
 #'
-#' @param reference_date Curves's reference date
-#' @param tenors pillar points expressed in year fraction
-#' @param spreads Creadit default spreads
-#' @param LGD Loss Given Default
-#' @param premium_frequency It represents the number of premiums paid per year.
-#' CDS premiums paid quaterly (i.e. numberPremiumPerYear=4) and sometimes semi-annually
-#' (i.e. numberPremiumPerYear=2)
-#' @param specs An input of type CDSSpec. Contains curve specifications.
-#'
+#' @param reference_date the curve's reference date as a [base::Date]
+#' @param tenors a numeric vector of pillar points time steps expressed in years
+#' @param spreads a numeric vector of creadit default spreads expressed in
+#'   decimals. Must be the same length as `tenors`
+#' @param lgd the loss given default associated with the curve as supplied by
+#'   Markit and expressed as a decimal value
+#' @param premium_frequency represents the number of premiums payments per annum
+#'   expressed as an integer. Must be one of 1, 2, 4 or 12.
+#' @param specs CDS curve specifications that inherits from [CDSSpecs()]
 #' @return An object of type `CDSCurve`
-#'
-#'
+#' @export
 #' @examples
-#' curve_specs <- CDSMarkitSpecs(rating = "AAA", region = "Japan", sector = "Utilities")
+#' curve_specs <- CDSMarkitSpecs(
+#'   rating = "AAA",
+#'   region = "Japan",
+#'   sector = "Utilities"
+#' )
 #'
-#' cds_curve <- CDSCurve(as.Date("2019-06-29"),
+#' cds_curve <- CDSCurve(
+#'   as.Date("2019-06-29"),
 #'   tenors = c(1, 3, 5, 7),
 #'   spreads = c(0.0050, 0.0070, 0.0090, 0.0110),
-#'   LGD = .6,
+#'   lgd = 0.6,
 #'   premium_frequency = 4,
 #'   specs = curve_specs
 #' )
-CDSCurve <- function(reference_date, tenors, spreads, LGD, premium_frequency, specs) {
-  validate_CDSCurve(new_CDSCurve(
-    reference_date, tenors, spreads, LGD,
-    premium_frequency, specs
-  ))
+CDSCurve <- function(reference_date, tenors, spreads, lgd, premium_frequency,
+  specs) {
+
+  validate_CDSCurve(
+    new_CDSCurve(reference_date, tenors, spreads, lgd, premium_frequency, specs)
+  )
+
 }
 
-new_CDSCurve <- function(reference_date, tenors, spreads, LGD,
-                         premium_frequency, specs) {
-  n <- max(NROW(tenors), NROW(spreads))
-  structure(list(
-    reference_date = reference_date,
-    LGD = LGD,
-    tenors = rep_len(tenors, n),
-    spread = rep_len(spreads, n),
-    specs = specs,
-    premium_frequency = premium_frequency
-  ),
-  class = "CDSCurve"
+new_CDSCurve <- function(reference_date, tenors, spreads, lgd, premium_frequency,
+  specs) {
+
+  structure(
+    list(
+      reference_date = reference_date,
+      lgd = lgd,
+      tenors = tenors,
+      spread = spreads,
+      specs = specs,
+      premium_frequency = premium_frequency
+    ),
+    class = "CDSCurve"
   )
+
 }
 
 validate_CDSCurve <- function(x) {
   assertthat::assert_that(
-    lubridate::is.Date(x$reference_date),
+    assertthat::is.date(x$reference_date),
     is.numeric(x$tenors),
-    is.numeric(x$LGD),
+    is.numeric(x$spreads),
+    length(x$tenors) == length(x$spreads),
+    assertthat::is.number(x$lgd),
     is.CDSSpecs(x$specs),
-    x$premium_frequency %in% c(4, 2, 1, 12)
+    x$premium_frequency %in% c(12, 4, 2, 1)
   )
   x
 }

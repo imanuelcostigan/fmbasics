@@ -25,7 +25,7 @@ bootstrap_survprob <- function(cds_curve, zero_curve, ...) UseMethod("bootstrap_
 #' zero_curve <- build_zero_curve()
 #' specs <- CDSMarkitSpecs(rating = "AAA", region = "Japan", sector = "Utilities")
 #' cds_curve <- CDSCurve(reference_date = zero_curve$reference_date,
-#' tenors = c(1,3,5,7), spreads = c(0.0050,0.0070,0.0090,0.0110), LGD = .6,
+#' tenors = c(1,3,5,7), spreads = c(0.0050,0.0070,0.0090,0.0110), lgd = .6,
 #' premium_frequency = 4, specs = specs)
 #' bootstrap_survprob(cds_curve = cds_curve, zero_curve = zero_curve)
 #'
@@ -45,7 +45,7 @@ bootstrap_survprob.CDSCurve <- function(cds_curve,
     yieldcurveRate = zero_curve$pillar_zeros,
     cdsTenors = cds_curve$tenors,
     cdsSpreads = cds_curve$spread,
-    recoveryRate = 1 - cds_curve$LGD,
+    recoveryRate = 1 - cds_curve$lgd,
     numberPremiumPerYear = cds_curve$premium_frequency,
     numberDefaultIntervalPerYear = num_timesteps_pa,
     accruedPremium = accrued_premium
@@ -76,7 +76,7 @@ bootstrap_survprob.CDSCurve <- function(cds_curve,
 #' zero_curve <- build_zero_curve()
 #' specs <- CDSMarkitSpecs(rating = "AAA", region = "Japan", sector = "Utilities")
 #' cds_curve <- CDSCurve(reference_date = zero_curve$reference_date,
-#' tenors = c(1,3,5,7), spreads = c(0.0050,0.0070,0.0090,0.0110), LGD = .6,
+#' tenors = c(1,3,5,7), spreads = c(0.0050,0.0070,0.0090,0.0110), lgd = .6,
 #' premium_frequency = 4, specs = specs)
 #' bootstrap_hazardrate(cds_curve = cds_curve, zero_curve = zero_curve)
 #'
@@ -102,7 +102,7 @@ bootstrap_hazardrate.CDSCurve <- function(cds_curve,
     yieldcurveRate = zero_curve$pillar_zeros,
     cdsTenors = cds_curve$tenors,
     cdsSpreads = cds_curve$spread,
-    recoveryRate = 1 - cds_curve$LGD,
+    recoveryRate = 1 - cds_curve$lgd,
     numberPremiumPerYear = cds_curve$premium_frequency,
     numberDefaultIntervalPerYear = num_timesteps_pa,
     accruedPremium = accrued_premium
