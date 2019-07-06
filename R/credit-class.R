@@ -200,22 +200,23 @@ validate_CDSCurve <- function(x) {
 #'   probabilities = c(0.99, 0.99, 0.99, 0.99),
 #'   specs = curve_specs
 #' )
+
 SurvivalProbCurve <- function(reference_date, tenors, probabilities, specs) {
-  validate_SurvivalProbCurve(new_SurvivalProbCurve(
-    reference_date, tenors,
-    probabilities, specs
-  ))
+  validate_SurvivalProbCurve(
+    new_SurvivalProbCurve(reference_date, tenors, probabilities, specs)
+  )
 }
 
 new_SurvivalProbCurve <- function(reference_date, tenors, probabilities, specs) {
   n <- max(NROW(tenors), NROW(probabilities))
-  structure(list(
-    specs = specs,
-    reference_date = reference_date,
-    tenors = rep_len(tenors, n),
-    probabilities = rep_len(probabilities, n)
-  ),
-  class = "SurvivalProbCurve"
+  structure(
+    list(
+      specs = specs,
+      reference_date = reference_date,
+      tenors = rep_len(tenors, n),
+      probabilities = rep_len(probabilities, n)
+    ),
+    class = "SurvivalProbCurve"
   )
 }
 
