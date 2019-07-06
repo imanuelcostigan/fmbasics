@@ -1,15 +1,12 @@
-
-
-
-#' Build a CDSspecs parrent class
+#' Build a CDSSpecs
 #'
-#' It contains information about the specifications of a CDS curve. It is also used
-#' for the `SurvivalProbCurve` and `HazardRate` objects.
+#' This class will enable you to specify CDS curves. It is used by
+#' [SurvivalProbCurve()] and [HazardRate()].
 #'
-#' @param rank Seniority of the debt issuance. Possible options are
-#' SNR for Senior(top precedence), SubTier3 for Subordinate Tier 3,
-#' SubUpperTier2 for Subordinate Upper Tier 2, SubLowerTier2 for Subordinate Lower Tier 2
-#' SubTier1 for Subordinate Tier 1
+#' @param rank Seniority of the debt issuance. Possible options are SNR for
+#'   Senior(top precedence), SubTier3 for Subordinate Tier 3, SubUpperTier2 for
+#'   Subordinate Upper Tier 2, SubLowerTier2 for Subordinate Lower Tier 2
+#'   SubTier1 for Subordinate Tier 1
 #'
 #' @return Object of type `CDSSpecs`
 #'
@@ -28,6 +25,7 @@ new_CDSSpecs <- function(rank, ..., subclass = NULL){
 
 validate_CDSSpecs <- function(x){
   assertthat::assert_that(
+    assertthat::is.string(x$rank),
     x$rank %in% c("SNR", "SubTier1", "SubTier3", "SubUpTier2",
                   "SubLowTier2", "SubTier1")
   )
