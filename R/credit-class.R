@@ -30,8 +30,7 @@ new_CDSSpecs <- function(rank, ..., subclass = NULL){
 validate_CDSSpecs <- function(x){
   assertthat::assert_that(
     assertthat::is.string(x$rank),
-    x$rank %in% c("SNR", "SubTier1", "SubTier3", "SubUpTier2",
-                  "SubLowTier2", "SubTier1")
+    x$rank %in% c("SNR", "SubTier1", "SubUpTier2", "SubLowTier2", "SubTier3")
   )
   x
 }
