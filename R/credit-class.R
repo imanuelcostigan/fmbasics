@@ -13,12 +13,11 @@
 #' @export
 #' @examples
 #' CDSSpecs(rank = "SubTier3")
-
-CDSSpecs <- function(rank, ..., subclass = NULL){
-  validate_CDSSpecs(new_CDSSpecs(rank,..., subclass = subclass))
+CDSSpecs <- function(rank, ..., subclass = NULL) {
+  validate_CDSSpecs(new_CDSSpecs(rank, ..., subclass = subclass))
 }
 
-new_CDSSpecs <- function(rank, ..., subclass = NULL){
+new_CDSSpecs <- function(rank, ..., subclass = NULL) {
   structure(
     list(
       rank = rank,
@@ -28,7 +27,7 @@ new_CDSSpecs <- function(rank, ..., subclass = NULL){
   )
 }
 
-validate_CDSSpecs <- function(x){
+validate_CDSSpecs <- function(x) {
   assertthat::assert_that(
     assertthat::is.string(x$rank),
     x$rank %in% c("SNR", "SubTier1", "SubUpTier2", "SubLowTier2", "SubTier3")
@@ -48,19 +47,18 @@ validate_CDSSpecs <- function(x){
 #' @export
 #' @examples
 #' CDSSingleNameSpecs(rank = "SNR", name = "Westpac")
-
-CDSSingleNameSpecs <- function(rank, name){
+CDSSingleNameSpecs <- function(rank, name) {
   validate_CDSSingleNameSpecs(new_CDSSingleNameSpecs(rank, name))
 }
 
-new_CDSSingleNameSpecs <- function(rank, name){
+new_CDSSingleNameSpecs <- function(rank, name) {
   CDSSpecs(
     rank = rank,
     name = name,
     subclass = "CDSSingleNameSpecs"
   )
 }
-validate_CDSSingleNameSpecs <- function(x){
+validate_CDSSingleNameSpecs <- function(x) {
   assertthat::assert_that(assertthat::is.string(x$name))
   x
 }
@@ -80,25 +78,30 @@ validate_CDSSingleNameSpecs <- function(x){
 #' @export
 #' @examples
 #' CDSMarkitSpecs(rating = "AAA", region = "Japan", sector = "Utilities")
-
-CDSMarkitSpecs <- function(rating, region, sector){
+CDSMarkitSpecs <- function(rating, region, sector) {
   valitate_CDSMarkitSpecs(new_CDSMarkitSpecs(rating, region, sector))
 }
-new_CDSMarkitSpecs <- function(rating, region, sector){
-  CDSSpecs(rank = "SNR",
-           rating = rating,
-           region = region,
-           sector = sector,
-           subclass = "CDSMarkitSpecs")
+new_CDSMarkitSpecs <- function(rating, region, sector) {
+  CDSSpecs(
+    rank = "SNR",
+    rating = rating,
+    region = region,
+    sector = sector,
+    subclass = "CDSMarkitSpecs"
+  )
 }
-valitate_CDSMarkitSpecs <- function(x){
+valitate_CDSMarkitSpecs <- function(x) {
   assertthat::assert_that(
     all(x$rating %in% c("AAA", "AA", "A", "BBB", "BB", "B", "CCC")),
-    all(x$region %in% c("AsiaExJapan", "EastEurope", "Europe", "Japan", "LatinAmerica",
-                    "NorthAmerica", "MiddleEast", "Oceania")),
-    all(x$sector %in% c("BasicMaterials", "ConsumerGoods", "ConsumerServices",
-                    "Energy", "Financials", "Government", "Healtcare", "Technology",
-                    "TeleCom", "Utilities"))
+    all(x$region %in% c(
+      "AsiaExJapan", "EastEurope", "Europe", "Japan", "LatinAmerica",
+      "NorthAmerica", "MiddleEast", "Oceania"
+    )),
+    all(x$sector %in% c(
+      "BasicMaterials", "ConsumerGoods", "ConsumerServices",
+      "Energy", "Financials", "Government", "Healtcare", "Technology",
+      "TeleCom", "Utilities"
+    ))
   )
   x
 }
@@ -122,36 +125,41 @@ valitate_CDSMarkitSpecs <- function(x){
 #' curve_specs <- CDSMarkitSpecs(rating = "AAA", region = "Japan", sector = "Utilities")
 #'
 #' cds_curve <- CDSCurve(as.Date("2019-06-29"),
-#' tenors = c(1,3,5,7),
-#' spreads = c(0.0050,0.0070,0.0090,0.0110),
-#' LGD = .6,
-#' premium_frequency = 4,
-#' specs = curve_specs)
-#'
-CDSCurve <- function(reference_date, tenors, spreads, LGD, premium_frequency, specs){
-  validate_CDSCurve(new_CDSCurve(reference_date, tenors, spreads, LGD,
-                                 premium_frequency, specs))
+#'   tenors = c(1, 3, 5, 7),
+#'   spreads = c(0.0050, 0.0070, 0.0090, 0.0110),
+#'   LGD = .6,
+#'   premium_frequency = 4,
+#'   specs = curve_specs
+#' )
+CDSCurve <- function(reference_date, tenors, spreads, LGD, premium_frequency, specs) {
+  validate_CDSCurve(new_CDSCurve(
+    reference_date, tenors, spreads, LGD,
+    premium_frequency, specs
+  ))
 }
 
 new_CDSCurve <- function(reference_date, tenors, spreads, LGD,
-                         premium_frequency, specs){
+                         premium_frequency, specs) {
   n <- max(NROW(tenors), NROW(spreads))
-  structure(list(reference_date = reference_date,
-                 LGD = LGD,
-                 tenors= rep_len(tenors, n),
-                 spread= rep_len(spreads, n),
-                 specs = specs,
-                 premium_frequency = premium_frequency),
-            class = "CDSCurve")
+  structure(list(
+    reference_date = reference_date,
+    LGD = LGD,
+    tenors = rep_len(tenors, n),
+    spread = rep_len(spreads, n),
+    specs = specs,
+    premium_frequency = premium_frequency
+  ),
+  class = "CDSCurve"
+  )
 }
 
-validate_CDSCurve <- function(x){
+validate_CDSCurve <- function(x) {
   assertthat::assert_that(
     lubridate::is.Date(x$reference_date),
     is.numeric(x$tenors),
     is.numeric(x$LGD),
     is.CDSSpecs(x$specs),
-    x$premium_frequency %in% c(4,2,1,12)
+    x$premium_frequency %in% c(4, 2, 1, 12)
   )
   x
 }
@@ -170,30 +178,34 @@ validate_CDSCurve <- function(x){
 #' curve_specs <- CDSMarkitSpecs(rating = "AAA", region = "Japan", sector = "Utilities")
 #'
 #' sp_curve <- SurvivalProbCurve(as.Date("2019-06-29"),
-#' tenors = c(1,3,5,7),
-#' probabilities = c(0.99,0.99,0.99,0.99),
-#' specs = curve_specs)
-#'
-
-SurvivalProbCurve <- function(reference_date, tenors, probabilities, specs){
-  validate_SurvivalProbCurve(new_SurvivalProbCurve(reference_date, tenors,
-                                                   probabilities, specs))
+#'   tenors = c(1, 3, 5, 7),
+#'   probabilities = c(0.99, 0.99, 0.99, 0.99),
+#'   specs = curve_specs
+#' )
+SurvivalProbCurve <- function(reference_date, tenors, probabilities, specs) {
+  validate_SurvivalProbCurve(new_SurvivalProbCurve(
+    reference_date, tenors,
+    probabilities, specs
+  ))
 }
 
-new_SurvivalProbCurve <- function(reference_date, tenors, probabilities, specs){
+new_SurvivalProbCurve <- function(reference_date, tenors, probabilities, specs) {
   n <- max(NROW(tenors), NROW(probabilities))
-  structure(list(specs = specs,
-                 reference_date = reference_date,
-                 tenors= rep_len(tenors, n),
-                 probabilities= rep_len(probabilities, n)),
-            class = "SurvivalProbCurve")
+  structure(list(
+    specs = specs,
+    reference_date = reference_date,
+    tenors = rep_len(tenors, n),
+    probabilities = rep_len(probabilities, n)
+  ),
+  class = "SurvivalProbCurve"
+  )
 }
 
-validate_SurvivalProbCurve <- function(x){
+validate_SurvivalProbCurve <- function(x) {
   assertthat::assert_that(
     lubridate::is.Date(x$reference_date),
     is.numeric(x$tenors),
-    all(is.numeric(x$probabilities), x$probabilities>=0, x$probabilities<=1),
+    all(is.numeric(x$probabilities), x$probabilities >= 0, x$probabilities <= 1),
     is.CDSSpecs(x$specs)
   )
   x
@@ -214,26 +226,30 @@ validate_SurvivalProbCurve <- function(x){
 #' curve_specs <- CDSMarkitSpecs(rating = "AAA", region = "Japan", sector = "Utilities")
 #'
 #' hr_curve <- HazardRate(as.Date("2019-06-29"),
-#' tenors = c(1,3,5,7),
-#' hazard_rates = c(0.05,0.05,0.05,0.05),
-#' specs = curve_specs)
-#'
-#'
-HazardRate <- function(reference_date, tenors, hazard_rates, specs){
-validate_HazardRate (new_HazardRate(reference_date, tenors,
-                                    hazard_rates, specs))
+#'   tenors = c(1, 3, 5, 7),
+#'   hazard_rates = c(0.05, 0.05, 0.05, 0.05),
+#'   specs = curve_specs
+#' )
+HazardRate <- function(reference_date, tenors, hazard_rates, specs) {
+  validate_HazardRate(new_HazardRate(
+    reference_date, tenors,
+    hazard_rates, specs
+  ))
 }
 
-new_HazardRate <- function(reference_date, tenors, hazard_rates, specs){
+new_HazardRate <- function(reference_date, tenors, hazard_rates, specs) {
   n <- max(NROW(tenors), NROW(hazard_rates))
-  structure(list(specs = specs,
-                 reference_date = reference_date,
-                 tenors= rep_len(tenors, n),
-                 hazard_rates= rep_len(hazard_rates, n)),
-            class = "HazardRate")
+  structure(list(
+    specs = specs,
+    reference_date = reference_date,
+    tenors = rep_len(tenors, n),
+    hazard_rates = rep_len(hazard_rates, n)
+  ),
+  class = "HazardRate"
+  )
 }
 
-validate_HazardRate <- function(x){
+validate_HazardRate <- function(x) {
   assertthat::assert_that(
     lubridate::is.Date(x$reference_date),
     is.numeric(x$tenors),
@@ -242,5 +258,3 @@ validate_HazardRate <- function(x){
   )
   x
 }
-
-
