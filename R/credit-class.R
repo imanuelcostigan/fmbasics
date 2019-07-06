@@ -67,15 +67,17 @@ validate_CDSSingleNameSpecs <- function(x){
 
 #' build a CDSMarkitSpecs class
 #'
-#' A subclass of CDSSpecs, only for Markit sector curves. Note that the paramter `rank`
-#' is fixed to be "SNR", as per Markit's methodology documents
+#' A subclass of CDSSpecs, only for Markit sector curves. Note that the paramter
+#' `rank` is fixed to be "SNR", as per Markit's methodology documents
 #'
 #'
-#' @param rating Credit Rating. Possible options are "AAA", "AA", "A", "BBB", "BB", "B", "CCC"
-#' @param region Possible options are "AsiaExJapan", "EastEurope", "Europe", "Japan", "LatinAmerica",
-#' "NorthAmerica", "MiddleEast", "Oceania"
-#' @param sector Possible options are "BasicMaterials", "ConsumerGoods", "ConsumerServices",
-#' "Energy", "Financials", "Government", "Healtcare", "Technology", "TeleCom", "Utilities"
+#' @param rating Credit Rating. Possible options are "AAA", "AA", "A", "BBB",
+#'   "BB", "B", "CCC"
+#' @param region Possible options are "AsiaExJapan", "EastEurope", "Europe",
+#'   "Japan", "LatinAmerica", "NorthAmerica", "MiddleEast", "Oceania"
+#' @param sector Possible options are "BasicMaterials", "ConsumerGoods",
+#'   "ConsumerServices", "Energy", "Financials", "Government", "Healtcare",
+#'   "Technology", "TeleCom", "Utilities"
 #'
 #' @return An object of type `CDSMarkitSpecs`
 #'
