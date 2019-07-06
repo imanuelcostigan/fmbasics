@@ -129,7 +129,7 @@ valitate_CDSMarkitSpecs <- function(x) {
 #'   sector = "Utilities"
 #' )
 #'
-#' cds_curve <- CDSCurve(
+#' CDSCurve(
 #'   as.Date("2019-06-29"),
 #'   tenors = c(1, 3, 5, 7),
 #'   spreads = c(0.0050, 0.0070, 0.0090, 0.0110),
