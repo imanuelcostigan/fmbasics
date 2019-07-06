@@ -1,4 +1,4 @@
-#' Build a CDSSpecs
+#' Build a `CDSSpecs`
 #'
 #' This class will enable you to specify CDS curves. It is used by
 #' [SurvivalProbCurve()] and [HazardRate()].
@@ -36,7 +36,7 @@ validate_CDSSpecs <- function(x) {
 }
 
 
-#' Build a CDSSingleNameSpecs
+#' Builds a `CDSSingleNameSpecs`
 #'
 #' A subclass of [CDSSpecs()], that implements specifications for single name
 #' CDS curves
@@ -63,7 +63,7 @@ validate_CDSSingleNameSpecs <- function(x) {
   x
 }
 
-#' Build a CDSMarkitSpecs class
+#' Build a `CDSMarkitSpecs`
 #'
 #' A subclass of [CDSSpecs()], only for Markit sector curves. Note that the
 #' paramter `rank` is fixed to be "SNR", as per Markit's methodology documents
@@ -107,7 +107,7 @@ valitate_CDSMarkitSpecs <- function(x) {
 }
 
 
-#' Builds an CDSCurve object
+#' Builds a `CDSCurve`
 #'
 #' @param reference_date the curve's reference date as a [base::Date]
 #' @param tenors a numeric vector of pillar points time steps expressed in years
@@ -175,7 +175,7 @@ validate_CDSCurve <- function(x) {
 }
 
 
-#' Builds a `SurvivalProbCurve` object
+#' Builds a `SurvivalProbCurve`
 #'
 #' @param reference_date Curves's reference date
 #' @param tenors pillar points expressed in year fraction
@@ -223,7 +223,7 @@ validate_SurvivalProbCurve <- function(x) {
 
 
 
-#' Builds a `HazardRate` object
+#' Builds a `HazardRate`
 #'
 #' @param reference_date Curves's reference date
 #' @param tenors pillar points expressed in year fraction
