@@ -60,7 +60,7 @@ print.SurvivalCurve <- function(x, ...){
   cat(format(x$specs,...), "\n")
 }
 
-format.HazardRate <- function(x, ...){
+format.HazardCurve <- function(x, ...){
   paste0(
     "<CDSCurve as of ", x$reference_date, "> \n",
     "Tenors: ", paste(x$tenors, collapse = " "), "\n",
@@ -69,7 +69,7 @@ format.HazardRate <- function(x, ...){
   )
 }
 
-print.HazardRate <- function(x, ...){
+print.HazardCurve <- function(x, ...){
   cat(format(x, ...), "\n")
   cat(format(x$specs,...), "\n")
 }

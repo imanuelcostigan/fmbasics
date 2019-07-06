@@ -1,7 +1,7 @@
 #' Build a `CDSSpecs`
 #'
 #' This class will enable you to specify CDS curves. It is used by
-#' [SurvivalCurve()] and [HazardRate()].
+#' [SurvivalCurve()] and [HazardCurve()].
 #'
 #' @param rank Seniority of the reference debt. Must be one of the following
 #'   options: "SNR" for Senior, "SubTier3" for Subordinate Tier 3,
@@ -233,7 +233,7 @@ validate_SurvivalCurve <- function(x) {
 
 
 
-#' Builds a `HazardRate`
+#' Builds a `HazardCurve`
 #'
 #' @param reference_date Curves's reference date
 #' @param tenors pillar points expressed in year fraction
@@ -245,19 +245,19 @@ validate_SurvivalCurve <- function(x) {
 #' @examples
 #' curve_specs <- CDSMarkitSpecs(rating = "AAA", region = "Japan", sector = "Utilities")
 #'
-#' hr_curve <- HazardRate(as.Date("2019-06-29"),
+#' hr_curve <- HazardCurve(as.Date("2019-06-29"),
 #'   tenors = c(1, 3, 5, 7),
 #'   hazard_rates = c(0.05, 0.05, 0.05, 0.05),
 #'   specs = curve_specs
 #' )
-HazardRate <- function(reference_date, tenors, hazard_rates, specs) {
-  validate_HazardRate(new_HazardRate(
+HazardCurve <- function(reference_date, tenors, hazard_rates, specs) {
+  validate_HazardCurve(new_HazardCurve(
     reference_date, tenors,
     hazard_rates, specs
   ))
 }
 
-new_HazardRate <- function(reference_date, tenors, hazard_rates, specs) {
+new_HazardCurve <- function(reference_date, tenors, hazard_rates, specs) {
   n <- max(NROW(tenors), NROW(hazard_rates))
   structure(list(
     specs = specs,
@@ -265,11 +265,11 @@ new_HazardRate <- function(reference_date, tenors, hazard_rates, specs) {
     tenors = rep_len(tenors, n),
     hazard_rates = rep_len(hazard_rates, n)
   ),
-  class = "HazardRate"
+  class = "HazardCurve"
   )
 }
 
-validate_HazardRate <- function(x) {
+validate_HazardCurve <- function(x) {
   assertthat::assert_that(
     lubridate::is.Date(x$reference_date),
     is.numeric(x$tenors),

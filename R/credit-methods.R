@@ -71,7 +71,7 @@ bootstrap_survprob.CDSCurve <- function(cds_curve,
 #'   Stuart Turnbull)
 #' @param accrued_premium If set to TRUE, the accrued premium will be taken into account in the calculation of the premium leg value.
 #'
-#' @return An object of type `HazardRate`
+#' @return An object of type `HazardCurve`
 #' @examples
 #' zero_curve <- build_zero_curve()
 #' specs <- CDSMarkitSpecs(rating = "AAA", region = "Japan", sector = "Utilities")
@@ -108,7 +108,7 @@ bootstrap_hazardrate.CDSCurve <- function(cds_curve,
     accruedPremium = accrued_premium
   )
 
-  HazardRate(
+  HazardCurve(
     reference_date = cds_curve$reference_date,
     tenors = cds_curve$tenors,
     hazard_rates = hr_output$hazrate,
