@@ -18,9 +18,13 @@ CDSSpecs <- function(rank, ...){
 }
 
 new_CDSSpecs <- function(rank, ..., subclass = NULL){
-  structure(list(rank = rank,
-                 ...),
-            class = c(subclass, "CDSSpecs"))
+  structure(
+    list(
+      rank = rank,
+      ...
+    ),
+    class = c(subclass, "CDSSpecs")
+  )
 }
 
 validate_CDSSpecs <- function(x){
