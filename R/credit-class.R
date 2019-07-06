@@ -39,8 +39,8 @@ validate_CDSSpecs <- function(x){
 
 #' Build a CDSSingleNameSpecs
 #'
-#' A subclass of CDSSpecs, that implements specifications for single name CDS
-#' curves
+#' A subclass of [CDSSpecs()], that implements specifications for single name
+#' CDS curves
 #'
 #' @inheritParams CDSSpecs
 #' @param name Reference debt issuer. Must be a string.
@@ -65,25 +65,22 @@ validate_CDSSingleNameSpecs <- function(x){
   x
 }
 
-#' build a CDSMarkitSpecs class
+#' Build a CDSMarkitSpecs class
 #'
-#' A subclass of CDSSpecs, only for Markit sector curves. Note that the paramter
-#' `rank` is fixed to be "SNR", as per Markit's methodology documents
+#' A subclass of [CDSSpecs()], only for Markit sector curves. Note that the
+#' paramter `rank` is fixed to be "SNR", as per Markit's methodology documents
 #'
-#'
-#' @param rating Credit Rating. Possible options are "AAA", "AA", "A", "BBB",
-#'   "BB", "B", "CCC"
-#' @param region Possible options are "AsiaExJapan", "EastEurope", "Europe",
+#' @param rating valid options are "AAA", "AA", "A", "BBB", "BB", "B", "CCC"
+#' @param region valid options are "AsiaExJapan", "EastEurope", "Europe",
 #'   "Japan", "LatinAmerica", "NorthAmerica", "MiddleEast", "Oceania"
-#' @param sector Possible options are "BasicMaterials", "ConsumerGoods",
+#' @param sector valid options are "BasicMaterials", "ConsumerGoods",
 #'   "ConsumerServices", "Energy", "Financials", "Government", "Healtcare",
 #'   "Technology", "TeleCom", "Utilities"
-#'
 #' @return An object of type `CDSMarkitSpecs`
-#'
+#' @export
 #' @examples
 #' CDSMarkitSpecs(rating = "AAA", region = "Japan", sector = "Utilities")
-#'
+
 CDSMarkitSpecs <- function(rating, region, sector){
   valitate_CDSMarkitSpecs(new_CDSMarkitSpecs(rating, region, sector))
 }
