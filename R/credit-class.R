@@ -13,9 +13,8 @@
 #' @export
 #' @examples
 #' CDSSpecs(rank = "SubTier3")
-#'
-CDSSpecs <- function(rank, ...){
-  validate_CDSSpecs(new_CDSSpecs(rank,...))
+CDSSpecs <- function(rank, ..., subclass = NULL){
+  validate_CDSSpecs(new_CDSSpecs(rank,..., subclass = subclass))
 }
 
 new_CDSSpecs <- function(rank, ..., subclass = NULL){
