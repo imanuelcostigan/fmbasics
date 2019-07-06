@@ -54,9 +54,11 @@ CDSSingleNameSpecs <- function(rank, name){
 }
 
 new_CDSSingleNameSpecs <- function(rank, name){
-  CDSSpecs(rank,
-           name = name,
-           subclass = "CDSSingleNameSpecs")
+  CDSSpecs(
+    rank = rank,
+    name = name,
+    subclass = "CDSSingleNameSpecs"
+  )
 }
 validate_CDSSingleNameSpecs <- function(x){
   assertthat::assert_that(is.character(x$name))
