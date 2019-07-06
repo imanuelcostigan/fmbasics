@@ -20,7 +20,7 @@ bootstrap_survprob <- function(cds_curve, zero_curve, ...) UseMethod("bootstrap_
 #'   Stuart Turnbull)
 #' @param accrued_premium If set to TRUE, the accrued premium will be taken into account in the calculation of the premium leg value.
 #'
-#' @return An object of type `SurvivalProbCurve`
+#' @return An object of type `SurvivalCurve`
 #' @examples
 #' zero_curve <- build_zero_curve()
 #' specs <- CDSMarkitSpecs(rating = "AAA", region = "Japan", sector = "Utilities")
@@ -51,7 +51,7 @@ bootstrap_survprob.CDSCurve <- function(cds_curve,
     accruedPremium = accrued_premium
   )
 
-  SurvivalProbCurve(
+  SurvivalCurve(
     reference_date = cds_curve$reference_date,
     tenors = cds_curve$tenors,
     probabilities = sp_output$survprob,

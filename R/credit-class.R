@@ -1,7 +1,7 @@
 #' Build a `CDSSpecs`
 #'
 #' This class will enable you to specify CDS curves. It is used by
-#' [SurvivalProbCurve()] and [HazardRate()].
+#' [SurvivalCurve()] and [HazardRate()].
 #'
 #' @param rank Seniority of the reference debt. Must be one of the following
 #'   options: "SNR" for Senior, "SubTier3" for Subordinate Tier 3,
@@ -177,7 +177,7 @@ validate_CDSCurve <- function(x) {
 }
 
 
-#' Builds a `SurvivalProbCurve`
+#' Builds a `SurvivalCurve`
 #'
 #' This will allow you to create a survival probability curve. This will
 #' typically be bootstrapped from a [CDSCurve()].
@@ -185,7 +185,7 @@ validate_CDSCurve <- function(x) {
 #' @inheritParams CDSCurve
 #' @param probabilities a vector of survival probabilities corresponding to each
 #'   time step in `tenors`.
-#' @return returns an object of type `SurvivalProbCurve`
+#' @return returns an object of type `SurvivalCurve`
 #' @export
 #' @examples
 #' curve_specs <- CDSMarkitSpecs(
@@ -194,20 +194,20 @@ validate_CDSCurve <- function(x) {
 #'   sector = "Utilities"
 #' )
 #'
-#' SurvivalProbCurve(
+#' SurvivalCurve(
 #'   reference_date = as.Date("2019-06-29"),
 #'   tenors = c(1, 3, 5, 7),
 #'   probabilities = c(0.99, 0.99, 0.99, 0.99),
 #'   specs = curve_specs
 #' )
 
-SurvivalProbCurve <- function(reference_date, tenors, probabilities, specs) {
-  validate_SurvivalProbCurve(
-    new_SurvivalProbCurve(reference_date, tenors, probabilities, specs)
+SurvivalCurve <- function(reference_date, tenors, probabilities, specs) {
+  validate_SurvivalCurve(
+    new_SurvivalCurve(reference_date, tenors, probabilities, specs)
   )
 }
 
-new_SurvivalProbCurve <- function(reference_date, tenors, probabilities, specs) {
+new_SurvivalCurve <- function(reference_date, tenors, probabilities, specs) {
   structure(
     list(
       specs = specs,
@@ -215,11 +215,11 @@ new_SurvivalProbCurve <- function(reference_date, tenors, probabilities, specs) 
       tenors = tenors,
       probabilities = probabilities
     ),
-    class = "SurvivalProbCurve"
+    class = "SurvivalCurve"
   )
 }
 
-validate_SurvivalProbCurve <- function(x) {
+validate_SurvivalCurve <- function(x) {
   assertthat::assert_that(
     assertthat::is.date(x$reference_date),
     is.numeric(x$tenors),
