@@ -13,6 +13,7 @@
 #' @export
 #' @examples
 #' CDSSpecs(rank = "SubTier3")
+
 CDSSpecs <- function(rank, ..., subclass = NULL){
   validate_CDSSpecs(new_CDSSpecs(rank,..., subclass = subclass))
 }
@@ -36,21 +37,18 @@ validate_CDSSpecs <- function(x){
 }
 
 
-#' build a CDSSingleNameSpecs class
+#' Build a CDSSingleNameSpecs
 #'
-#' A subclass of CDSSpecs, only for single name CDS curves
+#' A subclass of CDSSpecs, that implements specifications for single name CDS
+#' curves
 #'
-#' @param rank Seniority of the debt issuance. Possible options are
-#' SNR for Senior(top precedence), SubTier3 for Subordinate Tier 3,
-#' SubUpperTier2 for Subordinate Upper Tier 2, SubLowerTier2 for Subordinate Lower Tier 2
-#' SubTier1 for Subordinate Tier 1
-#' @param name Issuer of debnture
-#'
+#' @inheritParams CDSSpecs
+#' @param name Reference debt issuer. Must be a string.
 #' @return An object of type `CDSSingleNameSpecs`
-#'
+#' @export
 #' @examples
-#' CDSSingleNameSpecs(rank = "SNR", name = "WBC")
-#'
+#' CDSSingleNameSpecs(rank = "SNR", name = "Westpac")
+
 CDSSingleNameSpecs <- function(rank, name){
   validate_CDSSingleNameSpecs(new_CDSSingleNameSpecs(rank, name))
 }
