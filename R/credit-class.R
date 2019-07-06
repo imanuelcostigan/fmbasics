@@ -61,7 +61,7 @@ new_CDSSingleNameSpecs <- function(rank, name){
   )
 }
 validate_CDSSingleNameSpecs <- function(x){
-  assertthat::assert_that(is.character(x$name))
+  assertthat::assert_that(assertthat::is.string(x$name))
   x
 }
 
