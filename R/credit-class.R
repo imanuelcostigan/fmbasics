@@ -109,6 +109,8 @@ valitate_CDSMarkitSpecs <- function(x) {
 
 #' Builds a `CDSCurve`
 #'
+#' This will allow you to create an instance of a CDS curve.
+#'
 #' @param reference_date the curve's reference date as a [base::Date]
 #' @param tenors a numeric vector of pillar points time steps expressed in years
 #' @param spreads a numeric vector of creadit default spreads expressed in
