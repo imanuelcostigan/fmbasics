@@ -208,13 +208,12 @@ SurvivalProbCurve <- function(reference_date, tenors, probabilities, specs) {
 }
 
 new_SurvivalProbCurve <- function(reference_date, tenors, probabilities, specs) {
-  n <- max(NROW(tenors), NROW(probabilities))
   structure(
     list(
       specs = specs,
       reference_date = reference_date,
-      tenors = rep_len(tenors, n),
-      probabilities = rep_len(probabilities, n)
+      tenors = tenors,
+      probabilities = probabilities
     ),
     class = "SurvivalProbCurve"
   )
@@ -222,9 +221,11 @@ new_SurvivalProbCurve <- function(reference_date, tenors, probabilities, specs) 
 
 validate_SurvivalProbCurve <- function(x) {
   assertthat::assert_that(
-    lubridate::is.Date(x$reference_date),
+    assertthat::is.date(x$reference_date),
     is.numeric(x$tenors),
-    all(is.numeric(x$probabilities), x$probabilities >= 0, x$probabilities <= 1),
+    is.numeric(x$probabilities),
+    length(x$tenors) == length(x$probabilities),
+    all(x$probabilities >= 0, x$probabilities <= 1),
     is.CDSSpecs(x$specs)
   )
   x
