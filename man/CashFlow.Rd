@@ -30,3 +30,4 @@ Other money functions: \code{\link{MultiCurrencyMoney}},
   \code{\link{is.MultiCurrencyMoney}},
   \code{\link{is.SingleCurrencyMoney}}
 }
+\concept{money functions}

@@ -7,7 +7,7 @@
 Currency(iso, calendar)
 }
 \arguments{
-\item{iso}{a three letter code representing the currency (see \href{https://en.wikipedia.org/wiki/ISO_4217}{ISO4217})}
+\item{iso}{a three letter code representing the currency (see \href{https://en.wikipedia.org/wiki/ISO_4217}{ISO 4217})}
 
 \item{calendar}{a \link[fmdates:JointCalendar]{JointCalendar}}
 }

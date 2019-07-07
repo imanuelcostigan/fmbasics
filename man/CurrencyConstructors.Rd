@@ -55,3 +55,4 @@ AUD()
 Other constructors: \code{\link{CurrencyPairConstructors}},
   \code{\link{iborindices}}, \code{\link{oniaindices}}
 }
+\concept{constructors}
