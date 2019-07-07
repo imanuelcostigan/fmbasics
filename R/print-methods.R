@@ -19,13 +19,13 @@ print.CDSMarkitSpecs <- function(x, ...){
   cat(format(x, ...), "\n")
 }
 
-format.CDSSingleNameSpecs <- function(x,...){
-  paste0("<Curve Specifications: Single Name CDS Curve> \n",
+format.CDSSingleNameSpec <- function(x,...){
+  paste0("<Curve Specification: Single Name CDS Curve> \n",
          "Rank: ", x$rank, "\n",
          "Name: ", x$name, "\n")
 }
 
-print.CDSSingleNameSpecs <- function(x, ...){
+print.CDSSingleNameSpec <- function(x, ...){
   cat(format(x, ...), "\n")
 }
 

@@ -37,31 +37,31 @@ validate_CDSSpec <- function(x) {
 }
 
 
-#' Builds a `CDSSingleNameSpecs`
+#' Builds a `CDSSingleNameSpec`
 #'
 #' A subclass of [CDSSpec()], that implements specifications for single name
 #' CDS curves
 #'
 #' @inheritParams CDSSpec
 #' @param name Reference debt issuer. Must be a string.
-#' @return An object of type `CDSSingleNameSpecs`
+#' @return An object of type `CDSSingleNameSpec`
 #' @export
 #' @examples
-#' CDSSingleNameSpecs(rank = "SNR", name = "Westpac")
+#' CDSSingleNameSpec(rank = "SNR", name = "Westpac")
 #' @family CDS curve helpers
 
-CDSSingleNameSpecs <- function(rank, name) {
-  validate_CDSSingleNameSpecs(new_CDSSingleNameSpecs(rank, name))
+CDSSingleNameSpec <- function(rank, name) {
+  validate_CDSSingleNameSpec(new_CDSSingleNameSpec(rank, name))
 }
 
-new_CDSSingleNameSpecs <- function(rank, name) {
+new_CDSSingleNameSpec <- function(rank, name) {
   CDSSpec(
     rank = rank,
     name = name,
-    subclass = "CDSSingleNameSpecs"
+    subclass = "CDSSingleNameSpec"
   )
 }
-validate_CDSSingleNameSpecs <- function(x) {
+validate_CDSSingleNameSpec <- function(x) {
   assertthat::assert_that(assertthat::is.string(x$name))
   x
 }
