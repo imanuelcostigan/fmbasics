@@ -37,3 +37,10 @@ HazardCurve(
   specs = curve_specs
 )
 }
+\seealso{
+Other CDS curve helpers: \code{\link{CDSCurve}},
+  \code{\link{CDSMarkitSpecs}},
+  \code{\link{CDSSingleNameSpecs}}, \code{\link{CDSSpecs}},
+  \code{\link{SurvivalCurve}}
+}
+\concept{CDS curve helpers}

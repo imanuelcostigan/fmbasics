@@ -24,3 +24,9 @@ CDS curves
 \examples{
 CDSSingleNameSpecs(rank = "SNR", name = "Westpac")
 }
+\seealso{
+Other CDS curve helpers: \code{\link{CDSCurve}},
+  \code{\link{CDSMarkitSpecs}}, \code{\link{CDSSpecs}},
+  \code{\link{HazardCurve}}, \code{\link{SurvivalCurve}}
+}
+\concept{CDS curve helpers}

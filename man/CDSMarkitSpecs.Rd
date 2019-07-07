@@ -26,3 +26,9 @@ paramter \code{rank} is fixed to be "SNR", as per Markit's methodology documents
 \examples{
 CDSMarkitSpecs(rating = "AAA", region = "Japan", sector = "Utilities")
 }
+\seealso{
+Other CDS curve helpers: \code{\link{CDSCurve}},
+  \code{\link{CDSSingleNameSpecs}}, \code{\link{CDSSpecs}},
+  \code{\link{HazardCurve}}, \code{\link{SurvivalCurve}}
+}
+\concept{CDS curve helpers}

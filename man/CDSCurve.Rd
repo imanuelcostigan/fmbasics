@@ -44,3 +44,9 @@ CDSCurve(
   specs = curve_specs
 )
 }
+\seealso{
+Other CDS curve helpers: \code{\link{CDSMarkitSpecs}},
+  \code{\link{CDSSingleNameSpecs}}, \code{\link{CDSSpecs}},
+  \code{\link{HazardCurve}}, \code{\link{SurvivalCurve}}
+}
+\concept{CDS curve helpers}

@@ -26,3 +26,10 @@ This class will enable you to specify CDS curves. It is used by
 \examples{
 CDSSpecs(rank = "SubTier3")
 }
+\seealso{
+Other CDS curve helpers: \code{\link{CDSCurve}},
+  \code{\link{CDSMarkitSpecs}},
+  \code{\link{CDSSingleNameSpecs}},
+  \code{\link{HazardCurve}}, \code{\link{SurvivalCurve}}
+}
+\concept{CDS curve helpers}
