@@ -7,15 +7,15 @@ print.CDSSpec <- function(x, ...){
   cat(format(x, ...), "\n")
 }
 
-format.CDSMarkitSpecs <- function(x,...){
-  paste0("<Curve Specifications: Markit CDS Sector Curve> \n",
+format.CDSMarkitSpec <- function(x,...){
+  paste0("<Curve Specification: Markit CDS Sector Curve> \n",
          "Rank: SNR \n",
          "Rating: ", x$rating, "\n",
          "Region: " , x$region, "\n",
          "Sector: " , x$sector, "\n")
 }
 
-print.CDSMarkitSpecs <- function(x, ...){
+print.CDSMarkitSpec <- function(x, ...){
   cat(format(x, ...), "\n")
 }
 

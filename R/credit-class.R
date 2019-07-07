@@ -66,7 +66,7 @@ validate_CDSSingleNameSpec <- function(x) {
   x
 }
 
-#' Build a `CDSMarkitSpecs`
+#' Build a `CDSMarkitSpec`
 #'
 #' A subclass of [CDSSpec()], only for Markit sector curves. Note that the
 #' paramter `rank` is fixed to be "SNR", as per Markit's methodology documents
@@ -77,24 +77,27 @@ validate_CDSSingleNameSpec <- function(x) {
 #' @param sector valid options are "BasicMaterials", "ConsumerGoods",
 #'   "ConsumerServices", "Energy", "Financials", "Government", "Healtcare",
 #'   "Technology", "TeleCom", "Utilities"
-#' @return An object of type `CDSMarkitSpecs`
+#' @return An object of type `CDSMarkitSpec`
 #' @export
 #' @examples
-#' CDSMarkitSpecs(rating = "AAA", region = "Japan", sector = "Utilities")
+#' CDSMarkitSpec(rating = "AAA", region = "Japan", sector = "Utilities")
 #' @family CDS curve helpers
-CDSMarkitSpecs <- function(rating, region, sector) {
-  valitate_CDSMarkitSpecs(new_CDSMarkitSpecs(rating, region, sector))
+
+CDSMarkitSpec <- function(rating, region, sector) {
+  validate_CDSMarkitSpec(new_CDSMarkitSpec(rating, region, sector))
 }
-new_CDSMarkitSpecs <- function(rating, region, sector) {
+
+new_CDSMarkitSpec <- function(rating, region, sector) {
   CDSSpec(
     rank = "SNR",
     rating = rating,
     region = region,
     sector = sector,
-    subclass = "CDSMarkitSpecs"
+    subclass = "CDSMarkitSpec"
   )
 }
-valitate_CDSMarkitSpecs <- function(x) {
+
+validate_CDSMarkitSpec <- function(x) {
   assertthat::assert_that(
     all(x$rating %in% c("AAA", "AA", "A", "BBB", "BB", "B", "CCC")),
     all(x$region %in% c(
@@ -127,7 +130,7 @@ valitate_CDSMarkitSpecs <- function(x) {
 #' @return An object of type `CDSCurve`
 #' @export
 #' @examples
-#' curve_specs <- CDSMarkitSpecs(
+#' curve_specs <- CDSMarkitSpec(
 #'   rating = "AAA",
 #'   region = "Japan",
 #'   sector = "Utilities"
@@ -193,7 +196,7 @@ validate_CDSCurve <- function(x) {
 #' @return returns an object of type `SurvivalCurve`
 #' @export
 #' @examples
-#' curve_specs <- CDSMarkitSpecs(
+#' curve_specs <- CDSMarkitSpec(
 #'   rating = "AAA",
 #'   region = "Japan",
 #'   sector = "Utilities"
@@ -249,7 +252,7 @@ validate_SurvivalCurve <- function(x) {
 #' @return returns an object of type `hazard_rates`
 #' @export
 #' @examples
-#' curve_specs <- CDSMarkitSpecs(
+#' curve_specs <- CDSMarkitSpec(
 #'   rating = "AAA",
 #'   region = "Japan",
 #'   sector = "Utilities"
