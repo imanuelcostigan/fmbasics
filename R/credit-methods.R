@@ -1,11 +1,45 @@
-
-
-is.CDSCurve <- function(x) inherits(x, "CDSCurve")
-
+#' Inherits from CDSSpec
+#'
+#' Checks whether object inherits from `CDSSpec` class
+#'
+#' @param x an R object
+#' @return `TRUE` if `x` inherits from the `CDSSpec` class; otherwise `FALSE`
+#' @export
+#' @examples
+#' curve_specs <- CDSMarkitSpec(
+#'   rating = "AAA",
+#'   region = "Japan",
+#'   sector = "Utilities"
+#' )
+#' is.CDSSpec(curve_specs)
+#' @family CDS curve helpers
+#' @export
 is.CDSSpec <- function(x) inherits(x, "CDSSpec")
 
-
-
+#' Inherits from CDSCurve
+#'
+#' Checks whether object inherits from `CDSCurve` class
+#'
+#' @param x an R object
+#' @return `TRUE` if `x` inherits from the `CDSCurve` class; otherwise `FALSE`
+#' @export
+#' @examples
+#' curve_specs <- CDSMarkitSpec(
+#'   rating = "AAA",
+#'   region = "Japan",
+#'   sector = "Utilities"
+#' )
+#' cds_curve <- CDSCurve(
+#'   as.Date("2019-06-29"),
+#'   tenors = c(1, 3, 5, 7),
+#'   spreads = c(0.0050, 0.0070, 0.0090, 0.0110),
+#'   lgd = 0.6,
+#'   premium_frequency = 4,
+#'   specs = curve_specs
+#' )
+#' is.CDSCurve(cds_curve)
+#' @family CDS curve helpers
+is.CDSCurve <- function(x) inherits(x, "CDSCurve")
 
 bootstrap_survprob <- function(cds_curve, zero_curve, ...) UseMethod("bootstrap_survprob")
 
