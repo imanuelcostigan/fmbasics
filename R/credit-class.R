@@ -257,29 +257,30 @@ validate_SurvivalCurve <- function(x) {
 #'   specs = curve_specs
 #' )
 HazardCurve <- function(reference_date, tenors, hazard_rates, specs) {
-  validate_HazardCurve(new_HazardCurve(
-    reference_date, tenors,
-    hazard_rates, specs
-  ))
+  validate_HazardCurve(
+    new_HazardCurve(reference_date, tenors, hazard_rates, specs)
+  )
 }
 
 new_HazardCurve <- function(reference_date, tenors, hazard_rates, specs) {
-  n <- max(NROW(tenors), NROW(hazard_rates))
-  structure(list(
-    specs = specs,
-    reference_date = reference_date,
-    tenors = rep_len(tenors, n),
-    hazard_rates = rep_len(hazard_rates, n)
-  ),
-  class = "HazardCurve"
+
+  structure(
+    list(
+      specs = specs,
+      reference_date = reference_date,
+      tenors = tenors,
+      hazard_rates = hazard_rates
+    ),
+    class = "HazardCurve"
   )
 }
 
 validate_HazardCurve <- function(x) {
   assertthat::assert_that(
-    lubridate::is.Date(x$reference_date),
+    assertthat::is.date(x$reference_date),
     is.numeric(x$tenors),
     is.numeric(x$hazard_rates),
+    length(x$tenors) == length(x$hazard_rates),
     is.CDSSpecs(x$specs)
   )
   x
