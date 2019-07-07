@@ -2,7 +2,7 @@
 
 is.CDSCurve<- function(x)inherits(x, "CDSCurve")
 
-is.CDSSpecs<- function(x)inherits(x, "CDSSpecs")
+is.CDSSpec<- function(x)inherits(x, "CDSSpec")
 
 
 

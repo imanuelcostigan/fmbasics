@@ -1,4 +1,4 @@
-#' Build a `CDSSpecs`
+#' Build a `CDSSpec`
 #'
 #' This class will enable you to specify CDS curves. It is used by
 #' [SurvivalCurve()] and [HazardCurve()].
@@ -7,28 +7,28 @@
 #'   options: "SNR" for Senior, "SubTier3" for Subordinate Tier 3,
 #'   "SubUpperTier2" for Subordinate Upper Tier 2, "SubLowerTier2" for
 #'   Subordinate Lower Tier 2 "SubTier1" for Subordinate Tier 1
-#' @param ... parameters passed to other `CDSSpecs` constructors
-#' @param subclass the name of a `CDSSpecs` subclass. Defaults to `NULL`
-#' @return Object of type `CDSSpecs`
+#' @param ... parameters passed to other `CDSSpec` constructors
+#' @param subclass the name of a `CDSSpec` subclass. Defaults to `NULL`
+#' @return Object of type `CDSSpec`
 #' @export
 #' @examples
-#' CDSSpecs(rank = "SubTier3")
+#' CDSSpec(rank = "SubTier3")
 #' @family CDS curve helpers
-CDSSpecs <- function(rank, ..., subclass = NULL) {
-  validate_CDSSpecs(new_CDSSpecs(rank, ..., subclass = subclass))
+CDSSpec <- function(rank, ..., subclass = NULL) {
+  validate_CDSSpec(new_CDSSpec(rank, ..., subclass = subclass))
 }
 
-new_CDSSpecs <- function(rank, ..., subclass = NULL) {
+new_CDSSpec <- function(rank, ..., subclass = NULL) {
   structure(
     list(
       rank = rank,
       ...
     ),
-    class = c(subclass, "CDSSpecs")
+    class = c(subclass, "CDSSpec")
   )
 }
 
-validate_CDSSpecs <- function(x) {
+validate_CDSSpec <- function(x) {
   assertthat::assert_that(
     assertthat::is.string(x$rank),
     x$rank %in% c("SNR", "SubTier1", "SubUpTier2", "SubLowTier2", "SubTier3")
@@ -39,10 +39,10 @@ validate_CDSSpecs <- function(x) {
 
 #' Builds a `CDSSingleNameSpecs`
 #'
-#' A subclass of [CDSSpecs()], that implements specifications for single name
+#' A subclass of [CDSSpec()], that implements specifications for single name
 #' CDS curves
 #'
-#' @inheritParams CDSSpecs
+#' @inheritParams CDSSpec
 #' @param name Reference debt issuer. Must be a string.
 #' @return An object of type `CDSSingleNameSpecs`
 #' @export
@@ -55,7 +55,7 @@ CDSSingleNameSpecs <- function(rank, name) {
 }
 
 new_CDSSingleNameSpecs <- function(rank, name) {
-  CDSSpecs(
+  CDSSpec(
     rank = rank,
     name = name,
     subclass = "CDSSingleNameSpecs"
@@ -68,7 +68,7 @@ validate_CDSSingleNameSpecs <- function(x) {
 
 #' Build a `CDSMarkitSpecs`
 #'
-#' A subclass of [CDSSpecs()], only for Markit sector curves. Note that the
+#' A subclass of [CDSSpec()], only for Markit sector curves. Note that the
 #' paramter `rank` is fixed to be "SNR", as per Markit's methodology documents
 #'
 #' @param rating valid options are "AAA", "AA", "A", "BBB", "BB", "B", "CCC"
@@ -86,7 +86,7 @@ CDSMarkitSpecs <- function(rating, region, sector) {
   valitate_CDSMarkitSpecs(new_CDSMarkitSpecs(rating, region, sector))
 }
 new_CDSMarkitSpecs <- function(rating, region, sector) {
-  CDSSpecs(
+  CDSSpec(
     rank = "SNR",
     rating = rating,
     region = region,
@@ -123,7 +123,7 @@ valitate_CDSMarkitSpecs <- function(x) {
 #'   Markit and expressed as a decimal value
 #' @param premium_frequency represents the number of premiums payments per annum
 #'   expressed as an integer. Must be one of 1, 2, 4 or 12.
-#' @param specs CDS curve specifications that inherits from [CDSSpecs()]
+#' @param specs CDS curve specifications that inherits from [CDSSpec()]
 #' @return An object of type `CDSCurve`
 #' @export
 #' @examples
@@ -175,7 +175,7 @@ validate_CDSCurve <- function(x) {
     is.numeric(x$spreads),
     length(x$tenors) == length(x$spreads),
     assertthat::is.number(x$lgd),
-    is.CDSSpecs(x$specs),
+    is.CDSSpec(x$specs),
     x$premium_frequency %in% c(12, 4, 2, 1)
   )
   x
@@ -231,7 +231,7 @@ validate_SurvivalCurve <- function(x) {
     is.numeric(x$probabilities),
     length(x$tenors) == length(x$probabilities),
     all(x$probabilities >= 0, x$probabilities <= 1),
-    is.CDSSpecs(x$specs)
+    is.CDSSpec(x$specs)
   )
   x
 }
@@ -287,7 +287,7 @@ validate_HazardCurve <- function(x) {
     is.numeric(x$tenors),
     is.numeric(x$hazard_rates),
     length(x$tenors) == length(x$hazard_rates),
-    is.CDSSpecs(x$specs)
+    is.CDSSpec(x$specs)
   )
   x
 }

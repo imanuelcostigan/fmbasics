@@ -1,9 +1,9 @@
-format.CDSSpecs <- function(x,...){
-  paste0("<Curve Specifications> \n",
+format.CDSSpec <- function(x,...){
+  paste0("<Curve Specification> \n",
          "Rank: ", x$rank, "\n")
 }
 
-print.CDSSpecs <- function(x, ...){
+print.CDSSpec <- function(x, ...){
   cat(format(x, ...), "\n")
 }
 
