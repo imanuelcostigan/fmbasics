@@ -1,8 +1,8 @@
 
 
-is.CDSCurve<- function(x)inherits(x, "CDSCurve")
+is.CDSCurve <- function(x) inherits(x, "CDSCurve")
 
-is.CDSSpec<- function(x)inherits(x, "CDSSpec")
+is.CDSSpec <- function(x) inherits(x, "CDSSpec")
 
 
 
@@ -24,21 +24,22 @@ bootstrap_survprob <- function(cds_curve, zero_curve, ...) UseMethod("bootstrap_
 #' @examples
 #' zero_curve <- build_zero_curve()
 #' specs <- CDSMarkitSpec(rating = "AAA", region = "Japan", sector = "Utilities")
-#' cds_curve <- CDSCurve(reference_date = zero_curve$reference_date,
-#' tenors = c(1,3,5,7), spreads = c(0.0050,0.0070,0.0090,0.0110), lgd = .6,
-#' premium_frequency = 4, specs = specs)
+#' cds_curve <- CDSCurve(
+#'   reference_date = zero_curve$reference_date,
+#'   tenors = c(1, 3, 5, 7), spreads = c(0.0050, 0.0070, 0.0090, 0.0110), lgd = .6,
+#'   premium_frequency = 4, specs = specs
+#' )
 #' bootstrap_survprob(cds_curve = cds_curve, zero_curve = zero_curve)
-#'
-#'
 bootstrap_survprob.CDSCurve <- function(cds_curve,
                                         zero_curve,
                                         num_timesteps_pa = 12,
-                                        accrued_premium = TRUE)
-{
-  if(cds_curve$reference_date != zero_curve$reference_date)
+                                        accrued_premium = TRUE) {
+  if (cds_curve$reference_date != zero_curve$reference_date) {
     stop("The reference dates for CDS Curve and the Zero Curve are different", call. = FALSE)
-  if(!is.ZeroCurve(zero_curve))
+  }
+  if (!is.ZeroCurve(zero_curve)) {
     stop("zero_curve must be an object of type ZeroCurve", call. = FALSE)
+  }
 
   sp_output <- credule::bootstrapCDS(
     yieldcurveTenor = zero_curve$pillar_times,
@@ -75,27 +76,27 @@ bootstrap_survprob.CDSCurve <- function(cds_curve,
 #' @examples
 #' zero_curve <- build_zero_curve()
 #' specs <- CDSMarkitSpec(rating = "AAA", region = "Japan", sector = "Utilities")
-#' cds_curve <- CDSCurve(reference_date = zero_curve$reference_date,
-#' tenors = c(1,3,5,7), spreads = c(0.0050,0.0070,0.0090,0.0110), lgd = .6,
-#' premium_frequency = 4, specs = specs)
+#' cds_curve <- CDSCurve(
+#'   reference_date = zero_curve$reference_date,
+#'   tenors = c(1, 3, 5, 7), spreads = c(0.0050, 0.0070, 0.0090, 0.0110), lgd = .6,
+#'   premium_frequency = 4, specs = specs
+#' )
 #' bootstrap_hazardrate(cds_curve = cds_curve, zero_curve = zero_curve)
-#'
-#'
-
-
 bootstrap_hazardrate <- function(cds_curve, zero_curve, ...)
   UseMethod("bootstrap_hazardrate")
 
 bootstrap_hazardrate.CDSCurve <- function(cds_curve,
                                           zero_curve,
                                           num_timesteps_pa = 12,
-                                          accrued_premium = TRUE)
-{
-  if (cds_curve$reference_date != zero_curve$reference_date)
+                                          accrued_premium = TRUE) {
+  if (cds_curve$reference_date != zero_curve$reference_date) {
     stop("The reference dates for CDS Curve and the Zero Curve are different",
-         call. = FALSE)
-  if(!is.ZeroCurve(zero_curve))
-    stop("zero_curve must be an object of type ZeroCurve", call.= FALSE)
+      call. = FALSE
+    )
+  }
+  if (!is.ZeroCurve(zero_curve)) {
+    stop("zero_curve must be an object of type ZeroCurve", call. = FALSE)
+  }
 
   hr_output <- credule::bootstrapCDS(
     yieldcurveTenor = zero_curve$pillar_times,
