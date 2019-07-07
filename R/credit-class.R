@@ -338,39 +338,51 @@ is.CDSSpec <- function(x) inherits(x, "CDSSpec")
 #' @family CDS curve helpers
 is.CDSCurve <- function(x) inherits(x, "CDSCurve")
 
-
+#' @export
 format.CDSSpec <- function(x,...){
-  paste0("<Curve Specification> \n",
-    "Rank: ", x$rank, "\n")
+  paste0(
+    "<Curve Specification> \n",
+    "Rank: ", x$rank
+  )
 }
 
+#' @export
 print.CDSSpec <- function(x, ...){
   cat(format(x, ...), "\n")
 }
 
+#' @export
 format.CDSMarkitSpec <- function(x,...){
-  paste0("<Curve Specification: Markit CDS Sector Curve> \n",
+  paste0(
+    "<Curve Specification: Markit CDS Sector Curve> \n",
     "Rank: SNR \n",
     "Rating: ", x$rating, "\n",
     "Region: " , x$region, "\n",
-    "Sector: " , x$sector, "\n")
+    "Sector: " , x$sector
+  )
 }
 
+#' @export
 print.CDSMarkitSpec <- function(x, ...){
   cat(format(x, ...), "\n")
 }
 
+#' @export
 format.CDSSingleNameSpec <- function(x,...){
-  paste0("<Curve Specification: Single Name CDS Curve> \n",
+  paste0(
+    "<Curve Specification: Single Name CDS Curve> \n",
     "Rank: ", x$rank, "\n",
-    "Name: ", x$name, "\n")
+    "Name: ", x$name,
+  )
 }
 
+#' @export
 print.CDSSingleNameSpec <- function(x, ...){
   cat(format(x, ...), "\n")
 }
 
 
+#' @export
 format.CDSCurve <- function(x, ...){
   paste0(
     "<CDSCurve as of ", x$reference_date, "> \n",
@@ -378,38 +390,43 @@ format.CDSCurve <- function(x, ...){
     "Spreads: ", paste(x$spread, collapse = " "), "\n",
     "LGD: ", x$LGD, "\n",
     "Premium Frequency: ", x$premium_frequency, "\n",
-    "--------------\n"
+    "--------------"
   )
 }
 
+#' @export
 print.CDSCurve <- function(x, ...){
   cat(format(x, ...), "\n")
   cat(format(x$specs,...), "\n")
 }
 
+#' @export
 format.SurvivalCurve <- function(x, ...){
   paste0(
     "<CDSCurve as of ", x$reference_date, "> \n",
     "Tenors: ", paste(x$tenors, collapse = " "), "\n",
     "Survival Probabilities: ", paste(x$probabilities, collapse = " "), "\n",
-    "--------------\n"
+    "--------------"
   )
 }
 
+#' @export
 print.SurvivalCurve <- function(x, ...){
   cat(format(x, ...), "\n")
   cat(format(x$specs,...), "\n")
 }
 
+#' @export
 format.HazardCurve <- function(x, ...){
   paste0(
     "<CDSCurve as of ", x$reference_date, "> \n",
     "Tenors: ", paste(x$tenors, collapse = " "), "\n",
     "Survival Hazard Rate: ", paste(x$hazard_rates, collapse = " "), "\n",
-    "--------------\n"
+    "--------------"
   )
 }
 
+#' @export
 print.HazardCurve <- function(x, ...){
   cat(format(x, ...), "\n")
   cat(format(x$specs,...), "\n")
