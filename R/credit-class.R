@@ -235,17 +235,23 @@ validate_SurvivalCurve <- function(x) {
 
 #' Builds a `HazardCurve`
 #'
-#' @param reference_date Curves's reference date
-#' @param tenors pillar points expressed in year fraction
-#' @param hazard_rates hazard_rates
-#' @param specs An input of type CDSSpec. Contains curve specifications.
+#' This will allow you to create a harzard rate curve. This will typically be
+#' bootstrapped or implied from a [CDSCurve()] or [SurvivalCurve()].
 #'
+#' @inheritParams CDSCurve
+#' @param hazard_rates a vector of hazard rates corresponding to each time step
+#' in `tenors`
 #' @return returns an object of type `hazard_rates`
-#'
+#' @export
 #' @examples
-#' curve_specs <- CDSMarkitSpecs(rating = "AAA", region = "Japan", sector = "Utilities")
+#' curve_specs <- CDSMarkitSpecs(
+#'   rating = "AAA",
+#'   region = "Japan",
+#'   sector = "Utilities"
+#' )
 #'
-#' hr_curve <- HazardCurve(as.Date("2019-06-29"),
+#' HazardCurve(
+#'   reference_date = as.Date("2019-06-29"),
 #'   tenors = c(1, 3, 5, 7),
 #'   hazard_rates = c(0.05, 0.05, 0.05, 0.05),
 #'   specs = curve_specs
