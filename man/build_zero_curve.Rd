@@ -19,3 +19,4 @@ This creates a \code{\link{ZeroCurve}} object from the example data set
 \examples{
 build_zero_curve(LogDFInterpolation())
 }
+\concept{build object helpers}

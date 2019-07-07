@@ -34,3 +34,4 @@ Other interpolate functions: \code{\link{interpolate_dfs}},
   \code{\link{interpolate_zeros}},
   \code{\link{interpolate}}
 }
+\concept{interpolate functions}

@@ -44,8 +44,7 @@ EURNOK()
 USDNOK()
 }
 \description{
-These handy \code{CurrencyPair} constructors use their \link[=CurrencyConstructors]{single currency
-counterparts} in the obvious fashion.
+These handy \code{CurrencyPair} constructors use their \link[=CurrencyConstructors]{single currency counterparts} in the obvious fashion.
 }
 \examples{
 AUDUSD()
@@ -54,3 +53,4 @@ AUDUSD()
 Other constructors: \code{\link{CurrencyConstructors}},
   \code{\link{iborindices}}, \code{\link{oniaindices}}
 }
+\concept{constructors}
