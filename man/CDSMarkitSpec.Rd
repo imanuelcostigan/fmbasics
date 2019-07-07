@@ -29,6 +29,7 @@ CDSMarkitSpec(rating = "AAA", region = "Japan", sector = "Utilities")
 \seealso{
 Other CDS curve helpers: \code{\link{CDSCurve}},
   \code{\link{CDSSingleNameSpec}}, \code{\link{CDSSpec}},
-  \code{\link{HazardCurve}}, \code{\link{SurvivalCurve}}
+  \code{\link{HazardCurve}}, \code{\link{SurvivalCurve}},
+  \code{\link{is.CDSCurve}}, \code{\link{is.CDSSpec}}
 }
 \concept{CDS curve helpers}
