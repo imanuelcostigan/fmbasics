@@ -13,6 +13,7 @@
 #' @export
 #' @examples
 #' CDSSpecs(rank = "SubTier3")
+#' @family CDS curve helpers
 CDSSpecs <- function(rank, ..., subclass = NULL) {
   validate_CDSSpecs(new_CDSSpecs(rank, ..., subclass = subclass))
 }
@@ -47,6 +48,8 @@ validate_CDSSpecs <- function(x) {
 #' @export
 #' @examples
 #' CDSSingleNameSpecs(rank = "SNR", name = "Westpac")
+#' @family CDS curve helpers
+
 CDSSingleNameSpecs <- function(rank, name) {
   validate_CDSSingleNameSpecs(new_CDSSingleNameSpecs(rank, name))
 }
@@ -78,6 +81,7 @@ validate_CDSSingleNameSpecs <- function(x) {
 #' @export
 #' @examples
 #' CDSMarkitSpecs(rating = "AAA", region = "Japan", sector = "Utilities")
+#' @family CDS curve helpers
 CDSMarkitSpecs <- function(rating, region, sector) {
   valitate_CDSMarkitSpecs(new_CDSMarkitSpecs(rating, region, sector))
 }
@@ -137,6 +141,7 @@ valitate_CDSMarkitSpecs <- function(x) {
 #'   premium_frequency = 4,
 #'   specs = curve_specs
 #' )
+#' @family CDS curve helpers
 CDSCurve <- function(reference_date, tenors, spreads, lgd, premium_frequency,
   specs) {
 
@@ -200,7 +205,7 @@ validate_CDSCurve <- function(x) {
 #'   probabilities = c(0.99, 0.99, 0.99, 0.99),
 #'   specs = curve_specs
 #' )
-
+#' @family CDS curve helpers
 SurvivalCurve <- function(reference_date, tenors, probabilities, specs) {
   validate_SurvivalCurve(
     new_SurvivalCurve(reference_date, tenors, probabilities, specs)
@@ -256,6 +261,7 @@ validate_SurvivalCurve <- function(x) {
 #'   hazard_rates = c(0.05, 0.05, 0.05, 0.05),
 #'   specs = curve_specs
 #' )
+#' @family CDS curve helpers
 HazardCurve <- function(reference_date, tenors, hazard_rates, specs) {
   validate_HazardCurve(
     new_HazardCurve(reference_date, tenors, hazard_rates, specs)
