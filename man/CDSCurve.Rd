@@ -20,7 +20,7 @@ Markit and expressed as a decimal value}
 \item{premium_frequency}{represents the number of premiums payments per annum
 expressed as an integer. Must be one of 1, 2, 4 or 12.}
 
-\item{specs}{CDS curve specifications that inherits from \code{\link[=CDSSpecs]{CDSSpecs()}}}
+\item{specs}{CDS curve specifications that inherits from \code{\link[=CDSSpec]{CDSSpec()}}}
 }
 \value{
 An object of type \code{CDSCurve}
@@ -29,7 +29,7 @@ An object of type \code{CDSCurve}
 This will allow you to create an instance of a CDS curve.
 }
 \examples{
-curve_specs <- CDSMarkitSpecs(
+curve_specs <- CDSMarkitSpec(
   rating = "AAA",
   region = "Japan",
   sector = "Utilities"
@@ -45,8 +45,8 @@ CDSCurve(
 )
 }
 \seealso{
-Other CDS curve helpers: \code{\link{CDSMarkitSpecs}},
-  \code{\link{CDSSingleNameSpecs}}, \code{\link{CDSSpecs}},
+Other CDS curve helpers: \code{\link{CDSMarkitSpec}},
+  \code{\link{CDSSingleNameSpec}}, \code{\link{CDSSpec}},
   \code{\link{HazardCurve}}, \code{\link{SurvivalCurve}}
 }
 \concept{CDS curve helpers}

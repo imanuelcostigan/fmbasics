@@ -28,7 +28,7 @@ Using \href{https://www.rdocumentation.org/packages/credule/versions/0.1.3}{cred
 }
 \examples{
 zero_curve <- build_zero_curve()
-specs <- CDSMarkitSpecs(rating = "AAA", region = "Japan", sector = "Utilities")
+specs <- CDSMarkitSpec(rating = "AAA", region = "Japan", sector = "Utilities")
 cds_curve <- CDSCurve(reference_date = zero_curve$reference_date,
 tenors = c(1,3,5,7), spreads = c(0.0050,0.0070,0.0090,0.0110), lgd = .6,
 premium_frequency = 4, specs = specs)

@@ -14,7 +14,7 @@ SurvivalCurve(reference_date, tenors, probabilities, specs)
 \item{probabilities}{a vector of survival probabilities corresponding to each
 time step in \code{tenors}.}
 
-\item{specs}{CDS curve specifications that inherits from \code{\link[=CDSSpecs]{CDSSpecs()}}}
+\item{specs}{CDS curve specifications that inherits from \code{\link[=CDSSpec]{CDSSpec()}}}
 }
 \value{
 returns an object of type \code{SurvivalCurve}
@@ -24,7 +24,7 @@ This will allow you to create a survival probability curve. This will
 typically be bootstrapped from a \code{\link[=CDSCurve]{CDSCurve()}}.
 }
 \examples{
-curve_specs <- CDSMarkitSpecs(
+curve_specs <- CDSMarkitSpec(
   rating = "AAA",
   region = "Japan",
   sector = "Utilities"
@@ -39,8 +39,8 @@ SurvivalCurve(
 }
 \seealso{
 Other CDS curve helpers: \code{\link{CDSCurve}},
-  \code{\link{CDSMarkitSpecs}},
-  \code{\link{CDSSingleNameSpecs}}, \code{\link{CDSSpecs}},
+  \code{\link{CDSMarkitSpec}},
+  \code{\link{CDSSingleNameSpec}}, \code{\link{CDSSpec}},
   \code{\link{HazardCurve}}
 }
 \concept{CDS curve helpers}

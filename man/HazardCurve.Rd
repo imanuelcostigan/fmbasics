@@ -14,7 +14,7 @@ HazardCurve(reference_date, tenors, hazard_rates, specs)
 \item{hazard_rates}{a vector of hazard rates corresponding to each time step
 in \code{tenors}}
 
-\item{specs}{CDS curve specifications that inherits from \code{\link[=CDSSpecs]{CDSSpecs()}}}
+\item{specs}{CDS curve specifications that inherits from \code{\link[=CDSSpec]{CDSSpec()}}}
 }
 \value{
 returns an object of type \code{hazard_rates}
@@ -24,7 +24,7 @@ This will allow you to create a harzard rate curve. This will typically be
 bootstrapped or implied from a \code{\link[=CDSCurve]{CDSCurve()}} or \code{\link[=SurvivalCurve]{SurvivalCurve()}}.
 }
 \examples{
-curve_specs <- CDSMarkitSpecs(
+curve_specs <- CDSMarkitSpec(
   rating = "AAA",
   region = "Japan",
   sector = "Utilities"
@@ -39,8 +39,8 @@ HazardCurve(
 }
 \seealso{
 Other CDS curve helpers: \code{\link{CDSCurve}},
-  \code{\link{CDSMarkitSpecs}},
-  \code{\link{CDSSingleNameSpecs}}, \code{\link{CDSSpecs}},
+  \code{\link{CDSMarkitSpec}},
+  \code{\link{CDSSingleNameSpec}}, \code{\link{CDSSpec}},
   \code{\link{SurvivalCurve}}
 }
 \concept{CDS curve helpers}
