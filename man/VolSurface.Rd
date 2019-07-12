@@ -10,14 +10,14 @@ VolSurface(reference_date, surface_type, vol_quotes, dim1, dim2, ticker,
 \arguments{
 \item{reference_date}{\code{Date} value that represents the as of date}
 
-\item{surface_type}{type of the vol dimentions. Available types: "strike/term"}
+\item{surface_type}{type of the vol dimentions. Available types: \code{strike/term}}
 
 \item{vol_quotes}{\code{matrix} of class \code{numeric} holding the vol values.}
 
 \item{dim1}{\code{numeric} vector containing the surface strikes, deltas or
 moneyness depending on the surface type.}
 
-\item{dim2}{\code{Date} vector containing the tenors of the surface.}
+\item{dim2}{\code{Date} vector containing the tenors of the surface.+}
 
 \item{ticker}{label for the vol object, this should be the ticker of the underlying index}
 
@@ -26,4 +26,7 @@ moneyness depending on the surface type.}
 \description{
 The `VolSurface`` class is designed to represent volatility surfaces.
 Checks whether the dimentions of the surface correspond to the right type of axis: moneyness, delta or strike
+}
+\examples{
+vol_surface <- build_vol_surface()
 }
