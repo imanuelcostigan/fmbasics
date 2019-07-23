@@ -10,10 +10,14 @@ testthat::test_that("time variance interpolation works", {
 })
 
 testthat::test_that("the interpolation is working as expected", {
+  term <-  c(as.Date("2023-10-10"), as.Date("2020-02-29"),
+                    as.Date("2021-04-15"), as.Date("2022-06-10") )
+  strike <- c(96, 150, 80, 90)
+
   vs <- build_vol_surface()
-  testthat::expect_equal(interpolate_vol(vs, as.Date("2023-10-10"), 96)
-           , 0.26853916752886564)
-  testthat::expect_equal(interpolate_vol(vs, as.Date("2020-02-29"), 150),
-           0.19909034016558932)
+  testthat::expect_equal(interpolate(vs, list(term = term, strike = strike))
+           , c(0.26853916752886564, 0.19909034016558932,
+             0.25769535624031686,  0.25855784359768552 ))
+
 })
 

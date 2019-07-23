@@ -54,20 +54,26 @@ to_maturity <- function(dates, index) UseMethod("to_maturity", index)
 #' @rdname indexshifters
 #' @export
 to_reset.default <- function(dates, index) {
-  fmdates::shift(dates, -index$spot_lag,
-    index$day_convention, index$calendar, index$is_eom)
+  fmdates::shift(
+    dates, -index$spot_lag,
+    index$day_convention, index$calendar, index$is_eom
+  )
 }
 #' @rdname indexshifters
 #' @export
 to_value.default <- function(dates, index) {
-  fmdates::shift(dates, index$spot_lag,
-    index$day_convention, index$calendar, index$is_eom)
+  fmdates::shift(
+    dates, index$spot_lag,
+    index$day_convention, index$calendar, index$is_eom
+  )
 }
 #' @rdname indexshifters
 #' @export
 to_maturity.default <- function(dates, index) {
-  fmdates::shift(dates, index$tenor,
-    index$day_convention, c(index$pfc_calendar, index$calendar), index$is_eom)
+  fmdates::shift(
+    dates, index$tenor,
+    index$day_convention, c(index$pfc_calendar, index$calendar), index$is_eom
+  )
 }
 
 
@@ -126,20 +132,3 @@ interpolate_dfs <- function(x, from, to, ...) UseMethod("interpolate_dfs")
 #' @export
 #' @rdname interpolate_dfs
 interpolate_fwds <- function(x, from, to, ...) UseMethod("interpolate_fwds")
-
-
-
-#' Interpolate volatility surface
-#'
-#' This interpolates a vol surface from the class [VolSurface] at a date and a strike
-#' @param x the object to interpolate
-#' @param maturity a vetor of type date with the dates to interpolate at
-#' @param strike a vector of stikes to interpolate at with the same length as `date` vector
-#' @param ... other parameters used in the interpolation
-#' @return Returns a numeric vector of the same length as `date` parameter containing the interpolated
-#' implied volatilities at each couple of `(date, strike)`.
-#' @export
-#' @aliases interpolate_vol
-interpolate_vol <- function(x, maturity, strike, ...) UseMethod("interpolate_vol")
-
-

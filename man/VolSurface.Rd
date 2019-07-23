@@ -4,28 +4,31 @@
 \alias{VolSurface}
 \title{VolSurface class}
 \usage{
-VolSurface(reference_date, surface_type, vol_quotes, dim1, dim2, ticker,
-  interpolation)
+VolSurface(reference_date, vol_quotes, ticker, interpolation)
 }
 \arguments{
-\item{reference_date}{\code{Date} value that represents the as of date}
+\item{reference_date}{\code{Date} value that represents the as of date.}
 
-\item{surface_type}{type of the vol dimentions. Available types: \code{strike/term}}
+\item{vol_quotes}{object of class \code{tibble} containing the volatility data.
+The tibble contains 3 columns: \cr
+\enumerate{
+\item \code{maturity}: containing the maturities (tenors) of the vol surface, and is
+of class \code{character} with format "yyyymmdd", \cr
+\item \code{strike} or \code{delta} or \code{moneyness}, this column is of class \code{numeric} and
+the name of this column informs on the type of the volatility surface. The moneyness
+is defined as strike/spot. \cr
+\item \code{value}, this column contains the volatility values, and is of class
+\code{numeric}.
+}}
 
-\item{vol_quotes}{\code{matrix} of class \code{numeric} holding the vol values.}
+\item{ticker}{a label for the vol object, this should be similar ticker of the underlying index}
 
-\item{dim1}{\code{numeric} vector containing the surface strikes, deltas or
-moneyness depending on the surface type.}
-
-\item{dim2}{\code{Date} vector containing the tenors of the surface.+}
-
-\item{ticker}{label for the vol object, this should be the ticker of the underlying index}
-
-\item{interpolation}{object of type interpolation \code{\link[fmbasics:Interpolation]{fmbasics::Interpolation()}}}
+\item{interpolation}{Interplation method, given as an object of class
+interpolation \code{\link[fmbasics:Interpolation]{fmbasics::Interpolation()}}.}
 }
 \description{
-The `VolSurface`` class is designed to represent volatility surfaces.
-Checks whether the dimentions of the surface correspond to the right type of axis: moneyness, delta or strike
+The \code{VolSurface} class is designed to represent volatility surfaces.
+Checks whether the dimensions of the surface correspond to the right type of axis: moneyness, delta or strike
 }
 \examples{
 vol_surface <- build_vol_surface()

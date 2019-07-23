@@ -44,20 +44,23 @@ assertthat::on_failure(is_atomic_list) <- function(call, env) {
 #' @family build object helpers
 
 build_vol_surface <- function(){
-##1.651555326
 
   filepath <- system.file("extdata", "volsurface.csv", package = "fmbasics")
   vols <- utils::read.csv(file = filepath, header = T )
   spot <- 97.62
   reference_date <- as.Date("2019-04-26")
-  tenors <- lubridate::ymd(vols$Date)
+  tenors <- as.character(vols$Date)
   strikes <- seq(from = 0.05, to = 2.55, by= 0.05)*spot
-  vol_quotes <- vols[,-c(1:4) ]
-  vol_quotes <- t(vol_quotes)/100
+  imp_vols <- vols[,-c(1:4) ]/100
+
   vol_interp <- LinearTimeVarInterpolation()
-  vol_obj <- VolSurface(reference_date, "strike/term", vol_quotes, strikes, tenors,
-                                  "RIOASX", vol_interp)
-  vol_obj
+  vol_quotes <- tibble::tibble(
+    maturity = rep(tenors, length(strikes)),
+    strike = rep(strikes, each = length(tenors)),
+    value  = as.vector(as.matrix.data.frame(imp_vols))
+    )
+
+    VolSurface(reference_date, vol_quotes, "RIOASX", vol_interp)
 
 }
 
