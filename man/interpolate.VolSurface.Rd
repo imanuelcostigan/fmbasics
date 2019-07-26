@@ -12,7 +12,7 @@
 \item{at}{indicates the coordinates at which the interpolation is performed.
 \code{at} should be given as a named list of length two, where the two members are
 vectors with the same length and are named \code{term} and \code{strike}. e.g.
-list(term = c(1, 2), smile = c(72, 92)).}
+list(term = c(1, 2), strike = c(72, 92)).}
 
 \item{...}{unused in this model.}
 }
@@ -23,6 +23,12 @@ list(term = c(1, 2), smile = c(72, 92)).}
 This method is used to interpolate a \code{VolSurface} object at multiple points of
 the plane. The interpolation depends on the type of the surface, if the vols are
 given by strikes, delta, moneyness.
+}
+\examples{
+vol_surface <- fmbasics::build_vol_surface()
+interpolation_points <- list(term = c(as.Date("2020-03-31"), as.Date("2021-03-31")),
+strike = c(40, 80))
+implied_vols <- fmbasics::interpolate(x = vol_surface, at  = interpolation_points)
 }
 \seealso{
 Other interpolate functions: \code{\link{interpolate.ZeroCurve}},

@@ -17,7 +17,8 @@
 #' @param interpolation Interplation method, given as an object of class
 #' interpolation [fmbasics::Interpolation()].
 #' @export
-#' @examples vol_surface <- build_vol_surface()
+#' @seealso [interpolate.VolSurface]
+#' @examples vol_surface <- fmbasics::build_vol_surface()
 
 VolSurface <- function(reference_date, vol_quotes, ticker, interpolation) {
   validate_VolSurface(new_VolSurface(
@@ -74,6 +75,19 @@ is.VolSurface <- function(x) {
 }
 
 
+#' @export
+format.VolSurface <- function(x, ...){
+  cat(paste0("<VolSurface> @", format(x$reference_date, "%e %B %Y")), "\n",
+   paste0(x$ticker, "  ", format(x$interpolation)))
+}
+
+#' @export
+print.VolSurface  <- function(x, ...){
+
+  cat(format(x), "\n")
+  print(x$vol_quotes)
+
+}
 
 
 # VolSurface methods --------------------------------
@@ -89,9 +103,13 @@ is.VolSurface <- function(x) {
 #' @param at indicates the coordinates at which the interpolation is performed.
 #' `at` should be given as a named list of length two, where the two members are
 #' vectors with the same length and are named `term` and `strike`. e.g.
-#' list(term = c(1, 2), smile = c(72, 92)).
+#' list(term = c(1, 2), strike = c(72, 92)).
 #' @param ... unused in this model.
 #' @return `numeric` vector with length equal to the length of `at` members.
+#' @examples vol_surface <- fmbasics::build_vol_surface()
+#' interpolation_points <- list(term = c(as.Date("2020-03-31"), as.Date("2021-03-31")),
+#' strike = c(40, 80))
+#' implied_vols <- fmbasics::interpolate(x = vol_surface, at  = interpolation_points)
 #' @family interpolate functions
 #' @export
 interpolate.VolSurface <- function(x, at, ...) {

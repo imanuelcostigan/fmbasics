@@ -31,5 +31,8 @@ The \code{VolSurface} class is designed to represent volatility surfaces.
 Checks whether the dimensions of the surface correspond to the right type of axis: moneyness, delta or strike
 }
 \examples{
-vol_surface <- build_vol_surface()
+vol_surface <- fmbasics::build_vol_surface()
+}
+\seealso{
+\link{interpolate.VolSurface}
 }
