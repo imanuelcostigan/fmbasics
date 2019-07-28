@@ -3,7 +3,6 @@
 \name{interpolate_dfs}
 \alias{interpolate_dfs}
 \alias{interpolate_fwds}
-\alias{interpolate_fwds}
 \alias{interpolate_fwds.ZeroCurve}
 \alias{interpolate_dfs.ZeroCurve}
 \title{Interpolate forward rates and discount factors}
@@ -40,3 +39,4 @@ Other interpolate functions: \code{\link{interpolate.ZeroCurve}},
   \code{\link{interpolate_zeros}},
   \code{\link{interpolate}}
 }
+\concept{interpolate functions}

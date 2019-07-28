@@ -12,17 +12,7 @@
 \alias{CHFLIBOR}
 \alias{HKDHIBOR}
 \alias{NOKNIBOR}
-\alias{AUDBBSW}
 \alias{AUDBBSW1b}
-\alias{EURIBOR}
-\alias{GBPLIBOR}
-\alias{JPYLIBOR}
-\alias{JPYTIBOR}
-\alias{NZDBKBM}
-\alias{USDLIBOR}
-\alias{CHFLIBOR}
-\alias{HKDHIBOR}
-\alias{NOKNIBOR}
 \title{Standard IBOR}
 \usage{
 AUDBBSW(tenor)
@@ -91,3 +81,4 @@ Other constructors: \code{\link{CurrencyConstructors}},
   \code{\link{CurrencyPairConstructors}},
   \code{\link{oniaindices}}
 }
+\concept{constructors}
