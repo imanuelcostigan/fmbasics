@@ -34,12 +34,22 @@ traders, and are commonly plotted on a graph. More formal mathematical
 descriptions of this relation are often called the term structure of interest
 rates. When the effect of coupons on yields are stripped away, one has a
 zero-coupon yield curve.
+}
+\section{Interpolation schemes}{
+
 
 The following interpolation schemes are supported by \code{ZeroCurve}:
-\code{ConstantInterpolation}, \code{LinearInterpolation}, \code{LogDFInterpolation} and
-\code{CubicInterpolation}. Points outside the calibration region use constant
-extrapolation on the zero rate.
+\itemize{
+\item \code{ConstantInterpolation}: constant interpolation on zero rates
+\item \code{LinearInterpolation}: linear interpolation on zero rates
+\item \code{LogDFInterpolation}: linear interpolation on log discount factors or
+constant on forward rates
+\item \code{CubicInterpolation}: natural cubic spline on zero rates
 }
+
+Points outside the calibration region use constant extrapolation on zero rates.
+}
+
 \examples{
 build_zero_curve()
 }
