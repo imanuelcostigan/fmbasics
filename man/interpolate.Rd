@@ -22,3 +22,4 @@ Other interpolate functions: \code{\link{interpolate.ZeroCurve}},
   \code{\link{interpolate_dfs}},
   \code{\link{interpolate_zeros}}
 }
+\concept{interpolate functions}

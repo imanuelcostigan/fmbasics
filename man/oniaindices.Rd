@@ -10,14 +10,6 @@
 \alias{FedFunds}
 \alias{CHFTOIS}
 \alias{HONIX}
-\alias{AONIA}
-\alias{EONIA}
-\alias{SONIA}
-\alias{TONAR}
-\alias{NZIONA}
-\alias{FedFunds}
-\alias{CHFTOIS}
-\alias{HONIX}
 \title{Standard ONIA}
 \usage{
 AONIA()
@@ -75,3 +67,4 @@ Other constructors: \code{\link{CurrencyConstructors}},
   \code{\link{CurrencyPairConstructors}},
   \code{\link{iborindices}}
 }
+\concept{constructors}
