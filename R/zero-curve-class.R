@@ -19,10 +19,17 @@
 #' rates. When the effect of coupons on yields are stripped away, one has a
 #' zero-coupon yield curve.
 #'
+#' @section Interpolation schemes:
+#'
 #' The following interpolation schemes are supported by `ZeroCurve`:
-#' `ConstantInterpolation`, `LinearInterpolation`, `LogDFInterpolation` and
-#' `CubicInterpolation`. Points outside the calibration region use constant
-#' extrapolation on the zero rate.
+#'
+#' * `ConstantInterpolation`: constant interpolation on zero rates
+#' * `LinearInterpolation`: linear interpolation on zero rates
+#' * `LogDFInterpolation`: linear interpolation on log discount factors or
+#'    constant on forward rates
+#' * `CubicInterpolation`: natural cubic spline on zero rates
+#'
+#' Points outside the calibration region use constant extrapolation on zero rates.
 #'
 #' @param discount_factors a [`DiscountFactor`] object. These are converted to
 #'   continuously compounded zero coupon interest rates with an `act/365` day
