@@ -1,4 +1,4 @@
-# Version 0.4.0
+
 
 NEW:
 
@@ -6,6 +6,13 @@ NEW:
 - Implementations are consistent with `InterestRate`, `DiscountFactor`, and `ZeroCurve` classes
 - all operations and generic functions are extended to accommodate for new CDS classes
 - `as_SurvivalProbabilities.CDSCurve` contains CDS bootstrapping, which depends on `credule` package
+
+
+IMPROVED:
+
+- Rebuilt documentation using newer version of `roxygen2`
+- `ZeroCurve` documentation explicitly describes the various interpolation methods available (#20)
+
 
 
 # Version 0.3.0
