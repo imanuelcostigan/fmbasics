@@ -11,10 +11,10 @@
 #' @param ... parameters passed to other `CDSSpec` constructors
 #' @param subclass the name of a `CDSSpec` subclass. Defaults to `NULL`
 #' @return Object of type `CDSSpec`
-#' @export
 #' @examples
 #' CDSSpec(rank = "SubTier3")
 #' @family CDS curve helpers
+#' @export
 CDSSpec <- function(rank, ..., subclass = NULL) {
   validate_CDSSpec(new_CDSSpec(rank, ..., subclass = subclass))
 }
@@ -46,11 +46,10 @@ validate_CDSSpec <- function(x) {
 #' @inheritParams CDSSpec
 #' @param name Reference debt issuer. Must be a string.
 #' @return An object of type `CDSSingleNameSpec`
-#' @export
 #' @examples
 #' CDSSingleNameSpec(rank = "SNR", name = "Westpac")
 #' @family CDS curve helpers
-
+#' @export
 CDSSingleNameSpec <- function(rank, name) {
   validate_CDSSingleNameSpec(new_CDSSingleNameSpec(rank, name))
 }
@@ -79,11 +78,10 @@ validate_CDSSingleNameSpec <- function(x) {
 #'   "ConsumerServices", "Energy", "Financials", "Government", "Healtcare",
 #'   "Technology", "TeleCom", "Utilities"
 #' @return An object of type `CDSMarkitSpec`
-#' @export
 #' @examples
 #' CDSMarkitSpec(rating = "AAA", region = "Japan", sector = "Utilities")
 #' @family CDS curve helpers
-
+#' @export
 CDSMarkitSpec <- function(rating, region, sector) {
   validate_CDSMarkitSpec(new_CDSMarkitSpec(rating, region, sector))
 }
@@ -129,7 +127,6 @@ validate_CDSMarkitSpec <- function(x) {
 #'   expressed as an integer. Must be one of 1, 2, 4 or 12.
 #' @param specs CDS curve specifications that inherits from [CDSSpec()]
 #' @return An object of type `CDSCurve`
-#' @export
 #' @examples
 #' curve_specs <- CDSMarkitSpec(
 #'   rating = "AAA",
@@ -146,6 +143,7 @@ validate_CDSMarkitSpec <- function(x) {
 #'   specs = curve_specs
 #' )
 #' @family CDS curve helpers
+#' @export
 CDSCurve <- function(reference_date, tenors, spreads, lgd, premium_frequency,
   specs) {
 
@@ -193,20 +191,10 @@ validate_CDSCurve <- function(x) {
 #' @param survival_probabilities a vector of survival probabilities corresponding to each
 #'   time step in `tenors`.
 #' @return returns an object of type `SurvivalProbabilitiesCurve`
-#' @export
 #' @examples
-#'
-#'
-#'
-#'
-#'
-#'
-#'
-#'
-#'
-#'
-#'
+#'SurvivalProbabilities(0.97, Sys.Date(), Sys.Date() + 30, CDSSpec("Empty"))
 #' @family CDS curve helpers
+#' @export
 SurvivalProbabilities <- function(values, d1, d2, specs) {
   validate_SurvivalProbabilities(
     new_SurvivalProbabilities(values, d1, d2, specs)
@@ -247,14 +235,13 @@ validate_SurvivalProbabilities <- function(x) {
 #' @param hazard_rates a vector of hazard rates corresponding to each time step
 #' in `tenors`
 #' @return returns an object of type `hazard_rates`
-#' @export
 #' @examples
 #'
 #' ZeroHazardRate(values = c(0.04, 0.05), compounding = c(2, 4),
 #' day_basis =  'act/365', specs = curve_specs )
 #'
 #' @family CDS curve helpers
-#'
+#' @export
 ZeroHazardRate <- function(values, compounding, day_basis, specs) {
   validate_ZeroHazardRate(new_ZeroHazardRate(values, compounding, day_basis, specs))
 }
@@ -284,15 +271,31 @@ validate_ZeroHazardRate <- function(x) {
 
 
 
-#' Title
+#' CreditCurve class
 #'
-#' @param survival_probabilities
-#' @param zero_hazard_rates
-#' @param reference_date
-#' @param interpolation
+#' A class that defines the bare bones of a credit curve pricing
+#' structure.
 #'
-#' @return
-#' @export
+#' A term structure of credit spread is a curve showing
+#' several credit spreads across different contract lengths (2 month,
+#' 2 year, 20 year, etc...) for a similar debt contract. The curve shows the
+#' relation between the (level of) crdit spread and the
+#' time to maturity, known as the "term", of the debt for a given borrower in a
+#' given currency. When the effect of coupons on spreads are stripped away, one has a
+#' zero-coupon credit curve.
+#'
+#' The following interpolation schemes are supported by `ZeroCurve`:
+#' `ConstantInterpolation`, `LinearInterpolation`, `LogDFInterpolation` and
+#' `CubicInterpolation`. Points outside the calibration region use constant
+#' extrapolation on the zero hazard rate.
+#'
+#' @param survival_probabilities a [`SurvivalProbabilities`] object. These are converted to
+#'   continuously compounded zero coupon interest rates with an `act/365` day
+#'   basis for internal storage purposes
+#' @param reference_date a `Date` object
+#' @param interpolation an [`Interpolation`] object
+#'
+#' @return a `CreditCurve` object
 #'
 #' @examples
 #' curve_specs <- CDSMarkitSpec(rating = "AAA", region = "Japan", sector = "Utilities")
@@ -305,7 +308,8 @@ validate_ZeroHazardRate <- function(x) {
 #' sp <- as_SurvivalProbabilities(x = cds_curve, zero_curve = zero_curve)
 #' CreditCurve(survival_probabilities = sp, reference_date =ref_date,
 #'  interpolation =  CubicInterpolation(), specs = curve_specs)
-#'
+#' @export
+#' @seealso [Interpolation]
 CreditCurve <- function(survival_probabilities, reference_date, interpolation,
   specs) {
   validate_CreditCurve(new_CreditCurve(survival_probabilities, reference_date,
@@ -401,39 +405,6 @@ validate_CreditCurve <- function(x) {
 }
 
 
-# Curve methods -----------------------------------------------------------
-
-#' @rdname interpolate_dfs
-#' @export
-interpolate_fwds.ZeroCurve <- function(x, from, to, ...) {
-  assertthat::assert_that(
-    is.ZeroCurve(x),
-    assertthat::is.date(from),
-    assertthat::is.date(to),
-    all(from < to)
-  )
-  forward_dfs <- interpolate_dfs(x, from, to, ...)
-  as_InterestRate(forward_dfs, 0, x$day_basis)
-}
-
-#' @rdname interpolate_dfs
-#' @export
-interpolate_dfs.ZeroCurve <- function(x, from, to, ...) {
-  assertthat::assert_that(
-    is.ZeroCurve(x),
-    assertthat::is.date(from),
-    assertthat::is.date(to),
-    all(from <= to)
-  )
-  r1 <- interpolate_zeros(x, from, ...)
-  r2 <- interpolate_zeros(x, to, ...)
-  df_start <- as_DiscountFactor(r1, x$reference_date, from)
-  df_end <- as_DiscountFactor(r2, x$reference_date, to)
-  df_end / df_start
-}
-
-
-
 #' Inherits from CDSSpec
 #'
 #' Checks whether object inherits from `CDSSpec` class
@@ -476,6 +447,39 @@ is.CDSSpec <- function(x) inherits(x, "CDSSpec")
 #' is.CDSCurve(cds_curve)
 #' @family CDS curve helpers
 is.CDSCurve <- function(x) inherits(x, "CDSCurve")
+
+#' Inherits from ZeroHazardRate
+#'
+#' Checks whether object inherits from `ZeroHazardRate` class
+#'
+#' @param x an R object
+#' @return `TRUE` if `x` inherits from the `ZeroHazardRate` class; otherwise `FALSE`
+#' @examples
+#' is.ZeroHazardRate(ZeroHazardRate(0.04, 2, "act/365", CDSSpec("Empty")))
+#' @export
+
+is.ZeroHazardRate <- function(x) inherits(x, "ZeroHazardRate")
+
+#' Inherits from SurvivalProbabilities
+#'
+#' Checks whether object inherits from `SurvivalProbabilities` class
+#'
+#' @param x an R object
+#' @return `TRUE` if `x` inherits from the `SurvivalProbabilities` class; otherwise `FALSE`
+#' @examples
+#' is.SurvivalProbabilities(SurvivalProbabilities(0.97, Sys.Date(), Sys.Date() + 30, CDSSpec("Empty")))
+#' @export
+
+is.SurvivalProbabilities <- function(x) inherits(x, "SurvivalProbabilities")
+
+as.list.CDSSpec <- function(x) {
+  out <- list()
+  for(i in seq_along(x)) {
+    out[i] <- x[i]
+  }
+  out
+}
+
 
 #' @export
 format.CDSSpec <- function(x,...){
@@ -650,65 +654,26 @@ interpolate_dfs.CreditCurve <- function(x, from, to, ...) {
   )
   r1 <- interpolate_zeros(x, from)
   r2 <- interpolate_zeros(x, to)
-  df_start <- as_SurvivalProbabilities(r1, x$reference_date, from)
-  df_end <- as_SurvivalProbabilities(r2, x$reference_date, to)
+  df_start <- as_SurvivalProbabilities(r1, x$reference_date, from, x$specs)
+  df_end <- as_SurvivalProbabilities(r2, x$reference_date, to, x$specs)
   df_end / df_start
 }
 
-###########
-as_ZeroHazardRate <- function(x, ...) UseMethod("as_ZeroHazardRate")
 
-as_ZeroHazardRate.SurvivalProbabilities <- function(x, compounding, day_basis, ...) {
+#' @rdname interpolate_dfs
+#' @export
+interpolate_fwds.CreditCurve <- function(x, from, to, ...) {
   assertthat::assert_that(
-    fmdates::is_valid_day_basis(day_basis),
-    is_valid_compounding(compounding)
+    is.CreditCurve(x),
+    assertthat::is.date(from),
+    assertthat::is.date(to),
+    all(from < to)
   )
-  term <- fmdates::year_frac(x$start_date, x$end_date, day_basis)
-  is_cc <- is.infinite(compounding)
-  is_simple <- compounding == 0
-  is_tbill <- compounding == -1
-  is_pc <- !(is_cc | is_simple | is_tbill)
-  rate <- vector("numeric", NROW(x$value))
-  rate[is_cc] <- -log(x$value) / term
-  rate[is_simple] <- (1 / x$value - 1) / term
-  rate[is_tbill] <- (1 - x$value) / term
-  rate[is_pc] <- compounding *
-    ((1 / x$value) ^ (1 / (compounding * term)) - 1)
-  new_ZeroHazardRate(rate, compounding, day_basis, x$specs)
+  forward_dfs <- interpolate_dfs(x, from, to, ...)
+  as_ZeroHazardRate(forward_dfs, 0, x$day_basis, x$specs)
 }
 
 
 
-#######################
 
-#' Inherits from ZeroHazardRate
-#'
-#' Checks whether object inherits from `ZeroHazardRate` class
-#'
-#' @param x an R object
-#' @return `TRUE` if `x` inherits from the `ZeroHazardRate` class; otherwise `FALSE`
-#' @examples
-#' is.ZeroHazardRate(ZeroHazardRate(0.04, 2, "act/365", CDSSpec("Empty")))
-#' @export
 
-is.ZeroHazardRate <- function(x) inherits(x, "ZeroHazardRate")
-
-#' Inherits from SurvivalProbabilities
-#'
-#' Checks whether object inherits from `SurvivalProbabilities` class
-#'
-#' @param x an R object
-#' @return `TRUE` if `x` inherits from the `SurvivalProbabilities` class; otherwise `FALSE`
-#' @examples
-#' is.SurvivalProbabilities(SurvivalProbabilities(0.97, Sys.Date(), Sys.Date() + 30, CDSSpec("Empty")))
-#' @export
-
-is.SurvivalProbabilities <- function(x) inherits(x, "SurvivalProbabilities")
-
-as.list.CDSSpec <- function(x) {
-  out <- list()
-  for(i in seq_along(x)) {
-    out[i] <- x[i]
-  }
-  out
-}

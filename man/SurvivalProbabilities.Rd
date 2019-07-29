@@ -20,17 +20,7 @@ This will allow you to create a survival probability curve. This will
 typically be bootstrapped from a \code{\link[=CDSCurve]{CDSCurve()}}.
 }
 \examples{
-
-
-
-
-
-
-
-
-
-
-
+SurvivalProbabilities(0.97, Sys.Date(), Sys.Date() + 30, CDSSpec("Empty"))
 }
 \seealso{
 Other CDS curve helpers: \code{\link{CDSCurve}},

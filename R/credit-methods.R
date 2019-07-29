@@ -88,10 +88,25 @@ as_SurvivalProbabilities.ZeroHazardRate <- function(x, d1, d2, ...) {
 
 
 
-#'
-as_ZeroHazardRate <- function(x, ...)
-  UseMethod("as_ZeroHazardRate")
+###########
 
+#' Coerce to ZeroHazardRate
+#'
+#' You can coerce objects to the `ZeroHazardRate` class using this method.
+#'
+#' @param x object to coerce
+#' @param ... other parameters passed to methods
+#' @return an `ZeroHazardRate` object
+#' @examples
+#' library("lubridate")
+#' as_InterestRate(SurvivalProbabilities(0.95, ymd(20130101), ymd(20140101), CDSSpec("Empty")),
+#'   compounding = 2, day_basis = "act/365")
+#' @export
+as_ZeroHazardRate <- function(x, ...) UseMethod("as_ZeroHazardRate")
+
+#' @inheritParams ZeroHazardRate
+#' @rdname as_ZeroHazardRate
+#' @export
 as_ZeroHazardRate.SurvivalProbabilities <- function(x, compounding, day_basis, ...) {
   assertthat::assert_that(
     fmdates::is_valid_day_basis(day_basis),
@@ -108,7 +123,8 @@ as_ZeroHazardRate.SurvivalProbabilities <- function(x, compounding, day_basis, .
   rate[is_tbill] <- (1 - x$value) / term
   rate[is_pc] <- compounding *
     ((1 / x$value) ^ (1 / (compounding * term)) - 1)
-  new_ZeroHazardRate(values = rate, compounding = compounding, day_basis = day_basis, specs = x$specs)
+  new_ZeroHazardRate(values = rate, compounding = compounding, day_basis = day_basis,
+    specs = x$specs)
 }
 
 #' @inheritParams ZeroHazardRate
@@ -128,7 +144,7 @@ as_ZeroHazardRate.ZeroHazardRate <- function(x, compounding = NULL, day_basis = 
     } else {
       day_basis <- x$day_basis
     }
-    return(as_ZeroHazardRate(sp, compounding, day_basis))
+    return(as_ZeroHazardRate(sp, compounding, day_basis, x$specs))
   } else {
     return(x)
   }

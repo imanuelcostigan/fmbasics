@@ -4,7 +4,7 @@
 \alias{ZeroHazardRate}
 \title{Builds a \code{ZeroHazardRate}}
 \usage{
-ZeroHazardRate(value, compounding, day_basis, specs)
+ZeroHazardRate(values, compounding, day_basis, specs)
 }
 \arguments{
 \item{specs}{CDS curve specifications that inherits from \code{\link[=CDSSpec]{CDSSpec()}}}
@@ -20,11 +20,9 @@ This will allow you to create a harzard rate curve. This will typically be
 bootstrapped or implied from a \code{\link[=CDSCurve]{CDSCurve()}} or \code{\link[=SurvivalProbabilitiesCurve]{SurvivalProbabilitiesCurve()}}.
 }
 \examples{
-c
 
-
-
-
+ZeroHazardRate(values = c(0.04, 0.05), compounding = c(2, 4),
+day_basis =  'act/365', specs = curve_specs )
 
 }
 \seealso{

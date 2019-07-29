@@ -10,7 +10,8 @@ CDSSpec(rank, ..., subclass = NULL)
 \item{rank}{Seniority of the reference debt. Must be one of the following
 options: "SNR" for Senior, "SubTier3" for Subordinate Tier 3,
 "SubUpperTier2" for Subordinate Upper Tier 2, "SubLowerTier2" for
-Subordinate Lower Tier 2 "SubTier1" for Subordinate Tier 1}
+Subordinate Lower Tier 2 "SubTier1" for Subordinate Tier 1. "Empty" rank can be
+used for a generic instance of the class.}
 
 \item{...}{parameters passed to other \code{CDSSpec} constructors}
 

@@ -18,8 +18,9 @@ an interpolated value or set of values
 Interpolate values from an object
 }
 \seealso{
-Other interpolate functions: \code{\link{interpolate.ZeroCurve}},
-  \code{\link{interpolate_dfs}},
+Other interpolate functions: \code{\link{interpolate.CreditCurve}},
+  \code{\link{interpolate.ZeroCurve}},
+  \code{\link{interpolate_dfs.CreditCurve}},
   \code{\link{interpolate_zeros}}
 }
 \concept{interpolate functions}
