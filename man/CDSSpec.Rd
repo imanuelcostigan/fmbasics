@@ -21,7 +21,7 @@ Object of type \code{CDSSpec}
 }
 \description{
 This class will enable you to specify CDS curves. It is used by
-\code{\link[=SurvivalCurve]{SurvivalCurve()}} and \code{\link[=HazardCurve]{HazardCurve()}}.
+\code{\link[=SurvivalProbabilitiesCurve]{SurvivalProbabilitiesCurve()}} and \code{\link[=ZeroHazardCurve]{ZeroHazardCurve()}}.
 }
 \examples{
 CDSSpec(rank = "SubTier3")
@@ -30,7 +30,8 @@ CDSSpec(rank = "SubTier3")
 Other CDS curve helpers: \code{\link{CDSCurve}},
   \code{\link{CDSMarkitSpec}},
   \code{\link{CDSSingleNameSpec}},
-  \code{\link{HazardCurve}}, \code{\link{SurvivalCurve}},
-  \code{\link{is.CDSCurve}}, \code{\link{is.CDSSpec}}
+  \code{\link{SurvivalProbabilities}},
+  \code{\link{ZeroHazardRate}}, \code{\link{is.CDSCurve}},
+  \code{\link{is.CDSSpec}}
 }
 \concept{CDS curve helpers}

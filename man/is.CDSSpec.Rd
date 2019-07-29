@@ -27,7 +27,7 @@ is.CDSSpec(curve_specs)
 Other CDS curve helpers: \code{\link{CDSCurve}},
   \code{\link{CDSMarkitSpec}},
   \code{\link{CDSSingleNameSpec}}, \code{\link{CDSSpec}},
-  \code{\link{HazardCurve}}, \code{\link{SurvivalCurve}},
-  \code{\link{is.CDSCurve}}
+  \code{\link{SurvivalProbabilities}},
+  \code{\link{ZeroHazardRate}}, \code{\link{is.CDSCurve}}
 }
 \concept{CDS curve helpers}

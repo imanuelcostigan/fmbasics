@@ -27,7 +27,8 @@ CDSSingleNameSpec(rank = "SNR", name = "Westpac")
 \seealso{
 Other CDS curve helpers: \code{\link{CDSCurve}},
   \code{\link{CDSMarkitSpec}}, \code{\link{CDSSpec}},
-  \code{\link{HazardCurve}}, \code{\link{SurvivalCurve}},
-  \code{\link{is.CDSCurve}}, \code{\link{is.CDSSpec}}
+  \code{\link{SurvivalProbabilities}},
+  \code{\link{ZeroHazardRate}}, \code{\link{is.CDSCurve}},
+  \code{\link{is.CDSSpec}}
 }
 \concept{CDS curve helpers}

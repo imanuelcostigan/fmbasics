@@ -1,4 +1,4 @@
-bootstrap_survprob <- function(cds_curve, zero_curve, ...) UseMethod("bootstrap_survprob")
+as_SurvivalProbabilities <- function(x, ...) UseMethod("as_SurvivalProbabilities")
 
 #' Bootstraps Survival Probabilitie from a CDS curve
 #' Using \href{https://www.rdocumentation.org/packages/credule/versions/0.1.3}{credule package.}
@@ -11,17 +11,20 @@ bootstrap_survprob <- function(cds_curve, zero_curve, ...) UseMethod("bootstrap_
 #'   Stuart Turnbull)
 #' @param accrued_premium If set to TRUE, the accrued premium will be taken into account in the calculation of the premium leg value.
 #'
-#' @return An object of type `SurvivalCurve`
+#' @return An object of type `SurvivalProbabilitiesCurve`
 #' @examples
-#' zero_curve <- build_zero_curve()
-#' specs <- CDSMarkitSpec(rating = "AAA", region = "Japan", sector = "Utilities")
-#' cds_curve <- CDSCurve(
-#'   reference_date = zero_curve$reference_date,
-#'   tenors = c(1, 3, 5, 7), spreads = c(0.0050, 0.0070, 0.0090, 0.0110), lgd = .6,
-#'   premium_frequency = 4, specs = specs
-#' )
-#' bootstrap_survprob(cds_curve = cds_curve, zero_curve = zero_curve)
-bootstrap_survprob.CDSCurve <- function(cds_curve,
+#'
+#'
+#'zero_curve <- build_zero_curve()
+#'specs <- CDSMarkitSpec(rating = "AAA", region = "Japan", sector = "Utilities")
+#'cds_curve <- CDSCurve(
+#'  reference_date = zero_curve$reference_date,
+#'    tenors = c(1, 3, 5, 7), spreads = c(0.0050, 0.0070, 0.0090, 0.0110), lgd = .6,
+#'    premium_frequency = 4, specs = curve_specs)
+#'as_SurvivalProbabilities(x = cds_curve, zero_curve = zero_curve)
+#'
+#'
+as_SurvivalProbabilities.CDSCurve <- function(x,
                                         zero_curve,
                                         num_timesteps_pa = 12,
                                         accrued_premium = TRUE) {
@@ -44,68 +47,92 @@ bootstrap_survprob.CDSCurve <- function(cds_curve,
   )
 
 
-  SurvivalCurve(
-    reference_date = cds_curve$reference_date,
-    tenors = cds_curve$tenors,
-    probabilities = sp_output$survprob,
+  SurvivalProbabilities(
+    d1 = cds_curve$reference_date,
+    d2 = cds_curve$reference_date + 365 * cds_curve$tenors,
+    values = sp_output$survprob,
     specs = cds_curve$specs
   )
 }
 
 
-#' Bootstraps Hazard Rate from a CDS curve
-#' Using \href{https://www.rdocumentation.org/packages/credule/versions/0.1.3}{credule package.}
-#'
-#' @param cds_curve An object of type `CDSCurve`
-#' @param zero_curve An object of type `ZeroCurve`
-#' @param num_timesteps_pa It represents the number of timesteps used to perform the numerical integral
-#'  required while computing the default leg value. It is shown that a monthly discretisation
-#'   usually gives a good approximation (Ref. Valuation of Credit Default Swaps, Dominic O Kane and
-#'   Stuart Turnbull)
-#' @param accrued_premium If set to TRUE, the accrued premium will be taken into account in the calculation of the premium leg value.
-#'
-#' @return An object of type `HazardCurve`
+#' @inheritParams SurvivalProbabilities
+#' @rdname as_SurvivalProbabilities
 #' @examples
-#' zero_curve <- build_zero_curve()
-#' specs <- CDSMarkitSpec(rating = "AAA", region = "Japan", sector = "Utilities")
-#' cds_curve <- CDSCurve(
-#'   reference_date = zero_curve$reference_date,
-#'   tenors = c(1, 3, 5, 7), spreads = c(0.0050, 0.0070, 0.0090, 0.0110), lgd = .6,
-#'   premium_frequency = 4, specs = specs
-#' )
-#' bootstrap_hazardrate(cds_curve = cds_curve, zero_curve = zero_curve)
-bootstrap_hazardrate <- function(cds_curve, zero_curve, ...)
-  UseMethod("bootstrap_hazardrate")
-
-bootstrap_hazardrate.CDSCurve <- function(cds_curve,
-                                          zero_curve,
-                                          num_timesteps_pa = 12,
-                                          accrued_premium = TRUE) {
-  if (cds_curve$reference_date != zero_curve$reference_date) {
-    stop("The reference dates for CDS Curve and the Zero Curve are different",
-      call. = FALSE
-    )
-  }
-  if (!is.ZeroCurve(zero_curve)) {
-    stop("zero_curve must be an object of type ZeroCurve", call. = FALSE)
-  }
-
-  hr_output <- credule::bootstrapCDS(
-    yieldcurveTenor = zero_curve$pillar_times,
-    yieldcurveRate = zero_curve$pillar_zeros,
-    cdsTenors = cds_curve$tenors,
-    cdsSpreads = cds_curve$spread,
-    recoveryRate = 1 - cds_curve$lgd,
-    numberPremiumPerYear = cds_curve$premium_frequency,
-    numberDefaultIntervalPerYear = num_timesteps_pa,
-    accruedPremium = accrued_premium
+#' HR <- ZeroHazardRate(values = c(0.04, 0.05), compounding = c(2, 4),
+#' day_basis = 'act/365', specs = specs)
+#' as_SurvivalProbabilities(HR, ymd(20160202), ymd(20160302))
+#' @export
+as_SurvivalProbabilities.ZeroHazardRate <- function(x, d1, d2, ...) {
+  assertthat::assert_that(
+    lubridate::is.Date(d1),
+    lubridate::is.Date(d2)
   )
-
-
-  HazardCurve(
-    reference_date = cds_curve$reference_date,
-    tenors = cds_curve$tenors,
-    hazard_rates = hr_output$hazrate,
-    specs = cds_curve$specs
-  )
+  # year_frac is vectorised
+  term <- fmdates::year_frac(d1, d2, x$day_basis)
+  # determine compounding frequency for each x value
+  is_cc <- is.infinite(x$compounding)
+  is_simple <- x$compounding == 0
+  is_tbill <- x$compounding == -1
+  is_pc <- !(is_cc | is_simple | is_tbill)
+  # determine discount factors
+  df <- vector("numeric", NROW(x$value))
+  df[is_cc] <- exp(-x$value * term)
+  df[is_simple] <- 1 / (1 + x$value * term)
+  df[is_tbill] <- 1 - x$value * term
+  df[is_pc] <- 1 / ((1 + x$value / x$compounding) ^
+      (x$compounding * term))
+  new_SurvivalProbabilities(values = df, d1 = d1, d2 = d2, specs = x$specs)
 }
+
+
+
+
+#'
+as_ZeroHazardRate <- function(x, ...)
+  UseMethod("as_ZeroHazardRate")
+
+as_ZeroHazardRate.SurvivalProbabilities <- function(x, compounding, day_basis, ...) {
+  assertthat::assert_that(
+    fmdates::is_valid_day_basis(day_basis),
+    is_valid_compounding(compounding)
+  )
+  term <- fmdates::year_frac(x$start_date, x$end_date, day_basis)
+  is_cc <- is.infinite(compounding)
+  is_simple <- compounding == 0
+  is_tbill <- compounding == -1
+  is_pc <- !(is_cc | is_simple | is_tbill)
+  rate <- vector("numeric", NROW(x$value))
+  rate[is_cc] <- -log(x$value) / term
+  rate[is_simple] <- (1 / x$value - 1) / term
+  rate[is_tbill] <- (1 - x$value) / term
+  rate[is_pc] <- compounding *
+    ((1 / x$value) ^ (1 / (compounding * term)) - 1)
+  new_ZeroHazardRate(values = rate, compounding = compounding, day_basis = day_basis, specs = x$specs)
+}
+
+#' @inheritParams ZeroHazardRate
+#' @rdname as_ZeroHazardRate
+#' @export
+as_ZeroHazardRate.ZeroHazardRate <- function(x, compounding = NULL, day_basis = NULL, ...) {
+  if (!all(is.null(compounding), is.null(day_basis))) {
+    # start and end dates here don't matter.
+    sp <- as_SurvivalProbabilities(x, as.Date("2013-01-01"), as.Date("2014-01-01"))
+    if (!is.null(compounding)) {
+      compounding <- rep(compounding, length(x$compounding))
+    } else {
+      compounding <- x$compounding
+    }
+    if (!is.null(day_basis)) {
+      day_basis <- rep(day_basis, length(x$day_basis))
+    } else {
+      day_basis <- x$day_basis
+    }
+    return(as_ZeroHazardRate(sp, compounding, day_basis))
+  } else {
+    return(x)
+  }
+}
+
+
+

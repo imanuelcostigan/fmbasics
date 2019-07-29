@@ -1,12 +1,13 @@
 #' Build a `CDSSpec`
 #'
 #' This class will enable you to specify CDS curves. It is used by
-#' [SurvivalCurve()] and [HazardCurve()].
+#' [SurvivalProbabilitiesCurve()] and [ZeroHazardCurve()].
 #'
 #' @param rank Seniority of the reference debt. Must be one of the following
 #'   options: "SNR" for Senior, "SubTier3" for Subordinate Tier 3,
 #'   "SubUpperTier2" for Subordinate Upper Tier 2, "SubLowerTier2" for
-#'   Subordinate Lower Tier 2 "SubTier1" for Subordinate Tier 1
+#'   Subordinate Lower Tier 2 "SubTier1" for Subordinate Tier 1. "Empty" rank can be
+#'   used for a generic instance of the class.
 #' @param ... parameters passed to other `CDSSpec` constructors
 #' @param subclass the name of a `CDSSpec` subclass. Defaults to `NULL`
 #' @return Object of type `CDSSpec`
@@ -31,7 +32,7 @@ new_CDSSpec <- function(rank, ..., subclass = NULL) {
 validate_CDSSpec <- function(x) {
   assertthat::assert_that(
     assertthat::is.string(x$rank),
-    x$rank %in% c("SNR", "SubTier1", "SubUpTier2", "SubLowTier2", "SubTier3")
+    x$rank %in% c("SNR", "SubTier1", "SubUpTier2", "SubLowTier2", "SubTier3", "Empty")
   )
   x
 }
@@ -156,7 +157,6 @@ CDSCurve <- function(reference_date, tenors, spreads, lgd, premium_frequency,
 
 new_CDSCurve <- function(reference_date, tenors, spreads, lgd, premium_frequency,
   specs) {
-
   structure(
     list(
       reference_date = reference_date,
@@ -175,8 +175,8 @@ validate_CDSCurve <- function(x) {
   assertthat::assert_that(
     assertthat::is.date(x$reference_date),
     is.numeric(x$tenors),
-    is.numeric(x$spreads),
-    length(x$tenors) == length(x$spreads),
+    #is.numeric(x$spreads),
+    #length(x$tenors) == length(x$spreads),
     assertthat::is.number(x$lgd),
     is.CDSSpec(x$specs),
     x$premium_frequency %in% c(12, 4, 2, 1)
@@ -184,67 +184,64 @@ validate_CDSCurve <- function(x) {
   x
 }
 
-
-
-#' Builds a `SurvivalCurve`
+#' Builds a `SurvivalProbabilitiesCurve`
 #'
 #' This will allow you to create a survival probability curve. This will
 #' typically be bootstrapped from a [CDSCurve()].
 #'
 #' @inheritParams CDSCurve
-#' @param probabilities a vector of survival probabilities corresponding to each
+#' @param survival_probabilities a vector of survival probabilities corresponding to each
 #'   time step in `tenors`.
-#' @return returns an object of type `SurvivalCurve`
+#' @return returns an object of type `SurvivalProbabilitiesCurve`
 #' @export
 #' @examples
-#' curve_specs <- CDSMarkitSpec(
-#'   rating = "AAA",
-#'   region = "Japan",
-#'   sector = "Utilities"
-#' )
 #'
-#' SurvivalCurve(
-#'   reference_date = as.Date("2019-06-29"),
-#'   tenors = c(1, 3, 5, 7),
-#'   probabilities = c(0.99, 0.99, 0.99, 0.99),
-#'   specs = curve_specs
-#' )
+#'
+#'
+#'
+#'
+#'
+#'
+#'
+#'
+#'
+#'
 #' @family CDS curve helpers
-SurvivalCurve <- function(reference_date, tenors, probabilities, specs) {
-  validate_SurvivalCurve(
-    new_SurvivalCurve(reference_date, tenors, probabilities, specs)
+SurvivalProbabilities <- function(values, d1, d2, specs) {
+  validate_SurvivalProbabilities(
+    new_SurvivalProbabilities(values, d1, d2, specs)
   )
 }
 
-new_SurvivalCurve <- function(reference_date, tenors, probabilities, specs) {
+new_SurvivalProbabilities <- function(values, d1, d2, specs) {
   structure(
     list(
       specs = specs,
-      reference_date = reference_date,
-      tenors = tenors,
-      probabilities = probabilities
+      values = values,
+      start_date = d1,
+      end_date = d2
     ),
-    class = "SurvivalCurve"
+    class = "SurvivalProbabilities"
   )
 }
 
-validate_SurvivalCurve <- function(x) {
+validate_SurvivalProbabilities <- function(x) {
   assertthat::assert_that(
-    assertthat::is.date(x$reference_date),
-    is.numeric(x$tenors),
-    is.numeric(x$probabilities),
-    length(x$tenors) == length(x$probabilities),
-    all(x$probabilities >= 0, x$probabilities <= 1),
+    assertthat::is.date(x$start_date),
+    is.numeric(x$values),
+    assertthat::is.date(x$end_date),
+    all(x$values >= 0, x$values <= 1),
+    all(x$start_date <= x$end_date),
     is.CDSSpec(x$specs)
   )
   x
 }
 
 
-#' Builds a `HazardCurve`
+#' Builds a `ZeroHazardRate`
 #'
 #' This will allow you to create a harzard rate curve. This will typically be
-#' bootstrapped or implied from a [CDSCurve()] or [SurvivalCurve()].
+#' bootstrapped or implied from a [CDSCurve()] or [SurvivalProbabilitiesCurve()].
 #'
 #' @inheritParams CDSCurve
 #' @param hazard_rates a vector of hazard rates corresponding to each time step
@@ -252,48 +249,190 @@ validate_SurvivalCurve <- function(x) {
 #' @return returns an object of type `hazard_rates`
 #' @export
 #' @examples
-#' curve_specs <- CDSMarkitSpec(
-#'   rating = "AAA",
-#'   region = "Japan",
-#'   sector = "Utilities"
-#' )
 #'
-#' HazardCurve(
-#'   reference_date = as.Date("2019-06-29"),
-#'   tenors = c(1, 3, 5, 7),
-#'   hazard_rates = c(0.05, 0.05, 0.05, 0.05),
-#'   specs = curve_specs
-#' )
+#' ZeroHazardRate(values = c(0.04, 0.05), compounding = c(2, 4),
+#' day_basis =  'act/365', specs = curve_specs )
+#'
 #' @family CDS curve helpers
-HazardCurve <- function(reference_date, tenors, hazard_rates, specs) {
-  validate_HazardCurve(
-    new_HazardCurve(reference_date, tenors, hazard_rates, specs)
-  )
+#'
+ZeroHazardRate <- function(values, compounding, day_basis, specs) {
+  validate_ZeroHazardRate(new_ZeroHazardRate(values, compounding, day_basis, specs))
 }
 
-new_HazardCurve <- function(reference_date, tenors, hazard_rates, specs) {
+new_ZeroHazardRate <- function(values, compounding, day_basis, specs) {
 
   structure(
     list(
       specs = specs,
-      reference_date = reference_date,
-      tenors = tenors,
-      hazard_rates = hazard_rates
+      values = values,
+      day_basis = day_basis,
+      compounding = compounding
     ),
-    class = "HazardCurve"
+    class = "ZeroHazardRate"
   )
 }
 
-validate_HazardCurve <- function(x) {
+validate_ZeroHazardRate <- function(x) {
   assertthat::assert_that(
+    all(is.numeric(x$values)),
+    is.CDSSpec(x$specs),
+    fmdates::is_valid_day_basis(x$day_basis),
+    is_valid_compounding(x$compounding)
+  )
+  x
+}
+
+
+
+#' Title
+#'
+#' @param survival_probabilities
+#' @param zero_hazard_rates
+#' @param reference_date
+#' @param interpolation
+#'
+#' @return
+#' @export
+#'
+#' @examples
+#' curve_specs <- CDSMarkitSpec(rating = "AAA", region = "Japan", sector = "Utilities")
+#' zero_curve <- build_zero_curve()
+#' ref_date <- zero_curve$reference_date
+#' specs <- CDSMarkitSpec(rating = "AAA", region = "Japan", sector = "Utilities")
+#' cds_curve <- CDSCurve(reference_date = ref_date, tenors = c(1, 3, 5, 7),
+#' spreads = c(0.0050, 0.0070, 0.0090, 0.0110), lgd = .6, premium_frequency = 4,
+#' specs = curve_specs)
+#' sp <- as_SurvivalProbabilities(x = cds_curve, zero_curve = zero_curve)
+#' CreditCurve(survival_probabilities = sp, reference_date =ref_date,
+#'  interpolation =  CubicInterpolation(), specs = curve_specs)
+#'
+CreditCurve <- function(survival_probabilities, reference_date, interpolation,
+  specs) {
+  validate_CreditCurve(new_CreditCurve(survival_probabilities, reference_date,
+    interpolation, specs))
+}
+
+
+new_CreditCurve <-
+  function(survival_probabilities, reference_date, interpolation, specs) {
+    assertthat::assert_that(
+      is.ConstantInterpolation(interpolation) ||
+        is.LinearInterpolation(interpolation) ||
+        is.LogDFInterpolation(interpolation) ||
+        is.CubicInterpolation(interpolation)
+    )
+
+    # Will internally calculate zero_hazard_rates are calculated using act/365 basis and
+    # compounded continuously for speed purposes.
+
+    db <- "act/365"
+    cp <- Inf
+
+    dt <-
+      fmdates::year_frac(reference_date, survival_probabilities$end_date, db)
+    r <- as_ZeroHazardRate(survival_probabilities, cp, db)$value
+
+    f <- function(t) {
+      before_first <- t < dt[1]
+      after_last <- t > utils::tail(dt, 1)
+      in_support <- !before_first & !after_last
+
+      res <- vector("numeric", length = length(t))
+
+      # Constant extrapolation on zeros before and after region of calibration.
+      # This could be loosened by user paramterisation in the future.
+
+      if (is.ConstantInterpolation(interpolation)) {
+        g <- stats::approxfun(dt, r, method = "constant", rule = 2)
+        return(g(t))
+      }
+
+      if (is.LinearInterpolation(interpolation)) {
+        g <- stats::approxfun(dt, r, method = "linear", rule = 2)
+        return(g(t))
+      }
+
+      if (is.LogDFInterpolation(interpolation)) {
+        # rule = 2 is used to force approxfun to return a non-NA value outside
+        # calibration region. But uses constant extrapolation on zeros outside
+        # the region rather than constant on -r * t
+        g <-
+          stats::approxfun(dt, -dt * r, method = "linear", rule = 2)
+        res[before_first] <- r[1]
+        res[after_last] <- utils::tail(r, 1)
+        res[in_support] <- -g(t[in_support]) / t[in_support]
+        return(res)
+      }
+      if (is.CubicInterpolation(interpolation)) {
+        g <- stats::splinefun(dt, r, method = "natural")
+        # Override extarapolation to use constant extrapolation on zeros
+        res[before_first] <- r[1]
+        res[after_last] <- utils::tail(r, 1)
+        res[in_support] <- g(t[in_support])
+        return(res)
+      }
+    }
+
+
+    structure(
+      list(
+        reference_date = reference_date,
+        survival_probabilities = survival_probabilities,
+        pillar_times = dt,
+        pillar_values = r,
+        interpolator = f,
+        day_basis = db,
+        compounding = cp,
+        specs = specs
+      ),
+      class = "CreditCurve"
+    )
+
+  }
+
+validate_CreditCurve <- function(x) {
+  assertthat::assert_that(
+    all(x$reference_date <= x$survival_probabilities$end_date),
     assertthat::is.date(x$reference_date),
-    is.numeric(x$tenors),
-    is.numeric(x$hazard_rates),
-    length(x$tenors) == length(x$hazard_rates),
+    !is.unsorted(x$survival_probabilities$end_date),
     is.CDSSpec(x$specs)
   )
   x
 }
+
+
+# Curve methods -----------------------------------------------------------
+
+#' @rdname interpolate_dfs
+#' @export
+interpolate_fwds.ZeroCurve <- function(x, from, to, ...) {
+  assertthat::assert_that(
+    is.ZeroCurve(x),
+    assertthat::is.date(from),
+    assertthat::is.date(to),
+    all(from < to)
+  )
+  forward_dfs <- interpolate_dfs(x, from, to, ...)
+  as_InterestRate(forward_dfs, 0, x$day_basis)
+}
+
+#' @rdname interpolate_dfs
+#' @export
+interpolate_dfs.ZeroCurve <- function(x, from, to, ...) {
+  assertthat::assert_that(
+    is.ZeroCurve(x),
+    assertthat::is.date(from),
+    assertthat::is.date(to),
+    all(from <= to)
+  )
+  r1 <- interpolate_zeros(x, from, ...)
+  r2 <- interpolate_zeros(x, to, ...)
+  df_start <- as_DiscountFactor(r1, x$reference_date, from)
+  df_end <- as_DiscountFactor(r2, x$reference_date, to)
+  df_end / df_start
+}
+
+
 
 #' Inherits from CDSSpec
 #'
@@ -400,35 +539,176 @@ print.CDSCurve <- function(x, ...){
   cat(format(x$specs,...), "\n")
 }
 
+
 #' @export
-format.SurvivalCurve <- function(x, ...){
-  paste0(
-    "<CDSCurve as of ", x$reference_date, "> \n",
-    "Tenors: ", paste(x$tenors, collapse = " "), "\n",
-    "Survival Probabilities: ", paste(x$probabilities, collapse = " "), "\n",
-    "--------------"
+format.SurvivalProbabilities <- function(x, ...) {
+  paste0("<SurvivalProbabilities> ", x$value, ', ',
+    x$start_date, '--', x$end_date, collapse = '\n')
+}
+
+#' @export
+print.SurvivalProbabilities <- function(x, ...) {cat(format(x), "\n"); invisible(x)}
+
+
+#' @export
+format.ZeroHazardRate <- function(x, ...) {
+  rp <- format(x$value * 100, nsmall = 5)
+  cmp <- compounding_as_string(x$compounding)
+  db <- x$day_basis
+  paste0("<ZeroHazardRate> ", toupper(paste0(rp, "%, ", cmp, ", ", db)),
+    collapse = '\n')
+}
+
+#' @export
+print.ZeroHazardRate <- function(x, ...) {cat(format(x), "\n"); invisible(x)}
+
+
+#' @export
+is.CreditCurve <- function(x) {
+  inherits(x, "CreditCurve")
+}
+
+#' @export
+format.CreditCurve <- function(x, ...) {
+  paste0("<CreditCurve> @ ", format(x$reference_date, "%e %B %Y"))
+}
+
+#' @export
+print.CreditCurve <- function(x, ...) {
+  cat(format(x), "\n")
+  print(tibble::as_tibble(x))
+}
+
+#' Title
+#'
+#' @param x
+#' @param ...
+#'
+#' @return
+#' @export
+#'
+#' @examples
+as_tibble.CreditCurve <- function(x, ...) {
+  tibble::tibble(
+    Years = x$pillar_times,
+    `Zero Hazard Rates` = x$pillar_values
   )
 }
 
+
+#' Interpolate a `CreditCurve`
+#'
+#' There are two key interpolation schemes available in the `stats` package:
+#' constant and linear interpolation via [stats::approxfun()] and
+#' spline interpolation via [stats::splinefun()]. The `interpolate()` method
+#' is a simple wrapper around these methods that are useful for the purposes
+#' of interpolation financial market objects like credit curves.
+#'
+#' @param x a `CreditCurve` object
+#' @param at a non-negative numeric vector representing the years at which to
+#'   interpolate the Credit curve
+#' @param ... unused in this method
+#' @return a numeric vector of zero rates (continuously compounded, act/365)
+#' @examples
+#' zc <- build_zero_curve(LogDFInterpolation())
+#' interpolate(zc, c(1.5, 3))
 #' @export
-print.SurvivalCurve <- function(x, ...){
-  cat(format(x, ...), "\n")
-  cat(format(x$specs,...), "\n")
+#' @family interpolate functions
+interpolate.CreditCurve <- function(x, at, ...) {
+  assertthat::assert_that(is.numeric(at), all(at >= 0))
+  x$interpolator(at)
 }
 
+#' @rdname interpolate_zeros *edit interpolate zero
 #' @export
-format.HazardCurve <- function(x, ...){
-  paste0(
-    "<CDSCurve as of ", x$reference_date, "> \n",
-    "Tenors: ", paste(x$tenors, collapse = " "), "\n",
-    "Survival Hazard Rate: ", paste(x$hazard_rates, collapse = " "), "\n",
-    "--------------"
+interpolate_zeros.CreditCurve <- function(x, at, compounding = NULL, day_basis = NULL, ...) {
+
+  assertthat::assert_that(
+    is.CreditCurve(x),
+    assertthat::is.date(at),
+    is.null(compounding) || is_valid_compounding(compounding),
+    is.null(day_basis) || fmdates::is_valid_day_basis(day_basis)
   )
+
+  tt <- year_frac(x$reference_date, at, x$day_basis)
+  cr <- ZeroHazardRate(interpolate(x, tt), x$compounding, x$day_basis, specs = x$specs)
+  if (is.null(compounding) && is.null(day_basis)) {
+    return(cr)
+  } else {
+    as_ZeroHazardRate(cr, compounding = compounding, day_basis = day_basis, specs = x$specs)
+  }
 }
 
+#' @rdname interpolate_dfs
 #' @export
-print.HazardCurve <- function(x, ...){
-  cat(format(x, ...), "\n")
-  cat(format(x$specs,...), "\n")
+interpolate_dfs.CreditCurve <- function(x, from, to, ...) {
+  assertthat::assert_that(
+    is.CreditCurve(x),
+    assertthat::is.date(from),
+    assertthat::is.date(to),
+    all(from <= to)
+  )
+  r1 <- interpolate_zeros(x, from)
+  r2 <- interpolate_zeros(x, to)
+  df_start <- as_SurvivalProbabilities(r1, x$reference_date, from)
+  df_end <- as_SurvivalProbabilities(r2, x$reference_date, to)
+  df_end / df_start
 }
 
+###########
+as_ZeroHazardRate <- function(x, ...) UseMethod("as_ZeroHazardRate")
+
+as_ZeroHazardRate.SurvivalProbabilities <- function(x, compounding, day_basis, ...) {
+  assertthat::assert_that(
+    fmdates::is_valid_day_basis(day_basis),
+    is_valid_compounding(compounding)
+  )
+  term <- fmdates::year_frac(x$start_date, x$end_date, day_basis)
+  is_cc <- is.infinite(compounding)
+  is_simple <- compounding == 0
+  is_tbill <- compounding == -1
+  is_pc <- !(is_cc | is_simple | is_tbill)
+  rate <- vector("numeric", NROW(x$value))
+  rate[is_cc] <- -log(x$value) / term
+  rate[is_simple] <- (1 / x$value - 1) / term
+  rate[is_tbill] <- (1 - x$value) / term
+  rate[is_pc] <- compounding *
+    ((1 / x$value) ^ (1 / (compounding * term)) - 1)
+  new_ZeroHazardRate(rate, compounding, day_basis, x$specs)
+}
+
+
+
+#######################
+
+#' Inherits from ZeroHazardRate
+#'
+#' Checks whether object inherits from `ZeroHazardRate` class
+#'
+#' @param x an R object
+#' @return `TRUE` if `x` inherits from the `ZeroHazardRate` class; otherwise `FALSE`
+#' @examples
+#' is.ZeroHazardRate(ZeroHazardRate(0.04, 2, "act/365", CDSSpec("Empty")))
+#' @export
+
+is.ZeroHazardRate <- function(x) inherits(x, "ZeroHazardRate")
+
+#' Inherits from SurvivalProbabilities
+#'
+#' Checks whether object inherits from `SurvivalProbabilities` class
+#'
+#' @param x an R object
+#' @return `TRUE` if `x` inherits from the `SurvivalProbabilities` class; otherwise `FALSE`
+#' @examples
+#' is.SurvivalProbabilities(SurvivalProbabilities(0.97, Sys.Date(), Sys.Date() + 30, CDSSpec("Empty")))
+#' @export
+
+is.SurvivalProbabilities <- function(x) inherits(x, "SurvivalProbabilities")
+
+as.list.CDSSpec <- function(x) {
+  out <- list()
+  for(i in seq_along(x)) {
+    out[i] <- x[i]
+  }
+  out
+}
