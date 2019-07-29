@@ -1,7 +1,11 @@
 Type: Package
 Package: fmbasics
 Title: Financial Market Building Blocks
+<<<<<<< HEAD
 Version: 0.4.0
+=======
+Version: 0.3.0
+>>>>>>> parent of d28a2b9... Bump version number and NEWS file
 Authors@R: person("Imanuel", "Costigan", email = "i.costigan@me.com", 
                   role = c("aut", "cre"))
 Description: Implements basic financial market objects like currencies, currency
