@@ -2,6 +2,7 @@ as_SurvivalProbabilities <- function(x, ...) UseMethod("as_SurvivalProbabilities
 
 #' Bootstraps Survival Probabilitie from a CDS curve
 #' Using \href{https://www.rdocumentation.org/packages/credule/versions/0.1.3}{credule package.}
+#' The output of bootstrapping is a vector of cumulative survival probabilities.
 #'
 #' @param cds_curve An object of type `CDSCurve`
 #' @param zero_curve An object of type `ZeroCurve`

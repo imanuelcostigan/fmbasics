@@ -1,3 +1,13 @@
+# Version 0.4.0
+
+NEW:
+
+- new classes to contain CDS curves, Zero Hazard Rates, Survival Probabilities and Credit Curve
+- Implementations are consistent with `InterestRate`, `DiscountFactor`, and `ZeroCurve` classes
+- all operations and generic functions are extended to accommodate for new CDS classes
+- `as_SurvivalProbabilities.CDSCurve` contains CDS bootstrapping, which depends on `credule` package
+
+
 # Version 0.3.0
 
 NEW:

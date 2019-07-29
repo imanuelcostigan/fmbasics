@@ -190,6 +190,10 @@ validate_CDSCurve <- function(x) {
 #' @inheritParams CDSCurve
 #' @param survival_probabilities a vector of survival probabilities corresponding to each
 #'   time step in `tenors`.
+#' @param d1 a `Date` vector containing the as of date
+#' @param d2 a `Date` vector containing the date to which the survival probability
+#'   applies
+#' @param specs CDS curve specifications that inherits from [CDSSpec()]
 #' @return returns an object of type `SurvivalProbabilitiesCurve`
 #' @examples
 #'SurvivalProbabilities(0.97, Sys.Date(), Sys.Date() + 30, CDSSpec("Empty"))
@@ -234,6 +238,11 @@ validate_SurvivalProbabilities <- function(x) {
 #' @inheritParams CDSCurve
 #' @param hazard_rates a vector of hazard rates corresponding to each time step
 #' in `tenors`
+#' @param value a numeric vector containing zero hazard rate values (as decimals).
+#' @param compounding a numeric vector representing the [compounding] frequency.
+#' @param day_basis a character vector representing the day basis associated
+#'   with the interest rate and hazard rate(see [fmdates::year_frac()])
+#' @param specs CDS curve specifications that inherits from [CDSSpec()]
 #' @return returns an object of type `hazard_rates`
 #' @examples
 #'
@@ -294,6 +303,7 @@ validate_ZeroHazardRate <- function(x) {
 #'   basis for internal storage purposes
 #' @param reference_date a `Date` object
 #' @param interpolation an [`Interpolation`] object
+#' @param specs CDS curve specifications that inherits from [CDSSpec()]
 #'
 #' @return a `CreditCurve` object
 #'
@@ -511,34 +521,33 @@ print.CDSMarkitSpec <- function(x, ...){
 }
 
 #' @export
-format.CDSSingleNameSpec <- function(x,...){
+format.CDSSingleNameSpec <- function(x,...) {
   paste0(
     "<Curve Specification: Single Name CDS Curve> \n",
     "Rank: ", x$rank, "\n",
-    "Name: ", x$name,
+    "Name: ", x$name
   )
 }
 
 #' @export
-print.CDSSingleNameSpec <- function(x, ...){
+print.CDSSingleNameSpec <- function(x, ...) {
   cat(format(x, ...), "\n")
 }
 
 
 #' @export
-format.CDSCurve <- function(x, ...){
+format.CDSCurve <- function(x, ...) {
   paste0(
     "<CDSCurve as of ", x$reference_date, "> \n",
     "Tenors: ", paste(x$tenors, collapse = " "), "\n",
     "Spreads: ", paste(x$spread, collapse = " "), "\n",
     "LGD: ", x$LGD, "\n",
-    "Premium Frequency: ", x$premium_frequency, "\n",
-    "--------------"
+    "Premium Frequency: ", x$premium_frequency, "\n"
   )
 }
 
 #' @export
-print.CDSCurve <- function(x, ...){
+print.CDSCurve <- function(x, ...) {
   cat(format(x, ...), "\n")
   cat(format(x$specs,...), "\n")
 }
@@ -583,15 +592,31 @@ print.CreditCurve <- function(x, ...) {
   print(tibble::as_tibble(x))
 }
 
-#' Title
+#' CreditCurve attributes as a data frame
 #'
-#' @param x
-#' @param ...
+#' Create a `tibble` that contains the pillar point maturities in years (using
+#' the `act/365` convention) and the corresponding continuously compounded zero
+#' rates.
 #'
-#' @return
-#' @export
-#'
+#' @param x a `CreditCurve` object
+#' @param ... other parameters that are not used by this methods
+#' @return a `tibble` with two columns named `Years` and `Zero Hazard Rates`.
+#' @seealso [tibble::tibble()]
+#' @importFrom tibble as_tibble
 #' @examples
+#' curve_specs <- CDSMarkitSpec(rating = "AAA", region = "Japan", sector = "Utilities")
+#' zero_curve <- build_zero_curve()
+#' ref_date <- zero_curve$reference_date
+#' specs <- CDSMarkitSpec(rating = "AAA", region = "Japan", sector = "Utilities")
+#' cds_curve <- CDSCurve(reference_date = ref_date,
+#' tenors = c(1, 3, 5, 7), spreads = c(0.0050, 0.0070, 0.0090, 0.0110), lgd = .6,
+#' premium_frequency = 4, specs = curve_specs)
+#' sp <- as_SurvivalProbabilities(x = cds_curve, zero_curve = zero_curve)
+#' cc <- CreditCurve(survival_probabilities = sp,
+#'  reference_date =ref_date, interpolation =  LinearInterpolation(),
+#'  specs = curve_specs)
+#'  as_tibble(cc)
+#' @export
 as_tibble.CreditCurve <- function(x, ...) {
   tibble::tibble(
     Years = x$pillar_times,

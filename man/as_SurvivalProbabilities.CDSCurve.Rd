@@ -3,7 +3,8 @@
 \name{as_SurvivalProbabilities.CDSCurve}
 \alias{as_SurvivalProbabilities.CDSCurve}
 \title{Bootstraps Survival Probabilitie from a CDS curve
-Using \href{https://www.rdocumentation.org/packages/credule/versions/0.1.3}{credule package.}}
+Using \href{https://www.rdocumentation.org/packages/credule/versions/0.1.3}{credule package.}
+The output of bootstrapping is a vector of cumulative survival probabilities.}
 \usage{
 \method{as_SurvivalProbabilities}{CDSCurve}(x, zero_curve,
   num_timesteps_pa = 12, accrued_premium = TRUE)
@@ -26,6 +27,7 @@ An object of type \code{SurvivalProbabilitiesCurve}
 \description{
 Bootstraps Survival Probabilitie from a CDS curve
 Using \href{https://www.rdocumentation.org/packages/credule/versions/0.1.3}{credule package.}
+The output of bootstrapping is a vector of cumulative survival probabilities.
 }
 \examples{
 

@@ -14,6 +14,8 @@ basis for internal storage purposes}
 \item{reference_date}{a \code{Date} object}
 
 \item{interpolation}{an \code{\link{Interpolation}} object}
+
+\item{specs}{CDS curve specifications that inherits from \code{\link[=CDSSpec]{CDSSpec()}}}
 }
 \value{
 a \code{CreditCurve} object

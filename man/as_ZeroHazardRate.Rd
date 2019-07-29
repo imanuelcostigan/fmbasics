@@ -18,6 +18,11 @@ as_ZeroHazardRate(x, ...)
 \item{x}{object to coerce}
 
 \item{...}{other parameters passed to methods}
+
+\item{compounding}{a numeric vector representing the \link{compounding} frequency.}
+
+\item{day_basis}{a character vector representing the day basis associated
+with the interest rate and hazard rate(see \code{\link[fmdates:year_frac]{fmdates::year_frac()}})}
 }
 \value{
 an \code{ZeroHazardRate} object

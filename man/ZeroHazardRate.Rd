@@ -7,10 +7,17 @@
 ZeroHazardRate(values, compounding, day_basis, specs)
 }
 \arguments{
+\item{compounding}{a numeric vector representing the \link{compounding} frequency.}
+
+\item{day_basis}{a character vector representing the day basis associated
+with the interest rate and hazard rate(see \code{\link[fmdates:year_frac]{fmdates::year_frac()}})}
+
 \item{specs}{CDS curve specifications that inherits from \code{\link[=CDSSpec]{CDSSpec()}}}
 
 \item{hazard_rates}{a vector of hazard rates corresponding to each time step
 in \code{tenors}}
+
+\item{value}{a numeric vector containing zero hazard rate values (as decimals).}
 }
 \value{
 returns an object of type \code{hazard_rates}
