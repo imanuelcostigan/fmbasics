@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+# Version 0.3.99
 
 
 NEW:
@@ -9,16 +9,13 @@ NEW:
 - `as_SurvivalProbabilities.CDSCurve` contains CDS bootstrapping, which depends on `credule` package
 
 
+
+# Version 0.3.0
+
 IMPROVED:
 
 - Rebuilt documentation using newer version of `roxygen2`
 - `ZeroCurve` documentation explicitly describes the various interpolation methods available (#20)
-
-
-
-=======
->>>>>>> parent of d28a2b9... Bump version number and NEWS file
-# Version 0.3.0
 
 NEW:
 
