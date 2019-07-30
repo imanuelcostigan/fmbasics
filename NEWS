@@ -9,7 +9,6 @@ NEW:
 - `as_SurvivalProbabilities.CDSCurve` contains CDS bootstrapping, which depends on `credule` package
 
 
-
 # Version 0.3.0
 
 IMPROVED:
