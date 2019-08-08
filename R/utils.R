@@ -38,7 +38,7 @@ assertthat::on_failure(is_atomic_list) <- function(call, env) {
 #' `volsurface.csv`.
 #'
 #' @return a `VolQuotes` object from package built-in data
-#' @family build object helpers
+#' @family build vol object helpers
 #' @examples build_vol_quotes()
 #' @export
 build_vol_quotes <- function() {
@@ -66,7 +66,7 @@ build_vol_quotes <- function() {
 #' @return a `VolSurface` object using data from `volsurface.csv`
 #' @examples build_vol_surface()
 #' @export
-#' @family build object helpers
+#' @family build vol object helpers
 
 build_vol_surface <- function() {
   VolSurface(

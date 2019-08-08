@@ -17,7 +17,6 @@ This creates an object of class \code{VolQuotes} from the example data set
 build_vol_quotes()
 }
 \seealso{
-Other build object helpers: \code{\link{build_vol_surface}},
-  \code{\link{build_zero_curve}}
+Other build vol object helpers: \code{\link{build_vol_surface}}
 }
-\concept{build object helpers}
+\concept{build vol object helpers}
