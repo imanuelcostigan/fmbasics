@@ -240,8 +240,8 @@ as_tibble.VolQuotes <- function(x, ...) {
 #' @param x object of class `VolSurface` to be interpolated.
 #' @param at indicates the coordinates at which the interpolation is performed.
 #' `at` should be given as a named list of length two, where the two members are
-#' vectors with the same length and are named `term` and `strike`. e.g.
-#' list(term = c(1, 2), strike = c(72, 92)).
+#' vectors with the same length and are named `term` and `smile`. e.g.
+#' list(term = c(1, 2), smile = c(72, 92)).
 #' @param ... unused in this model.
 #' @return `numeric` vector with length equal to the length of `at` members.
 #' @examples vol_surface <- build_vol_surface()
