@@ -1,24 +1,17 @@
 #' VolSurface class
 #'
-#' The `VolSurface` class is designed to represent volatility surfaces.
-#' Checks whether the dimensions of the surface correspond to the right type of axis: moneyness, delta or strike
+#' The `VolSurface` class is designed to capture the information about volatilities.
+#' Checks whether the data members are of the correct type.
 #'
 #' @param reference_date `Date` value that represents the as of date.
-#' @param vol_quotes object of class `tibble` containing the volatility data.
-#' The tibble contains 3 columns: \cr
-#' 1. `maturity`: containing the maturities (tenors) of the vol surface, and is
-#' of class `character` with format "yyyymmdd", \cr
-#' 2. `strike` or `delta` or `moneyness`, this column is of class `numeric` and
-#' the name of this column informs on the type of the volatility surface. The moneyness
-#' is defined as strike/spot. \cr
-#' 3. `value`, this column contains the volatility values, and is of class
-#' `numeric`.
-#' @param ticker a label for the vol object, this should be similar ticker of the underlying index
+#' @param vol_quotes object of class [VolQuotes()] containing the volatility data.
+
+#' @param ticker a `string` label for the vol object.
 #' @param interpolation Interplation method, given as an object of class
-#' interpolation [fmbasics::Interpolation()].
+#' interpolation [Interpolation()].
+#' @seealso [interpolate.VolSurface], [build_vol_surface()]
+#' @examples vol_surface <- build_vol_surface()
 #' @export
-#' @seealso [interpolate.VolSurface]
-#' @examples vol_surface <- fmbasics::build_vol_surface()
 
 VolSurface <- function(reference_date, vol_quotes, ticker, interpolation) {
   validate_VolSurface(new_VolSurface(
@@ -27,13 +20,35 @@ VolSurface <- function(reference_date, vol_quotes, ticker, interpolation) {
 }
 
 new_VolSurface <- function(reference_date, vol_quotes, ticker, interpolation) {
-  assertthat::assert_that(is.Interpolation(interpolation))
+  assertthat::assert_that(
+    is.LinearCubicTimeVarInterpolation(interpolation)
+  )
+
+  db <- "act/365"
+
+  f <- function(at) {
+    if (is.LinearCubicTimeVarInterpolation(interpolation)) {
+      yf <- fmdates::year_frac(reference_date, vol_quotes$maturity, db)
+      interp_data <- tibble::tibble(
+        x = yf,
+        y = vol_quotes$smile,
+        z = yf * vol_quotes$value^2
+      )
+      x0 <- fmdates::year_frac(reference_date, at$term, db)
+      y0 <- at$smile
+      res <- sqrt(linear_cubic_interp(interp_data, x0, y0) / x0)
+      return(res)
+    }
+  }
+
 
   structure(
     list(
       reference_date = reference_date,
       vol_quotes = vol_quotes,
       ticker = ticker,
+      interpolator = f,
+      day_basis = db,
       interpolation = interpolation
     ),
     class = "VolSurface"
@@ -44,20 +59,8 @@ new_VolSurface <- function(reference_date, vol_quotes, ticker, interpolation) {
 validate_VolSurface <- function(x) {
   assertthat::assert_that(
     assertthat::is.date(x$reference_date),
-    colnames(x$vol_quotes)[1] == "maturity",
-    colnames(x$vol_quotes)[2] %in% c("strike", "delta", "moneyness"),
-    colnames(x$vol_quotes)[3] == "value",
-    tibble::is_tibble(x$vol_quotes),
-    is.character(x$vol_quotes$maturity),
-    assertthat::is.date(as.Date(x$vol_quotes$maturity, format = "%Y%m%d")),
-    is.double(x$vol_quotes$strike),
-    is.double(x$vol_quotes$value),
-    !is.unsorted(unique(x$vol_quotes$strike), na.rm = F),
-    !is.unsorted(as.Date(unique(x$vol_quotes$maturity), format = "%Y%m%d"), na.rm = F),
-    length(x$vol_quotes$strike) == length(unique(x$vol_quotes$strike)) *
-      length(unique(x$vol_quotes$maturity)),
     is.character(x$ticker),
-    is.Interpolation(x$interpolation)
+    x$vol_quotes$reference_date == x$reference_date
   )
   x
 }
@@ -76,18 +79,153 @@ is.VolSurface <- function(x) {
 
 
 #' @export
-format.VolSurface <- function(x, ...){
-  cat(paste0("<VolSurface> @", format(x$reference_date, "%e %B %Y")), "\n",
-   paste0(x$ticker, "  ", format(x$interpolation)))
+format.VolSurface <- function(x, ...) {
+  cat(
+    paste0("<VolSurface> @", format(x$reference_date, "%e %B %Y")), "\n",
+    paste0(x$ticker, "  ", format(x$interpolation))
+  )
 }
 
 #' @export
-print.VolSurface  <- function(x, ...){
-
+print.VolSurface <- function(x, ...) {
   cat(format(x), "\n")
   print(x$vol_quotes)
-
 }
+
+
+#' VolQuotes class
+#'
+#' `VolQuotes` class is designed to capture volatility data. Checks that the
+#' inputs are of the correct type.
+#'
+#' @param reference_date object of class `Date` that captures the as of date.
+#' @param maturity  vector of class `Date` that captures the maturity pillar points.
+#' @param smile  `numeric` vector containing the values of the second dimension
+#' of the volatility surface. The elements of the vector can either contain the
+#' strikes, the moneyness or the delta. The input type is specified in `type`
+#' parameter.
+#' @param type `character` string defining the second dimension of the VolSurface. The
+#' values accepted in `type` parameters are "strike", "delta" and "moneyness.
+#' @param value `numeric` vector containing the values of the volatilities.
+#' @param ... other parameters that can be used in sub-classes.
+#' @return object of class `VolQuotes`.
+#' @examples vq <-  VolQuotes(reference_date = as.Date("2019-04-26"),
+#' maturity = rep(seq(as.Date("2019-04-26")+1, by = "month", length.out = 3), 4),
+#' smile = rep(seq(10, 20, length.out = 4), each = 3),
+#' type = "strike",
+#' value = seq(1, 0.1, length.out = 12 ))
+#' @seealso [VolSurface()], [build_vol_quotes()]
+#' @export
+
+
+
+
+
+VolQuotes <- function(reference_date, maturity, smile, type, value) {
+  validate_VolQuotes(new_VolQuotes(reference_date, maturity, smile, type, value))
+}
+
+
+new_VolQuotes <- function(reference_date, maturity, smile, type, value, ...,
+                          sub_class = NULL) {
+  n <- NROW(maturity)
+  structure(list(
+    reference_date = reference_date,
+    maturity = maturity,
+    smile = smile,
+    type = type,
+    value = value
+  ),
+  class = c(sub_class, "VolQuotes")
+  )
+}
+
+
+validate_VolQuotes <- function(x) {
+  assertthat::assert_that(
+    lubridate::is.Date(x$reference_date),
+    length(x$value) == length(x$maturity),
+    length(x$value) == length(x$smile),
+    all(lubridate::is.Date(x$maturity)),
+    all(is.numeric(x$value)),
+    all(is.numeric(x$smile)),
+    all(x$value > 0),
+    all(x$maturity > x$reference_date),
+    !is.unsorted(unique(x$maturity)),
+    !is.unsorted(unique(x$smile)),
+    length(x$smile) == length(unique(x$smile)) *
+      length(unique(x$maturity)),
+    x$type %in% c("strike", "delta", "moneyness")
+  )
+  x
+}
+
+
+#' @export
+format.VolQuotes <- function(x, ...) {
+  vol_quotes <- tibble::tibble(
+    reference_date = format(x$reference_date, "%Y%m%d"),
+    maturity = format(x$maturity, "%Y%m%d"),
+    smile = x$smile,
+    value = x$value
+  )
+  colnames(vol_quotes)[3] <- x$type
+
+  vol_quotes
+}
+
+
+
+
+#' @export
+format.VolQuotes <- function(x, ...) {
+  paste0("<VolQuotes> @ ", format(x$reference_date, "%e %B %Y"))
+}
+
+#' @export
+print.VolQuotes <- function(x, ...) {
+  vols_tibble <- tibble::as_tibble(x)
+
+  cat(format(x), "\n")
+  print(tibble::as_tibble(x))
+}
+
+
+#' Inherits from VolQuotes
+#'
+#' Checks whether the object inherits from `VolQuotes` class
+#'
+#' @param x an R object
+#' @return `TRUE` if `x` inherits from the `VolQuotes` class; otherwise `FALSE`
+#' @export
+is.VolQuotes <- function(x) {
+  inherits(x, "VolQuotes")
+}
+
+
+
+#' VolQuotes attributes as a data frame
+#'
+#' Create a `tibble` that contains the pillar point maturities and strikes for
+#' VolQuotes object with the corresponding volatility.
+#'
+#' @param x a `VolQuotes` object
+#' @param ... other parameters that are not used by this methods
+#' @return a `tibble` that contains the volatility per maturity and strike.
+#' @seealso [tibble::tibble()]
+#' @importFrom tibble as_tibble
+#' @export
+as_tibble.VolQuotes <- function(x, ...) {
+  vols_tibble <- tibble::tibble(
+    maturity = format(x$maturity, "%Y%m%d"),
+    smile = x$smile,
+    value = x$value
+  )
+  colnames(vols_tibble)[2] <- x$type
+
+  vols_tibble
+}
+
 
 
 # VolSurface methods --------------------------------
@@ -106,68 +244,20 @@ print.VolSurface  <- function(x, ...){
 #' list(term = c(1, 2), strike = c(72, 92)).
 #' @param ... unused in this model.
 #' @return `numeric` vector with length equal to the length of `at` members.
-#' @examples vol_surface <- fmbasics::build_vol_surface()
+#' @examples vol_surface <- build_vol_surface()
 #' interpolation_points <- list(term = c(as.Date("2020-03-31"), as.Date("2021-03-31")),
-#' strike = c(40, 80))
-#' implied_vols <- fmbasics::interpolate(x = vol_surface, at  = interpolation_points)
+#' smile = c(40, 80))
+#' implied_vols <- interpolate(x = vol_surface, at  = interpolation_points)
 #' @family interpolate functions
 #' @export
+
 interpolate.VolSurface <- function(x, at, ...) {
   assertthat::assert_that(
-    all.equal(names(at), c("term", "strike")),
-    length(at$term) == length(at$strike),
+    all.equal(names(at), c("term", "smile")),
+    length(at$term) == length(at$smile),
     assertthat::is.date(at$term),
-    is.numeric(at$strike)
+    is.numeric(at$smile)
   )
 
-  if (is.LinearTimeVarInterpolation(x$interpolation) & colnames(x$vol_quotes)[2] == "strike") {
-    vols <- x$vol_quotes$value
-    variance <- vols^2
-    tenors <- as.Date(x$vol_quotes$maturity, format = "%Y%m%d")
-    tenors_yf <- fmdates::year_frac(
-      date1 = x$reference_date, date2 = tenors,
-      day_basis = "act/365"
-    )
-
-    time_variance <- variance * tenors_yf
-
-    imp_vol <- rep(NA, length(at$term))
-
-
-    for (i in seq_along(at$term)) {
-      tt <- at$term[i]
-      K <- at$strike[i]
-      smile <- rep(NA, length(unique(x$vol_quotes$strike)))
-      tt_yf <- fmdates::year_frac(
-        date1 = x$reference_date, date2 = tt,
-        day_basis = "act/365"
-      )
-      for (k in 1:length(smile)) {
-        g <- stats::approxfun(
-          x = unique(tenors_yf),
-          y = time_variance[(1 + (k - 1) * length(unique(tenors_yf))):(k * length(unique(tenors_yf)))],
-          method = "linear",
-          rule = 2
-        )
-        smile[k] <- g(tt_yf)
-      }
-      if (K >= min(x$vol_quotes$strike) & K <= max(x$vol_quotes$strike)) {
-        interpolated_time_var <- stats::spline(
-          x = unique(x$vol_quotes$strike),
-          y = smile, method = "natural", xout = K
-        )$y
-      }
-      if (K < min(x$vol_quotes$strike)) {
-        interpolated_time_var <- smile[1]
-      }
-      if (K > max(x$vol_quotes$strike)) {
-        interpolated_time_var <- utils::tail(smile, 1)
-      }
-      imp_vol[i] <- sqrt(interpolated_time_var / tt_yf)
-    }
-  } else {
-    print("Interpolation not implemented for this surface type")
-  }
-
-  imp_vol
+  x$interpolator(at)
 }

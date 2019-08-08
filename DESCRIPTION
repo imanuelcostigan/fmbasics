@@ -19,6 +19,7 @@ Imports:
   methods,
   stats,
   tibble,
+  readr,
   utils
 Suggests: 
   covr,

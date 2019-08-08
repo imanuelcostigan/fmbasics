@@ -25,10 +25,10 @@ the plane. The interpolation depends on the type of the surface, if the vols are
 given by strikes, delta, moneyness.
 }
 \examples{
-vol_surface <- fmbasics::build_vol_surface()
+vol_surface <- build_vol_surface()
 interpolation_points <- list(term = c(as.Date("2020-03-31"), as.Date("2021-03-31")),
-strike = c(40, 80))
-implied_vols <- fmbasics::interpolate(x = vol_surface, at  = interpolation_points)
+smile = c(40, 80))
+implied_vols <- interpolate(x = vol_surface, at  = interpolation_points)
 }
 \seealso{
 Other interpolate functions: \code{\link{interpolate.ZeroCurve}},

@@ -17,6 +17,7 @@ This creates a \code{\link{VolSurface}} object from the example data set
 build_vol_surface()
 }
 \seealso{
-Other build object helpers: \code{\link{build_zero_curve}}
+Other build object helpers: \code{\link{build_vol_quotes}},
+  \code{\link{build_zero_curve}}
 }
 \concept{build object helpers}

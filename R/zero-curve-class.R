@@ -41,7 +41,6 @@ ZeroCurve <- function(discount_factors, reference_date, interpolation) {
 
 
 new_ZeroCurve <- function(discount_factors, reference_date, interpolation) {
-
   assertthat::assert_that(
     is.ConstantInterpolation(interpolation) ||
       is.LinearInterpolation(interpolation) ||
@@ -59,7 +58,6 @@ new_ZeroCurve <- function(discount_factors, reference_date, interpolation) {
   r <- as_InterestRate(discount_factors, cp, db)$value
 
   f <- function(t) {
-
     before_first <- t < dt[1]
     after_last <- t > utils::tail(dt, 1)
     in_support <- !before_first & !after_last
@@ -106,10 +104,10 @@ new_ZeroCurve <- function(discount_factors, reference_date, interpolation) {
     pillar_zeros = r,
     interpolator = f,
     day_basis = db,
-    compounding = cp),
-    class = "ZeroCurve"
+    compounding = cp
+  ),
+  class = "ZeroCurve"
   )
-
 }
 
 validate_ZeroCurve <- function(x) {
@@ -191,10 +189,11 @@ Interpolation <- function(method, what) {
     constant_forwards = "LogDF",
     linear_zeros = "Linear",
     natural_cubic_zeros = "Cubic",
-    linear_time_variance = "Linear"
+    linear_cubic_time_var = "Linear_Cubic"
   )
   structure(list(),
-    class = c(paste0(prefix, "Interpolation"), "Interpolation"))
+    class = c(paste0(prefix, "Interpolation"), "Interpolation")
+  )
 }
 
 #' @rdname Interpolation
@@ -211,7 +210,7 @@ LinearInterpolation <- function() Interpolation("linear", "zeros")
 CubicInterpolation <- function() Interpolation("natural_cubic", "zeros")
 #' @rdname Interpolation
 #' @export
-LinearTimeVarInterpolation <- function() Interpolation("linear", "time_variance")
+LinearCubicTimeVarInterpolation <- function() Interpolation("linear_cubic", "time_var")
 
 #' Check Interpolation class
 #'
@@ -241,7 +240,7 @@ is.LinearInterpolation <- check_interpolation("Linear")
 is.CubicInterpolation <- check_interpolation("Cubic")
 #' @rdname is.Interpolation
 #' @export
-is.LinearTimeVarInterpolation <- check_interpolation("Linear")
+is.LinearCubicTimeVarInterpolation <- check_interpolation("Linear_Cubic")
 #' @export
 format.Interpolation <- function(x, ...) paste0("<", class(x)[1], ">")
 #' @export
@@ -284,7 +283,6 @@ type_sum.ZeroCurve <- function(x) {
 #' @rdname interpolate_zeros
 #' @export
 interpolate_zeros.ZeroCurve <- function(x, at, compounding = NULL, day_basis = NULL, ...) {
-
   assertthat::assert_that(
     is.ZeroCurve(x),
     assertthat::is.date(at),

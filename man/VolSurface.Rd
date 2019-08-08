@@ -9,30 +9,20 @@ VolSurface(reference_date, vol_quotes, ticker, interpolation)
 \arguments{
 \item{reference_date}{\code{Date} value that represents the as of date.}
 
-\item{vol_quotes}{object of class \code{tibble} containing the volatility data.
-The tibble contains 3 columns: \cr
-\enumerate{
-\item \code{maturity}: containing the maturities (tenors) of the vol surface, and is
-of class \code{character} with format "yyyymmdd", \cr
-\item \code{strike} or \code{delta} or \code{moneyness}, this column is of class \code{numeric} and
-the name of this column informs on the type of the volatility surface. The moneyness
-is defined as strike/spot. \cr
-\item \code{value}, this column contains the volatility values, and is of class
-\code{numeric}.
-}}
+\item{vol_quotes}{object of class \code{\link[=VolQuotes]{VolQuotes()}} containing the volatility data.}
 
-\item{ticker}{a label for the vol object, this should be similar ticker of the underlying index}
+\item{ticker}{a \code{string} label for the vol object.}
 
 \item{interpolation}{Interplation method, given as an object of class
-interpolation \code{\link[fmbasics:Interpolation]{fmbasics::Interpolation()}}.}
+interpolation \code{\link[=Interpolation]{Interpolation()}}.}
 }
 \description{
-The \code{VolSurface} class is designed to represent volatility surfaces.
-Checks whether the dimensions of the surface correspond to the right type of axis: moneyness, delta or strike
+The \code{VolSurface} class is designed to capture the information about volatilities.
+Checks whether the data members are of the correct type.
 }
 \examples{
-vol_surface <- fmbasics::build_vol_surface()
+vol_surface <- build_vol_surface()
 }
 \seealso{
-\link{interpolate.VolSurface}
+\link{interpolate.VolSurface}, \code{\link[=build_vol_surface]{build_vol_surface()}}
 }

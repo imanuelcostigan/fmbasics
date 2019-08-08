@@ -6,7 +6,7 @@
 \alias{is.LogDFInterpolation}
 \alias{is.LinearInterpolation}
 \alias{is.CubicInterpolation}
-\alias{is.LinearTimeVarInterpolation}
+\alias{is.LinearCubicTimeVarInterpolation}
 \title{Check Interpolation class}
 \usage{
 is.Interpolation(x)
@@ -19,7 +19,7 @@ is.LinearInterpolation(x)
 
 is.CubicInterpolation(x)
 
-is.LinearTimeVarInterpolation(x)
+is.LinearCubicTimeVarInterpolation(x)
 }
 \arguments{
 \item{x}{an object}
