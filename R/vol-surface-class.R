@@ -118,22 +118,24 @@ print.VolSurface <- function(x, ...) {
 #' @seealso [VolSurface()], [build_vol_quotes()]
 #' @export
 
-VolQuotes <- function(reference_date, maturity, smile, type, value) {
-  validate_VolQuotes(new_VolQuotes(reference_date, maturity, smile, type, value))
+VolQuotes <- function(reference_date, maturity, smile, value, type) {
+  validate_VolQuotes(new_VolQuotes(reference_date, maturity, smile, value, type))
 }
 
+new_VolQuotes <- function(reference_date, maturity, smile, value, type, ...,
+  sub_class = NULL) {
 
-new_VolQuotes <- function(reference_date, maturity, smile, type, value, ...,
-                          sub_class = NULL) {
   n <- NROW(maturity)
-  structure(list(
-    reference_date = reference_date,
-    maturity = maturity,
-    smile = smile,
-    type = type,
-    value = value
-  ),
-  class = c(sub_class, "VolQuotes")
+  structure(
+    list(
+      reference_date = reference_date,
+      maturity = maturity,
+      smile = smile,
+      value = value,
+      type = type,
+      ...
+    ),
+    class = c(sub_class, "VolQuotes")
   )
 }
 
