@@ -57,8 +57,9 @@ new_VolSurface <- function(reference_date, vol_quotes, ticker, interpolation) {
 validate_VolSurface <- function(x) {
   assertthat::assert_that(
     assertthat::is.date(x$reference_date),
-    is.character(x$ticker),
-    x$vol_quotes$reference_date == x$reference_date
+    is.VolQuotes(x$vol_quotes),
+    x$vol_quotes$reference_date == x$reference_date,
+    assertthat::is.string(x$ticker),
   )
   x
 }
