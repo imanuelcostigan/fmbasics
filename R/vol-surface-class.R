@@ -14,9 +14,9 @@
 #' @export
 
 VolSurface <- function(reference_date, vol_quotes, ticker, interpolation) {
-  validate_VolSurface(new_VolSurface(
-    reference_date, vol_quotes, ticker, interpolation
-  ))
+  validate_VolSurface(
+    new_VolSurface(reference_date, vol_quotes, ticker, interpolation)
+  )
 }
 
 new_VolSurface <- function(reference_date, vol_quotes, ticker, interpolation) {
@@ -28,19 +28,18 @@ new_VolSurface <- function(reference_date, vol_quotes, ticker, interpolation) {
 
   f <- function(at) {
     if (is.LinearCubicTimeVarInterpolation(interpolation)) {
-      yf <- fmdates::year_frac(reference_date, vol_quotes$maturity, db)
-      interp_data <- tibble::tibble(
-        x = yf,
-        y = vol_quotes$smile,
-        z = yf * vol_quotes$value^2
-      )
       x0 <- fmdates::year_frac(reference_date, at$term, db)
       y0 <- at$smile
+      tt <- fmdates::year_frac(reference_date, vol_quotes$maturity, db)
+      interp_data <- tibble::tibble(
+        x = tt,
+        y = vol_quotes$smile,
+        z = tt * vol_quotes$value ^ 2
+      )
       res <- sqrt(linear_cubic_interp(interp_data, x0, y0) / x0)
       return(res)
     }
   }
-
 
   structure(
     list(
