@@ -47,8 +47,7 @@ new_VolSurface <- function(reference_date, vol_quotes, ticker, interpolation) {
       vol_quotes = vol_quotes,
       ticker = ticker,
       interpolator = f,
-      day_basis = db,
-      interpolation = interpolation
+      day_basis = db
     ),
     class = "VolSurface"
   )
