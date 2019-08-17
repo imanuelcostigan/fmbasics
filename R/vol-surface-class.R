@@ -4,11 +4,11 @@
 #' Checks whether the data members are of the correct type.
 #'
 #' @param reference_date `Date` value that represents the as of date.
-#' @param vol_quotes object of class [VolQuotes()] containing the volatility data.
-
-#' @param ticker a `string` label for the vol object.
+#' @param vol_quotes object of class [VolQuotes()] containing the volatility
+#'   data.
+#' @param ticker a string representing the vol object.
 #' @param interpolation Interplation method, given as an object of class
-#' interpolation [Interpolation()].
+#'   interpolation [Interpolation()].
 #' @seealso [interpolate.VolSurface], [build_vol_surface()]
 #' @examples vol_surface <- build_vol_surface()
 #' @export
