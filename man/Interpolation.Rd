@@ -6,6 +6,7 @@
 \alias{LogDFInterpolation}
 \alias{LinearInterpolation}
 \alias{CubicInterpolation}
+\alias{LinearCubicTimeVarInterpolation}
 \title{Interpolation}
 \usage{
 ConstantInterpolation()
@@ -15,6 +16,8 @@ LogDFInterpolation()
 LinearInterpolation()
 
 CubicInterpolation()
+
+LinearCubicTimeVarInterpolation()
 }
 \value{
 an object that inherits from the \code{Interpolation} class.

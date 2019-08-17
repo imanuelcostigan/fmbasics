@@ -33,7 +33,8 @@ This interpolates zero rates from either a \link[=ZeroCurve]{ZeroCurve} or some
 other object that contains such an object.
 }
 \seealso{
-Other interpolate functions: \code{\link{interpolate.ZeroCurve}},
+Other interpolate functions: \code{\link{interpolate.VolSurface}},
+  \code{\link{interpolate.ZeroCurve}},
   \code{\link{interpolate_dfs}}, \code{\link{interpolate}}
 }
 \concept{interpolate functions}
