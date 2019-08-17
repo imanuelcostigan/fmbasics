@@ -98,17 +98,19 @@ print.VolSurface <- function(x, ...) {
 #' inputs are of the correct type.
 #'
 #' @param reference_date object of class `Date` that captures the as of date.
-#' @param maturity  vector of class `Date` that captures the maturity pillar points.
+#' @param maturity  vector of class `Date` that captures the maturity pillar
+#'   points.
 #' @param smile  `numeric` vector containing the values of the second dimension
-#' of the volatility surface. The elements of the vector can either contain the
-#' strikes, the moneyness or the delta. The input type is specified in `type`
-#' parameter.
-#' @param type `character` string defining the second dimension of the VolSurface. The
-#' values accepted in `type` parameters are "strike", "delta" and "moneyness.
+#'   of the volatility surface. The elements of the vector can either contain
+#'   the strikes, the moneyness or the delta. The input type is specified in
+#'   `type` parameter.
+#' @param type `character` string defining the second dimension of the
+#'   VolSurface. The values accepted in `type` parameters are "strike", "delta"
+#'   and "moneyness.
 #' @param value `numeric` vector containing the values of the volatilities.
-#' @param ... other parameters that can be used in sub-classes.
 #' @return object of class `VolQuotes`.
-#' @examples vq <-  VolQuotes(reference_date = as.Date("2019-04-26"),
+#' @examples
+#' vq <-  VolQuotes(reference_date = as.Date("2019-04-26"),
 #' maturity = rep(seq(as.Date("2019-04-26")+1, by = "month", length.out = 3), 4),
 #' smile = rep(seq(10, 20, length.out = 4), each = 3),
 #' type = "strike",
