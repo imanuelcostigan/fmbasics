@@ -117,10 +117,6 @@ print.VolSurface <- function(x, ...) {
 #' @seealso [VolSurface()], [build_vol_quotes()]
 #' @export
 
-
-
-
-
 VolQuotes <- function(reference_date, maturity, smile, type, value) {
   validate_VolQuotes(new_VolQuotes(reference_date, maturity, smile, type, value))
 }
