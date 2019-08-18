@@ -53,7 +53,7 @@ build_vol_quotes <- function() {
   maturities <- as.Date(rep(dates, length(strike)), format = "%Y%m%d")
   strikes <- rep(strike, each = length(dates))
   imp_vols <- as.vector(as.matrix.data.frame(vol_data[-1, -1 ] / 100))
-  VolQuotes(reference_date, maturities, strikes, "strike", imp_vols)
+  VolQuotes(reference_date, maturities, strikes, imp_vols, "strike")
 }
 
 
