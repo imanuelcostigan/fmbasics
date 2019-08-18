@@ -21,14 +21,15 @@ the strikes, the moneyness or the delta. The input type is specified in
 
 \item{type}{\code{character} string defining the second dimension of the
 VolSurface. The values accepted in \code{type} parameters are "strike", "delta"
-and "moneyness.}
+and "moneyness. This is stored as an attribute to the tibble and can
+be extracted by calling \code{attr(x, "type")}}
 }
 \value{
 object of class \code{VolQuotes}.
 }
 \description{
 \code{VolQuotes} class is designed to capture volatility data. Checks that the
-inputs are of the correct type.
+inputs are of the correct type and stores the values in a \code{\link[tibble:tibble]{tibble::tibble()}}.
 }
 \examples{
 vq <-  VolQuotes(reference_date = as.Date("2019-04-26"),

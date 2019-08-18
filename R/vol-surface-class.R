@@ -95,7 +95,7 @@ print.VolSurface <- function(x, ...) {
 #' VolQuotes class
 #'
 #' `VolQuotes` class is designed to capture volatility data. Checks that the
-#' inputs are of the correct type.
+#' inputs are of the correct type and stores the values in a [tibble::tibble()].
 #'
 #' @param reference_date object of class `Date` that captures the as of date.
 #' @param maturity  vector of class `Date` that captures the maturity pillar
@@ -106,7 +106,8 @@ print.VolSurface <- function(x, ...) {
 #'   `type` parameter.
 #' @param type `character` string defining the second dimension of the
 #'   VolSurface. The values accepted in `type` parameters are "strike", "delta"
-#'   and "moneyness.
+#'   and "moneyness. This is stored as an attribute to the tibble and can
+#'   be extracted by calling `attr(x, "type")`
 #' @param value `numeric` vector containing the values of the volatilities.
 #' @return object of class `VolQuotes`.
 #' @examples
