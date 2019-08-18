@@ -9,9 +9,10 @@ VolSurface(reference_date, vol_quotes, ticker, interpolation)
 \arguments{
 \item{reference_date}{\code{Date} value that represents the as of date.}
 
-\item{vol_quotes}{object of class \code{\link[=VolQuotes]{VolQuotes()}} containing the volatility data.}
+\item{vol_quotes}{object of class \code{\link[=VolQuotes]{VolQuotes()}} containing the volatility
+data.}
 
-\item{ticker}{a \code{string} label for the vol object.}
+\item{ticker}{a string representing the vol object.}
 
 \item{interpolation}{Interplation method, given as an object of class
 interpolation \code{\link[=Interpolation]{Interpolation()}}.}

@@ -11,8 +11,8 @@
 
 \item{at}{indicates the coordinates at which the interpolation is performed.
 \code{at} should be given as a named list of length two, where the two members are
-vectors with the same length and are named \code{term} and \code{strike}. e.g.
-list(term = c(1, 2), strike = c(72, 92)).}
+vectors with the same length and are named \code{term} and \code{smile}. e.g.
+list(term = c(1, 2), smile = c(72, 92)).}
 
 \item{...}{unused in this model.}
 }

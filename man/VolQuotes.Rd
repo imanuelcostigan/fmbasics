@@ -4,24 +4,24 @@
 \alias{VolQuotes}
 \title{VolQuotes class}
 \usage{
-VolQuotes(reference_date, maturity, smile, type, value)
+VolQuotes(reference_date, maturity, smile, value, type)
 }
 \arguments{
 \item{reference_date}{object of class \code{Date} that captures the as of date.}
 
-\item{maturity}{vector of class \code{Date} that captures the maturity pillar points.}
+\item{maturity}{vector of class \code{Date} that captures the maturity pillar
+points.}
 
 \item{smile}{\code{numeric} vector containing the values of the second dimension
-of the volatility surface. The elements of the vector can either contain the
-strikes, the moneyness or the delta. The input type is specified in \code{type}
-parameter.}
-
-\item{type}{\code{character} string defining the second dimension of the VolSurface. The
-values accepted in \code{type} parameters are "strike", "delta" and "moneyness.}
+of the volatility surface. The elements of the vector can either contain
+the strikes, the moneyness or the delta. The input type is specified in
+\code{type} parameter.}
 
 \item{value}{\code{numeric} vector containing the values of the volatilities.}
 
-\item{...}{other parameters that can be used in sub-classes.}
+\item{type}{\code{character} string defining the second dimension of the
+VolSurface. The values accepted in \code{type} parameters are "strike", "delta"
+and "moneyness.}
 }
 \value{
 object of class \code{VolQuotes}.
