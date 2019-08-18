@@ -125,8 +125,8 @@ VolQuotes <- function(reference_date, maturity, smile, value, type) {
 new_VolQuotes <- function(reference_date, maturity, smile, value, type, ...,
   sub_class = NULL) {
 
-  structure(
-    list(
+  tibble::new_tibble(
+    x = list(
       reference_date = reference_date,
       maturity = maturity,
       smile = smile,
@@ -136,8 +136,8 @@ new_VolQuotes <- function(reference_date, maturity, smile, value, type, ...,
     ),
     class = c(sub_class, "VolQuotes")
   )
-}
 
+}
 
 validate_VolQuotes <- function(x) {
   assertthat::assert_that(
@@ -149,10 +149,6 @@ validate_VolQuotes <- function(x) {
     all(is.numeric(x$smile)),
     all(x$value > 0),
     all(x$maturity > x$reference_date),
-    !is.unsorted(unique(x$maturity)),
-    !is.unsorted(unique(x$smile)),
-    length(x$smile) == length(unique(x$smile)) *
-      length(unique(x$maturity)),
     x$type %in% c("strike", "delta", "moneyness")
   )
   x
@@ -171,9 +167,6 @@ format.VolQuotes <- function(x, ...) {
 
   vol_quotes
 }
-
-
-
 
 #' @export
 format.VolQuotes <- function(x, ...) {
