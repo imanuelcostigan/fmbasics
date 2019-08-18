@@ -59,7 +59,7 @@ validate_VolSurface <- function(x) {
     assertthat::is.date(x$reference_date),
     is.VolQuotes(x$vol_quotes),
     x$vol_quotes$reference_date == x$reference_date,
-    assertthat::is.string(x$ticker),
+    assertthat::is.string(x$ticker)
   )
   x
 }
@@ -178,25 +178,26 @@ is.VolQuotes <- function(x) {
 #'
 #' @param x object of class `VolSurface` to be interpolated.
 #' @param at indicates the coordinates at which the interpolation is performed.
-#' `at` should be given as a named list of length two, where the two members are
-#' vectors with the same length and are named `term` and `smile`. e.g.
-#' list(term = c(1, 2), smile = c(72, 92)).
+#'   `at` should be given as a [tibble::tibble()] with two column names named
+#'   `term` and `smile`. e.g. list(term = c(1, 2), smile = c(72, 92)).
 #' @param ... unused in this model.
-#' @return `numeric` vector with length equal to the length of `at` members.
-#' @examples vol_surface <- build_vol_surface()
-#' interpolation_points <- list(term = c(as.Date("2020-03-31"), as.Date("2021-03-31")),
-#' smile = c(40, 80))
-#' implied_vols <- interpolate(x = vol_surface, at  = interpolation_points)
+#' @return `numeric` vector with length equal to the number of rows of `at`.
+#' @examples
+#' x <- build_vol_surface()
+#' at <- tibble::tibble(
+#'   term = c(as.Date("2020-03-31"), as.Date("2021-03-31")),
+#'   smile = c(40, 80)
+#' )
+#' interpolate(x, at)
 #' @family interpolate functions
 #' @export
 
 interpolate.VolSurface <- function(x, at, ...) {
   assertthat::assert_that(
-    all.equal(names(at), c("term", "smile")),
-    length(at$term) == length(at$smile),
+    tibble::is.tibble(at),
+    setequal(names(at), c("term", "smile")),
     assertthat::is.date(at$term),
     is.numeric(at$smile)
   )
-
   x$interpolator(at)
 }

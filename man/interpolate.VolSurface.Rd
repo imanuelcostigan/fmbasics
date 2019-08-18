@@ -10,14 +10,13 @@
 \item{x}{object of class \code{VolSurface} to be interpolated.}
 
 \item{at}{indicates the coordinates at which the interpolation is performed.
-\code{at} should be given as a named list of length two, where the two members are
-vectors with the same length and are named \code{term} and \code{smile}. e.g.
-list(term = c(1, 2), smile = c(72, 92)).}
+\code{at} should be given as a \code{\link[tibble:tibble]{tibble::tibble()}} with two column names named
+\code{term} and \code{smile}. e.g. list(term = c(1, 2), smile = c(72, 92)).}
 
 \item{...}{unused in this model.}
 }
 \value{
-\code{numeric} vector with length equal to the length of \code{at} members.
+\code{numeric} vector with length equal to the number of rows of \code{at}.
 }
 \description{
 This method is used to interpolate a \code{VolSurface} object at multiple points of
@@ -25,10 +24,12 @@ the plane. The interpolation depends on the type of the surface, if the vols are
 given by strikes, delta, moneyness.
 }
 \examples{
-vol_surface <- build_vol_surface()
-interpolation_points <- list(term = c(as.Date("2020-03-31"), as.Date("2021-03-31")),
-smile = c(40, 80))
-implied_vols <- interpolate(x = vol_surface, at  = interpolation_points)
+x <- build_vol_surface()
+at <- tibble::tibble(
+  term = c(as.Date("2020-03-31"), as.Date("2021-03-31")),
+  smile = c(40, 80)
+)
+interpolate(x, at)
 }
 \seealso{
 Other interpolate functions: \code{\link{interpolate.ZeroCurve}},
