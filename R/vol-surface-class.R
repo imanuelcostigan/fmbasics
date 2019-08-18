@@ -125,7 +125,6 @@ VolQuotes <- function(reference_date, maturity, smile, value, type) {
 new_VolQuotes <- function(reference_date, maturity, smile, value, type, ...,
   sub_class = NULL) {
 
-  n <- NROW(maturity)
   structure(
     list(
       reference_date = reference_date,
