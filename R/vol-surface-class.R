@@ -131,9 +131,9 @@ new_VolQuotes <- function(reference_date, maturity, smile, value, type, ...,
       maturity = maturity,
       smile = smile,
       value = value,
-      type = type,
       ...
     ),
+    type = type, # store this as an attribute accessible by attr(x, "type")
     class = c(sub_class, "VolQuotes")
   )
 
@@ -149,38 +149,10 @@ validate_VolQuotes <- function(x) {
     all(is.numeric(x$smile)),
     all(x$value > 0),
     all(x$maturity > x$reference_date),
-    x$type %in% c("strike", "delta", "moneyness")
+    attr(x, "type") %in% c("strike", "delta", "moneyness")
   )
   x
 }
-
-
-#' @export
-format.VolQuotes <- function(x, ...) {
-  vol_quotes <- tibble::tibble(
-    reference_date = format(x$reference_date, "%Y%m%d"),
-    maturity = format(x$maturity, "%Y%m%d"),
-    smile = x$smile,
-    value = x$value
-  )
-  colnames(vol_quotes)[3] <- x$type
-
-  vol_quotes
-}
-
-#' @export
-format.VolQuotes <- function(x, ...) {
-  paste0("<VolQuotes> @ ", format(x$reference_date, "%e %B %Y"))
-}
-
-#' @export
-print.VolQuotes <- function(x, ...) {
-  vols_tibble <- tibble::as_tibble(x)
-
-  cat(format(x), "\n")
-  print(tibble::as_tibble(x))
-}
-
 
 #' Inherits from VolQuotes
 #'
@@ -192,31 +164,6 @@ print.VolQuotes <- function(x, ...) {
 is.VolQuotes <- function(x) {
   inherits(x, "VolQuotes")
 }
-
-
-
-#' VolQuotes attributes as a data frame
-#'
-#' Create a `tibble` that contains the pillar point maturities and strikes for
-#' VolQuotes object with the corresponding volatility.
-#'
-#' @param x a `VolQuotes` object
-#' @param ... other parameters that are not used by this methods
-#' @return a `tibble` that contains the volatility per maturity and strike.
-#' @seealso [tibble::tibble()]
-#' @importFrom tibble as_tibble
-#' @export
-as_tibble.VolQuotes <- function(x, ...) {
-  vols_tibble <- tibble::tibble(
-    maturity = format(x$maturity, "%Y%m%d"),
-    smile = x$smile,
-    value = x$value
-  )
-  colnames(vols_tibble)[2] <- x$type
-
-  vols_tibble
-}
-
 
 
 # VolSurface methods --------------------------------
