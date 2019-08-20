@@ -149,7 +149,7 @@ new_VolQuotes <- function(maturity, smile, value, reference_date, type, ...,
 
 validate_VolQuotes <- function(x) {
   assertthat::assert_that(
-    lubridate::is.Date(attr(x, "reference_date")),
+    assertthat::is.date(attr(x, "reference_date")),
     length(x$value) == length(x$maturity),
     length(x$value) == length(x$smile),
     all(lubridate::is.Date(x$maturity)),
