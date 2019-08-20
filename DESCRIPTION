@@ -25,7 +25,8 @@ Imports:
     readr,
     stats,
     tibble,
-    utils
+    utils,
+    magrittr
 Suggests: 
     covr,
     knitr,
