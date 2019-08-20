@@ -43,17 +43,17 @@ assertthat::on_failure(is_atomic_list) <- function(call, env) {
 #' @export
 build_vol_quotes <- function() {
   filepath <- system.file("extdata", "volsurface.csv", package = "fmbasics")
-  vol_data <- readr::read_csv(filepath,
-    col_names = F,
-    col_types = readr::cols(.default = "d", X1 = "c")
+  tbl <- readr::read_csv(filepath, col_types = readr::cols(.default = "d"))
+  reference_date <- lubridate::ymd(colnames(tbl)[1])
+  colnames(tbl)[1] <- "maturity"
+  tbl <- tidyr::gather(tbl, key = "smile", value = "value", -1)
+  VolQuotes(
+    lubridate::ymd(tbl$maturity),
+    as.numeric(tbl$smile) / 100,
+    tbl$value,
+    reference_date,
+    "strike"
   )
-  reference_date <- as.Date(x = vol_data$X1[1], format = "%Y%m%d")
-  dates <- vol_data$X1[-1]
-  strike <- as.numeric(vol_data[1, -1])
-  maturities <- as.Date(rep(dates, length(strike)), format = "%Y%m%d")
-  strikes <- rep(strike, each = length(dates))
-  imp_vols <- as.vector(as.matrix.data.frame(vol_data[-1, -1 ] / 100))
-  VolQuotes(reference_date, maturities, strikes, imp_vols, "strike")
 }
 
 
