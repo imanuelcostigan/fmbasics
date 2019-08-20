@@ -119,22 +119,24 @@ print.VolSurface <- function(x, ...) {
 #' @seealso [VolSurface()], [build_vol_quotes()]
 #' @export
 
-VolQuotes <- function(reference_date, maturity, smile, value, type) {
-  validate_VolQuotes(new_VolQuotes(reference_date, maturity, smile, value, type))
+VolQuotes <- function(maturity, smile, value, reference_date, type) {
+  validate_VolQuotes(
+    new_VolQuotes(maturity, smile, value, reference_date, type)
+  )
 }
 
-new_VolQuotes <- function(reference_date, maturity, smile, value, type, ...,
+new_VolQuotes <- function(maturity, smile, value, reference_date, type, ...,
   sub_class = NULL) {
 
   tibble::new_tibble(
     x = list(
-      reference_date = reference_date,
       maturity = maturity,
       smile = smile,
       value = value,
       ...
     ),
-    type = type, # store this as an attribute accessible by attr(x, "type")
+    reference_date = reference_date,
+    type = type,
     class = c(sub_class, "VolQuotes")
   )
 
@@ -142,14 +144,14 @@ new_VolQuotes <- function(reference_date, maturity, smile, value, type, ...,
 
 validate_VolQuotes <- function(x) {
   assertthat::assert_that(
-    lubridate::is.Date(x$reference_date),
+    lubridate::is.Date(attr(x, "reference_date")),
     length(x$value) == length(x$maturity),
     length(x$value) == length(x$smile),
     all(lubridate::is.Date(x$maturity)),
     all(is.numeric(x$value)),
     all(is.numeric(x$smile)),
     all(x$value > 0),
-    all(x$maturity > x$reference_date),
+    all(x$maturity > attr(x, "reference_date")),
     attr(x, "type") %in% c("strike", "delta", "moneyness")
   )
   x
