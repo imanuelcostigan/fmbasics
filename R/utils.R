@@ -52,7 +52,8 @@ build_vol_quotes <- function() {
     as.numeric(tbl$smile) / 100,
     tbl$value,
     reference_date,
-    "strike"
+    "strike",
+    "ABC.AX"
   )
 }
 
@@ -70,9 +71,7 @@ build_vol_quotes <- function() {
 
 build_vol_surface <- function() {
   VolSurface(
-    reference_date = as.Date("2019-04-26"),
     vol_quotes = build_vol_quotes(),
-    ticker = "RIOASX",
     interpolation = LinearCubicTimeVarInterpolation()
   )
 }

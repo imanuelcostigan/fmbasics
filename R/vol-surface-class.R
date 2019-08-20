@@ -3,49 +3,48 @@
 #' The `VolSurface` class is designed to capture the information about volatilities.
 #' Checks whether the data members are of the correct type.
 #'
-#' @param reference_date `Date` value that represents the as of date.
 #' @param vol_quotes object of class [VolQuotes()] containing the volatility
 #'   data.
-#' @param ticker a string representing the vol object.
 #' @param interpolation Interplation method, given as an object of class
-#'   interpolation [Interpolation()].
+#'   interpolation [Interpolation()]. At this time only the
+#'   [LinearCubicTimeVarInterpolation()] is supported.
+#' @return a `VolSurface` object
 #' @seealso [interpolate.VolSurface], [build_vol_surface()]
-#' @examples vol_surface <- build_vol_surface()
+#' @examples
+#' build_vol_surface()
 #' @export
 
-VolSurface <- function(reference_date, vol_quotes, ticker, interpolation) {
+VolSurface <- function(vol_quotes, interpolation) {
   validate_VolSurface(
-    new_VolSurface(reference_date, vol_quotes, ticker, interpolation)
+    new_VolSurface(vol_quotes, interpolation)
   )
 }
 
-new_VolSurface <- function(reference_date, vol_quotes, ticker, interpolation) {
+new_VolSurface <- function(vol_quotes, interpolation) {
   assertthat::assert_that(
     is.LinearCubicTimeVarInterpolation(interpolation)
   )
 
   db <- "act/365"
+  rd <- attr(vol_quotes, "reference_date")
 
   f <- function(at) {
     if (is.LinearCubicTimeVarInterpolation(interpolation)) {
-      x0 <- fmdates::year_frac(reference_date, at$term, db)
+      x0 <- fmdates::year_frac(rd, at$term, db)
       y0 <- at$smile
-      tt <- fmdates::year_frac(reference_date, vol_quotes$maturity, db)
-      interp_data <- tibble::tibble(
+      tt <- fmdates::year_frac(rd, vol_quotes$maturity, db)
+      tbl <- tibble::tibble(
         x = tt,
         y = vol_quotes$smile,
         z = tt * vol_quotes$value ^ 2
       )
-      res <- sqrt(linear_cubic_interp(interp_data, x0, y0) / x0)
-      return(res)
+      sqrt(linear_cubic_interp(tbl, x0, y0) / x0)
     }
   }
 
   structure(
     list(
-      reference_date = reference_date,
       vol_quotes = vol_quotes,
-      ticker = ticker,
       interpolator = f,
       day_basis = db
     ),
@@ -56,10 +55,7 @@ new_VolSurface <- function(reference_date, vol_quotes, ticker, interpolation) {
 
 validate_VolSurface <- function(x) {
   assertthat::assert_that(
-    assertthat::is.date(x$reference_date),
-    is.VolQuotes(x$vol_quotes),
-    x$vol_quotes$reference_date == x$reference_date,
-    assertthat::is.string(x$ticker)
+    is.VolQuotes(x$vol_quotes)
   )
   x
 }
@@ -80,8 +76,14 @@ is.VolSurface <- function(x) {
 #' @export
 format.VolSurface <- function(x, ...) {
   cat(
-    paste0("<VolSurface> @", format(x$reference_date, "%e %B %Y")), "\n",
-    paste0(x$ticker, "  ", format(x$interpolation))
+    paste0(
+      "<VolSurface> @ ",
+      format(attr(x$vol_quotes, "reference_date"), "%e %B %Y")
+    ), "\n",
+    paste0(
+      attr(x$vol_quotes, "ticker"), "  ",
+      x$interpolation
+    )
   )
 }
 
@@ -140,7 +142,7 @@ new_VolQuotes <- function(maturity, smile, value, reference_date, type, ticker,
     x = list(
       maturity = maturity,
       smile = smile,
-      value = value,
+      value = value
     ),
     reference_date = reference_date,
     type = type,
