@@ -97,25 +97,30 @@ print.VolSurface <- function(x, ...) {
 #' `VolQuotes` class is designed to capture volatility data. Checks that the
 #' inputs are of the correct type and stores the values in a [tibble::tibble()].
 #'
-#' @param reference_date object of class `Date` that captures the as of date.
 #' @param maturity  vector of class `Date` that captures the maturity pillar
 #'   points.
 #' @param smile  `numeric` vector containing the values of the second dimension
 #'   of the volatility surface. The elements of the vector can either contain
 #'   the strikes, the moneyness or the delta. The input type is specified in
 #'   `type` parameter.
+#' @param value `numeric` vector containing the values of the volatilities.
+#' @param reference_date object of class `Date` that captures the as of date.
+#'   This is stored as an attribute to the tibble and can be extracted by
+#'   calling `attr(x, "reference_date")`
 #' @param type `character` string defining the second dimension of the
 #'   VolSurface. The values accepted in `type` parameters are "strike", "delta"
 #'   and "moneyness. This is stored as an attribute to the tibble and can
 #'   be extracted by calling `attr(x, "type")`
-#' @param value `numeric` vector containing the values of the volatilities.
 #' @return object of class `VolQuotes`.
 #' @examples
-#' vq <-  VolQuotes(reference_date = as.Date("2019-04-26"),
-#' maturity = rep(seq(as.Date("2019-04-26")+1, by = "month", length.out = 3), 4),
-#' smile = rep(seq(10, 20, length.out = 4), each = 3),
-#' type = "strike",
-#' value = seq(1, 0.1, length.out = 12 ))
+#' pillars <- seq(as.Date("2019-04-26") + 1, by = "month", length.out = 3)
+#' VolQuotes(
+#'   maturity = rep(pillars, 4),
+#'   smile = rep(seq(10, 20, length.out = 4), each = 3),
+#'   value = seq(1, 0.1, length.out = 12),
+#'   reference_date = as.Date("2019-04-26"),
+#'   type = "strike"
+#' )
 #' @seealso [VolSurface()], [build_vol_quotes()]
 #' @export
 
