@@ -97,21 +97,24 @@ print.VolSurface <- function(x, ...) {
 #' `VolQuotes` class is designed to capture volatility data. Checks that the
 #' inputs are of the correct type and stores the values in a [tibble::tibble()].
 #'
-#' @param maturity  vector of class `Date` that captures the maturity pillar
+#' @param maturity Date vector that captures the maturity pillar
 #'   points.
-#' @param smile  `numeric` vector containing the values of the second dimension
+#' @param smile numeric vector containing the values of the second dimension
 #'   of the volatility surface. The elements of the vector can either contain
 #'   the strikes, the moneyness or the delta. The input type is specified in
 #'   `type` parameter.
-#' @param value `numeric` vector containing the values of the volatilities.
-#' @param reference_date object of class `Date` that captures the as of date.
+#' @param value numeric vector containing the values of the volatilities.
+#' @param reference_date `Date` that captures the as of date. This is stored as
+#'   an attribute to the tibble and can be extracted by calling
+#'   `attr(x, "reference_date")`
+#' @param type string defining the second dimension of the VolSurface. The
+#'   values accepted in `type` parameters are "strike", "delta" and "moneyness.
 #'   This is stored as an attribute to the tibble and can be extracted by
-#'   calling `attr(x, "reference_date")`
-#' @param type `character` string defining the second dimension of the
-#'   VolSurface. The values accepted in `type` parameters are "strike", "delta"
-#'   and "moneyness. This is stored as an attribute to the tibble and can
-#'   be extracted by calling `attr(x, "type")`
-#' @return object of class `VolQuotes`.
+#'   calling `attr(x, "type")`
+#' @param ticker string that represents the underlying asset. This is stored as
+#'   an attribute to the tibble and can be extracted by calling
+#'   `attr(x, "ticker")`
+#' @return object of class `VolQuotes`
 #' @examples
 #' pillars <- seq(as.Date("2019-04-26") + 1, by = "month", length.out = 3)
 #' VolQuotes(
@@ -124,24 +127,25 @@ print.VolSurface <- function(x, ...) {
 #' @seealso [VolSurface()], [build_vol_quotes()]
 #' @export
 
-VolQuotes <- function(maturity, smile, value, reference_date, type) {
+VolQuotes <- function(maturity, smile, value, reference_date, type, ticker) {
   validate_VolQuotes(
-    new_VolQuotes(maturity, smile, value, reference_date, type)
+    new_VolQuotes(maturity, smile, value, reference_date, type, ticker)
   )
 }
 
-new_VolQuotes <- function(maturity, smile, value, reference_date, type, ...,
-  sub_class = NULL) {
+new_VolQuotes <- function(maturity, smile, value, reference_date, type, ticker,
+  ..., sub_class = NULL) {
 
   tibble::new_tibble(
     x = list(
       maturity = maturity,
       smile = smile,
       value = value,
-      ...
     ),
     reference_date = reference_date,
     type = type,
+    ticker = ticker,
+    ...,
     class = c(sub_class, "VolQuotes")
   )
 
@@ -157,7 +161,8 @@ validate_VolQuotes <- function(x) {
     all(is.numeric(x$smile)),
     all(x$value > 0),
     all(x$maturity > attr(x, "reference_date")),
-    attr(x, "type") %in% c("strike", "delta", "moneyness")
+    attr(x, "type") %in% c("strike", "delta", "moneyness"),
+    assertthat::is.string(attr(x, "ticker"))
   )
   x
 }
