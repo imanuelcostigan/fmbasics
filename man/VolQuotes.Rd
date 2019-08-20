@@ -4,11 +4,9 @@
 \alias{VolQuotes}
 \title{VolQuotes class}
 \usage{
-VolQuotes(reference_date, maturity, smile, value, type)
+VolQuotes(maturity, smile, value, reference_date, type)
 }
 \arguments{
-\item{reference_date}{object of class \code{Date} that captures the as of date.}
-
 \item{maturity}{vector of class \code{Date} that captures the maturity pillar
 points.}
 
@@ -18,6 +16,10 @@ the strikes, the moneyness or the delta. The input type is specified in
 \code{type} parameter.}
 
 \item{value}{\code{numeric} vector containing the values of the volatilities.}
+
+\item{reference_date}{object of class \code{Date} that captures the as of date.
+This is stored as an attribute to the tibble and can be extracted by
+calling \code{attr(x, "reference_date")}}
 
 \item{type}{\code{character} string defining the second dimension of the
 VolSurface. The values accepted in \code{type} parameters are "strike", "delta"
@@ -32,11 +34,14 @@ object of class \code{VolQuotes}.
 inputs are of the correct type and stores the values in a \code{\link[tibble:tibble]{tibble::tibble()}}.
 }
 \examples{
-vq <-  VolQuotes(reference_date = as.Date("2019-04-26"),
-maturity = rep(seq(as.Date("2019-04-26")+1, by = "month", length.out = 3), 4),
-smile = rep(seq(10, 20, length.out = 4), each = 3),
-type = "strike",
-value = seq(1, 0.1, length.out = 12 ))
+pillars <- seq(as.Date("2019-04-26") + 1, by = "month", length.out = 3)
+VolQuotes(
+  maturity = rep(pillars, 4),
+  smile = rep(seq(10, 20, length.out = 4), each = 3),
+  value = seq(1, 0.1, length.out = 12),
+  reference_date = as.Date("2019-04-26"),
+  type = "strike"
+)
 }
 \seealso{
 \code{\link[=VolSurface]{VolSurface()}}, \code{\link[=build_vol_quotes]{build_vol_quotes()}}
