@@ -3,13 +3,17 @@
 
 # fmbasics - Financial Market Building Blocks
 
-[![CRAN\_Status\_Badge](https://www.r-pkg.org/badges/version/fmbasics)](https://cran.r-project.org/package=fmbasics)
+<!-- badges: start -->
+
+[![CRAN
+status](https://www.r-pkg.org/badges/version/fmbasics)](https://CRAN.R-project.org/package=fmbasics)
 [![Travis-CI Build
 Status](https://travis-ci.org/imanuelcostigan/fmbasics.svg?branch=master)](https://travis-ci.org/imanuelcostigan/fmbasics)
 [![AppVeyor Build
 Status](https://ci.appveyor.com/api/projects/status/github/imanuelcostigan/fmbasics?branch=master&svg=true)](https://ci.appveyor.com/project/imanuelcostigan/fmbasics)
 [![Coverage
 Status](https://img.shields.io/codecov/c/github/imanuelcostigan/fmbasics/master.svg)](https://codecov.io/github/imanuelcostigan/fmbasics?branch=master)
+<!-- badges: end -->
 
 Implements basic financial market objects like currencies, currency
 pairs, interest rates and interest rate indices. You will be able to use
