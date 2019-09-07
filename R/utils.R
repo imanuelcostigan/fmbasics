@@ -49,8 +49,8 @@ build_vol_quotes <- function() {
   tbl <- tidyr::gather(tbl, key = "smile", value = "value", -1)
   VolQuotes(
     lubridate::ymd(tbl$maturity),
-    as.numeric(tbl$smile) / 100,
-    tbl$value,
+    as.numeric(tbl$smile),
+    tbl$value / 100,
     reference_date,
     "strike",
     "ABC.AX"
