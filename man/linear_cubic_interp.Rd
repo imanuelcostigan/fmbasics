@@ -19,12 +19,14 @@ and natural cubic spline on the second dimension.
 }
 \examples{
 vols <- build_vol_quotes()
- interp_data <- tibble::tibble(x = fmdates::year_frac(vols$reference_date,
-as.Date(vols$maturity,"\%Y\%m\%d"), "act/365"),
-y = vols$smile,
-z = vols$value)
+interp_data <- tibble::tibble(
+  x = fmdates::year_frac(attr(vols, "reference_date"),
+    as.Date(vols$maturity,"\%Y\%m\%d"), "act/365"),
+  y = vols$smile,
+  z = vols$value
+)
 x0 <- c(2.5, 3.5)
 y0 <- c(22, 55)
-linear_cubic_interp(interp_data = interp_data, x0 = x0, y0 = y0)
+linear_cubic_interp(interp_data, x0 = x0, y0 = y0)
 }
 \keyword{internal}
