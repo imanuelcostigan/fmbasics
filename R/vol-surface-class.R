@@ -126,7 +126,8 @@ print.VolSurface <- function(x, ...) {
 #'   smile = rep(seq(10, 20, length.out = 4), each = 3),
 #'   value = seq(1, 0.1, length.out = 12),
 #'   reference_date = as.Date("2019-04-26"),
-#'   type = "strike"
+#'   type = "strike",
+#'   ticker = "ABC.AX"
 #' )
 #' @seealso [VolSurface()], [build_vol_quotes()]
 #' @export

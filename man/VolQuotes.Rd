@@ -13,10 +13,11 @@ points.}
 \item{smile}{numeric vector containing the values of the second dimension
 of the volatility surface. The elements of the vector can either contain
 the strikes, the moneyness or the delta. The input type is specified in
-\code{type} parameter.}
+\code{type} parameter. Must be the same length as \code{maturity}}
 
 \item{value}{numeric vector containing the values of the volatilities. Should
-typically be represented as a decimal value (e.g. 30\% should be 0.3).}
+typically be represented as a decimal value (e.g. 30\% should be 0.3) and
+must be the same length as \code{maturity}}
 
 \item{reference_date}{\code{Date} that captures the as of date. This is stored as
 an attribute to the tibble and can be extracted by calling
@@ -45,7 +46,8 @@ VolQuotes(
   smile = rep(seq(10, 20, length.out = 4), each = 3),
   value = seq(1, 0.1, length.out = 12),
   reference_date = as.Date("2019-04-26"),
-  type = "strike"
+  type = "strike",
+  ticker = "ABC.AX"
 )
 }
 \seealso{
