@@ -6,7 +6,7 @@
 #' @param vol_quotes object of class [VolQuotes()] containing the volatility
 #'   data.
 #' @param interpolation Interplation method, given as an object of class
-#'   interpolation [Interpolation()]. At this time only the
+#'   interpolation [Interpolation()]. At this time only
 #'   [LinearCubicTimeVarInterpolation()] is supported. This is a two-dimensional
 #'   interpolator that uses linear interpolation in the time dimension and cubic
 #'   splines in the smile dimension with the values interpolated being the
@@ -14,7 +14,7 @@
 #' @return a `VolSurface` object
 #' @seealso [interpolate.VolSurface], [build_vol_surface()]
 #' @examples
-#' build_vol_surface()
+#' VolSurface(build_vol_quotes(), LinearCubicTimeVarInterpolation())
 #' @export
 
 VolSurface <- function(vol_quotes, interpolation) {

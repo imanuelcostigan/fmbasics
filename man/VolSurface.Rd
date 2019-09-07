@@ -11,7 +11,7 @@ VolSurface(vol_quotes, interpolation)
 data.}
 
 \item{interpolation}{Interplation method, given as an object of class
-interpolation \code{\link[=Interpolation]{Interpolation()}}. At this time only the
+interpolation \code{\link[=Interpolation]{Interpolation()}}. At this time only
 \code{\link[=LinearCubicTimeVarInterpolation]{LinearCubicTimeVarInterpolation()}} is supported. This is a two-dimensional
 interpolator that uses linear interpolation in the time dimension and cubic
 splines in the smile dimension with the values interpolated being the
@@ -25,7 +25,7 @@ The \code{VolSurface} class is designed to capture implied volatility informatio
 along with information about how to interpolate an implied volatility between nodes.
 }
 \examples{
-build_vol_surface()
+VolSurface(build_vol_quotes(), LinearCubicTimeVarInterpolation())
 }
 \seealso{
 \link{interpolate.VolSurface}, \code{\link[=build_vol_surface]{build_vol_surface()}}
