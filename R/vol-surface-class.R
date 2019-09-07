@@ -104,9 +104,10 @@ print.VolSurface <- function(x, ...) {
 #' @param smile numeric vector containing the values of the second dimension
 #'   of the volatility surface. The elements of the vector can either contain
 #'   the strikes, the moneyness or the delta. The input type is specified in
-#'   `type` parameter.
+#'   `type` parameter. Must be the same length as `maturity`
 #' @param value numeric vector containing the values of the volatilities. Should
-#'   typically be represented as a decimal value (e.g. 30\% should be 0.3).
+#'   typically be represented as a decimal value (e.g. 30\% should be 0.3) and
+#'   must be the same length as `maturity`
 #' @param reference_date `Date` that captures the as of date. This is stored as
 #'   an attribute to the tibble and can be extracted by calling
 #'   `attr(x, "reference_date")`
@@ -145,6 +146,7 @@ new_VolQuotes <- function(maturity, smile, value, reference_date, type, ticker,
       smile = smile,
       value = value
     ),
+    nrow = length(maturity),
     reference_date = reference_date,
     type = type,
     ticker = ticker,
