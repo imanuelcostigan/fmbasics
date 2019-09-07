@@ -105,7 +105,8 @@ print.VolSurface <- function(x, ...) {
 #'   of the volatility surface. The elements of the vector can either contain
 #'   the strikes, the moneyness or the delta. The input type is specified in
 #'   `type` parameter.
-#' @param value numeric vector containing the values of the volatilities.
+#' @param value numeric vector containing the values of the volatilities. Should
+#'   typically be represented as a decimal value (e.g. 30\% should be 0.3).
 #' @param reference_date `Date` that captures the as of date. This is stored as
 #'   an attribute to the tibble and can be extracted by calling
 #'   `attr(x, "reference_date")`
