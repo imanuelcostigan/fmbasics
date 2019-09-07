@@ -1,13 +1,16 @@
 #' VolSurface class
 #'
-#' The `VolSurface` class is designed to capture the information about volatilities.
-#' Checks whether the data members are of the correct type.
+#' The `VolSurface` class is designed to capture implied volatility information
+#' along with information about how to interpolate an implied volatility between nodes.
 #'
 #' @param vol_quotes object of class [VolQuotes()] containing the volatility
 #'   data.
 #' @param interpolation Interplation method, given as an object of class
 #'   interpolation [Interpolation()]. At this time only the
-#'   [LinearCubicTimeVarInterpolation()] is supported.
+#'   [LinearCubicTimeVarInterpolation()] is supported. This is a two-dimensional
+#'   interpolator that uses linear interpolation in the time dimension and cubic
+#'   splines in the smile dimension with the values interpolated being the
+#'   square of the implied volatilities. Return values are implied volatilies
 #' @return a `VolSurface` object
 #' @seealso [interpolate.VolSurface], [build_vol_surface()]
 #' @examples
