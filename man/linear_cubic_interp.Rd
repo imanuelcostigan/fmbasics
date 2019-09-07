@@ -27,3 +27,4 @@ x0 <- c(2.5, 3.5)
 y0 <- c(22, 55)
 linear_cubic_interp(interp_data = interp_data, x0 = x0, y0 = y0)
 }
+\keyword{internal}
