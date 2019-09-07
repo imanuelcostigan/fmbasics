@@ -54,20 +54,26 @@ to_maturity <- function(dates, index) UseMethod("to_maturity", index)
 #' @rdname indexshifters
 #' @export
 to_reset.default <- function(dates, index) {
-  fmdates::shift(dates, -index$spot_lag,
-    index$day_convention, index$calendar, index$is_eom)
+  fmdates::shift(
+    dates, -index$spot_lag,
+    index$day_convention, index$calendar, index$is_eom
+  )
 }
 #' @rdname indexshifters
 #' @export
 to_value.default <- function(dates, index) {
-  fmdates::shift(dates, index$spot_lag,
-    index$day_convention, index$calendar, index$is_eom)
+  fmdates::shift(
+    dates, index$spot_lag,
+    index$day_convention, index$calendar, index$is_eom
+  )
 }
 #' @rdname indexshifters
 #' @export
 to_maturity.default <- function(dates, index) {
-  fmdates::shift(dates, index$tenor,
-    index$day_convention, c(index$pfc_calendar, index$calendar), index$is_eom)
+  fmdates::shift(
+    dates, index$tenor,
+    index$day_convention, c(index$pfc_calendar, index$calendar), index$is_eom
+  )
 }
 
 

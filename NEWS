@@ -1,5 +1,10 @@
 # Version 0.3.99
 
+NEW:
+
+- `VolQuotes()` and `VolSurface()` allow you to create volatility surfaces. The latter can be interpolated by a two-dimensional interpolator via `LinearCubicTimeVarInterpolation()` which uses linear interpolation in the maturity dimension (x), cubic splines in the smile dimension (y) for  implied volatility squared (variance, z).
+- Implemented a `VolSurface` method for `interpolate()`.
+
 IMPROVED:
 
 - Rebuilt documentation using newer version of `roxygen2`

@@ -2,30 +2,37 @@ Type: Package
 Package: fmbasics
 Title: Financial Market Building Blocks
 Version: 0.3.99
-Authors@R: person("Imanuel", "Costigan", email = "i.costigan@me.com", 
-                  role = c("aut", "cre"))
-Description: Implements basic financial market objects like currencies, currency
-  pairs, interest rates and interest rate indices. You will be able to use
-  Benchmark instances of these objects which have been defined using their most
-  common conventions or those defined by International Swap Dealer Association
-  (ISDA, <https://www.isda.org>) legal documentation. 
+Authors@R: c(person(given = "Imanuel", family = "Costigan", role = c("aut", "cre"),
+                    email = "i.costigan@me.com"),
+             person(given = "Sayf", family = "Hamada", role = "ctb",
+                    email = "sayfeddine.hamada@westpac.com.au"))
+Description: Implements basic financial market objects like
+    currencies, currency pairs, interest rates and interest rate indices.
+    You will be able to use Benchmark instances of these objects which
+    have been defined using their most common conventions or those defined
+    by International Swap Dealer Association (ISDA,
+    <https://www.isda.org>) legal documentation.
 License: GPL-2
-URL: https://github.com/imanuelcostigan/fmbasics, https://imanuelcostigan.github.io/fmbasics/
+URL: https://github.com/imanuelcostigan/fmbasics,
+    https://imanuelcostigan.github.io/fmbasics/
 BugReports: https://github.com/imanuelcostigan/fmbasics/issues
 Imports: 
-  assertthat,
-  fmdates (>= 0.1.2),
-  lubridate (>= 1.6.0),
-  methods,
-  stats,
-  tibble,
-  utils
+    assertthat,
+    fmdates (>= 0.1.2),
+    lubridate (>= 1.6.0),
+    methods,
+    readr,
+    stats,
+    tibble,
+    utils,
+    tidyr
 Suggests: 
-  covr,
-  knitr,
-  rmarkdown,
-  testthat
-VignetteBuilder: knitr
+    covr,
+    knitr,
+    rmarkdown,
+    testthat
+VignetteBuilder: 
+    knitr
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
