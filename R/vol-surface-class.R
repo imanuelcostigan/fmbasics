@@ -30,7 +30,7 @@ new_VolSurface <- function(vol_quotes, interpolation) {
 
   f <- function(at) {
     if (is.LinearCubicTimeVarInterpolation(interpolation)) {
-      x0 <- fmdates::year_frac(rd, at$term, db)
+      x0 <- fmdates::year_frac(rd, at$maturity, db)
       y0 <- at$smile
       tt <- fmdates::year_frac(rd, vol_quotes$maturity, db)
       tbl <- tibble::tibble(
@@ -197,13 +197,13 @@ is.VolQuotes <- function(x) {
 #' @param x object of class `VolSurface` to be interpolated.
 #' @param at indicates the coordinates at which the interpolation is performed.
 #'   `at` should be given as a [tibble::tibble()] with two column names named
-#'   `term` and `smile`. e.g. list(term = c(1, 2), smile = c(72, 92)).
+#'   `maturity` and `smile`. e.g. list(maturity = c(1, 2), smile = c(72, 92)).
 #' @param ... unused in this model.
 #' @return `numeric` vector with length equal to the number of rows of `at`.
 #' @examples
 #' x <- build_vol_surface()
 #' at <- tibble::tibble(
-#'   term = c(as.Date("2020-03-31"), as.Date("2021-03-31")),
+#'   maturity = c(as.Date("2020-03-31"), as.Date("2021-03-31")),
 #'   smile = c(40, 80)
 #' )
 #' interpolate(x, at)
@@ -213,8 +213,8 @@ is.VolQuotes <- function(x) {
 interpolate.VolSurface <- function(x, at, ...) {
   assertthat::assert_that(
     tibble::is_tibble(at),
-    setequal(names(at), c("term", "smile")),
-    assertthat::is.date(at$term),
+    setequal(names(at), c("maturity", "smile")),
+    assertthat::is.date(at$maturity),
     is.numeric(at$smile)
   )
   x$interpolator(at)
