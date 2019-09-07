@@ -2,11 +2,10 @@ Type: Package
 Package: fmbasics
 Title: Financial Market Building Blocks
 Version: 0.3.99
-Authors@R: 
-    person(given = "Imanuel",
-           family = "Costigan",
-           role = c("aut", "cre"),
-           email = "i.costigan@me.com")
+Authors@R: c(person(given = "Imanuel", family = "Costigan", role = c("aut", "cre"),
+                    email = "i.costigan@me.com"),
+             person(given = "Sayf", family = "Hamada", role = "ctb",
+                    email = "sayfeddine.hamada@westpac.com.au"))
 Description: Implements basic financial market objects like
     currencies, currency pairs, interest rates and interest rate indices.
     You will be able to use Benchmark instances of these objects which
