@@ -186,39 +186,3 @@ validate_VolQuotes <- function(x) {
 is.VolQuotes <- function(x) {
   inherits(x, "VolQuotes")
 }
-
-
-# VolSurface methods --------------------------------
-
-
-#' Interpolate a `VolSurface` object.
-#'
-#' This method is used to interpolate a `VolSurface` object at multiple points of
-#' the plane. The interpolation depends on the type of the surface, if the vols are
-#' given by strikes, delta, moneyness.
-#'
-#' @param x object of class `VolSurface` to be interpolated.
-#' @param at indicates the coordinates at which the interpolation is performed.
-#'   `at` should be given as a [tibble::tibble()] with two column names named
-#'   `maturity` and `smile`. e.g. list(maturity = c(1, 2), smile = c(72, 92)).
-#' @param ... unused in this model.
-#' @return `numeric` vector with length equal to the number of rows of `at`.
-#' @examples
-#' x <- build_vol_surface()
-#' at <- tibble::tibble(
-#'   maturity = c(as.Date("2020-03-31"), as.Date("2021-03-31")),
-#'   smile = c(40, 80)
-#' )
-#' interpolate(x, at)
-#' @family interpolate functions
-#' @export
-
-interpolate.VolSurface <- function(x, at, ...) {
-  assertthat::assert_that(
-    tibble::is_tibble(at),
-    setequal(names(at), c("maturity", "smile")),
-    assertthat::is.date(at$maturity),
-    is.numeric(at$smile)
-  )
-  x$interpolator(at)
-}
