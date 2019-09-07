@@ -4,25 +4,25 @@
 \alias{VolSurface}
 \title{VolSurface class}
 \usage{
-VolSurface(reference_date, vol_quotes, ticker, interpolation)
+VolSurface(vol_quotes, interpolation)
 }
 \arguments{
-\item{reference_date}{\code{Date} value that represents the as of date.}
-
 \item{vol_quotes}{object of class \code{\link[=VolQuotes]{VolQuotes()}} containing the volatility
 data.}
 
-\item{ticker}{a string representing the vol object.}
-
 \item{interpolation}{Interplation method, given as an object of class
-interpolation \code{\link[=Interpolation]{Interpolation()}}.}
+interpolation \code{\link[=Interpolation]{Interpolation()}}. At this time only the
+\code{\link[=LinearCubicTimeVarInterpolation]{LinearCubicTimeVarInterpolation()}} is supported.}
+}
+\value{
+a \code{VolSurface} object
 }
 \description{
 The \code{VolSurface} class is designed to capture the information about volatilities.
 Checks whether the data members are of the correct type.
 }
 \examples{
-vol_surface <- build_vol_surface()
+build_vol_surface()
 }
 \seealso{
 \link{interpolate.VolSurface}, \code{\link[=build_vol_surface]{build_vol_surface()}}

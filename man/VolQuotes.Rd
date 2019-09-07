@@ -4,30 +4,35 @@
 \alias{VolQuotes}
 \title{VolQuotes class}
 \usage{
-VolQuotes(maturity, smile, value, reference_date, type)
+VolQuotes(maturity, smile, value, reference_date, type, ticker)
 }
 \arguments{
-\item{maturity}{vector of class \code{Date} that captures the maturity pillar
+\item{maturity}{Date vector that captures the maturity pillar
 points.}
 
-\item{smile}{\code{numeric} vector containing the values of the second dimension
+\item{smile}{numeric vector containing the values of the second dimension
 of the volatility surface. The elements of the vector can either contain
 the strikes, the moneyness or the delta. The input type is specified in
 \code{type} parameter.}
 
-\item{value}{\code{numeric} vector containing the values of the volatilities.}
+\item{value}{numeric vector containing the values of the volatilities. Should
+typically be represented as a decimal value (e.g. 30\% should be 0.3).}
 
-\item{reference_date}{object of class \code{Date} that captures the as of date.
+\item{reference_date}{\code{Date} that captures the as of date. This is stored as
+an attribute to the tibble and can be extracted by calling
+\code{attr(x, "reference_date")}}
+
+\item{type}{string defining the second dimension of the VolSurface. The
+values accepted in \code{type} parameters are "strike", "delta" and "moneyness.
 This is stored as an attribute to the tibble and can be extracted by
-calling \code{attr(x, "reference_date")}}
+calling \code{attr(x, "type")}}
 
-\item{type}{\code{character} string defining the second dimension of the
-VolSurface. The values accepted in \code{type} parameters are "strike", "delta"
-and "moneyness. This is stored as an attribute to the tibble and can
-be extracted by calling \code{attr(x, "type")}}
+\item{ticker}{string that represents the underlying asset. This is stored as
+an attribute to the tibble and can be extracted by calling
+\code{attr(x, "ticker")}}
 }
 \value{
-object of class \code{VolQuotes}.
+object of class \code{VolQuotes}
 }
 \description{
 \code{VolQuotes} class is designed to capture volatility data. Checks that the
