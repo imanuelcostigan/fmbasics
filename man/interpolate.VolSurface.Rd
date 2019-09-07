@@ -11,7 +11,7 @@
 
 \item{at}{indicates the coordinates at which the interpolation is performed.
 \code{at} should be given as a \code{\link[tibble:tibble]{tibble::tibble()}} with two column names named
-\code{term} and \code{smile}. e.g. list(term = c(1, 2), smile = c(72, 92)).}
+\code{maturity} and \code{smile}. e.g. list(maturity = c(1, 2), smile = c(72, 92)).}
 
 \item{...}{unused in this model.}
 }
@@ -26,7 +26,7 @@ given by strikes, delta, moneyness.
 \examples{
 x <- build_vol_surface()
 at <- tibble::tibble(
-  term = c(as.Date("2020-03-31"), as.Date("2021-03-31")),
+  maturity = c(as.Date("2020-03-31"), as.Date("2021-03-31")),
   smile = c(40, 80)
 )
 interpolate(x, at)

@@ -12,14 +12,17 @@ data.}
 
 \item{interpolation}{Interplation method, given as an object of class
 interpolation \code{\link[=Interpolation]{Interpolation()}}. At this time only the
-\code{\link[=LinearCubicTimeVarInterpolation]{LinearCubicTimeVarInterpolation()}} is supported.}
+\code{\link[=LinearCubicTimeVarInterpolation]{LinearCubicTimeVarInterpolation()}} is supported. This is a two-dimensional
+interpolator that uses linear interpolation in the time dimension and cubic
+splines in the smile dimension with the values interpolated being the
+square of the implied volatilities. Return values are implied volatilies}
 }
 \value{
 a \code{VolSurface} object
 }
 \description{
-The \code{VolSurface} class is designed to capture the information about volatilities.
-Checks whether the data members are of the correct type.
+The \code{VolSurface} class is designed to capture implied volatility information
+along with information about how to interpolate an implied volatility between nodes.
 }
 \examples{
 build_vol_surface()
