@@ -2,9 +2,8 @@
 
 NEW:
 
-- `VolQuotes()` and `VolSurface()` allow you to create volatility surfaces.
-- `LinearCubicTimeVarInterpolation()` is a two dimensional interpolator that allows you to interpolate linearly in the maturity dimension and using cubic splines in the smile dimension when coupled with `VolSurface`.
-- Implemented a `VolSurface` method for `interpolate()`
+- `VolQuotes()` and `VolSurface()` allow you to create volatility surfaces. The latter can be interpolated by a two-dimensional interpolator via `LinearCubicTimeVarInterpolation()` which uses linear interpolation in the maturity dimension (x), cubic splines in the smile dimension (y) for  implied volatility squared (variance, z).
+- Implemented a `VolSurface` method for `interpolate()`.
 
 IMPROVED:
 
