@@ -209,7 +209,7 @@ is.VolQuotes <- function(x) {
 
 interpolate.VolSurface <- function(x, at, ...) {
   assertthat::assert_that(
-    tibble::is.tibble(at),
+    tibble::is_tibble(at),
     setequal(names(at), c("term", "smile")),
     assertthat::is.date(at$term),
     is.numeric(at$smile)
