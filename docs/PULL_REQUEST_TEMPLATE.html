@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Interpolate forward rates and discount factors — interpolate_dfs • fmbasics</title>
+<title>NA • fmbasics</title>
 
 
 <!-- jquery -->
@@ -29,16 +29,13 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
-<link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script>
+<link href="pkgdown.css" rel="stylesheet">
+<script src="pkgdown.js"></script>
 
 
 
 
-<meta property="og:title" content="Interpolate forward rates and discount factors — interpolate_dfs" />
-<meta property="og:description" content="This interpolates forward rates and forward discount factors from either a
-ZeroCurve or some other object that contains such an object." />
-<meta name="twitter:card" content="summary" />
+<meta property="og:title" content="NA" />
 
 
 
@@ -57,7 +54,7 @@ ZeroCurve or some other object that contains such an object." />
   </head>
 
   <body>
-    <div class="container template-reference-topic">
+    <div class="container template-title-body">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -69,7 +66,7 @@ ZeroCurve or some other object that contains such an object." />
         <span class="icon-bar"></span>
       </button>
       <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">fmbasics</a>
+        <a class="navbar-link" href="index.html">fmbasics</a>
         <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.99</span>
       </span>
     </div>
@@ -77,13 +74,13 @@ ZeroCurve or some other object that contains such an object." />
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../index.html">
+  <a href="index.html">
     <span class="fas fa fas fa-home fa-lg"></span>
      
   </a>
 </li>
 <li>
-  <a href="../reference/index.html">Reference</a>
+  <a href="reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -93,10 +90,10 @@ ZeroCurve or some other object that contains such an object." />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/basics.html">Currencies, currency pairs and indices</a>
+      <a href="articles/basics.html">Currencies, currency pairs and indices</a>
     </li>
     <li>
-      <a href="../articles/rates.html">Rates and Discount Factors</a>
+      <a href="articles/rates.html">Rates and Discount Factors</a>
     </li>
   </ul>
 </li>
@@ -119,73 +116,26 @@ ZeroCurve or some other object that contains such an object." />
       </header>
 
 <div class="row">
-  <div class="col-md-9 contents">
+  <div class="contents col-md-9">
     <div class="page-header">
-    <h1>Interpolate forward rates and discount factors</h1>
-    <small class="dont-index">Source: <a href='https://github.com/imanuelcostigan/fmbasics/blob/master/R/generic-methods.R'><code>R/generic-methods.R</code></a>, <a href='https://github.com/imanuelcostigan/fmbasics/blob/master/R/interpolation-class.R'><code>R/interpolation-class.R</code></a></small>
-    <div class="hidden name"><code>interpolate_dfs.Rd</code></div>
+      <h1>NA</h1>
     </div>
 
-    <div class="ref-description">
-    <p>This interpolates forward rates and forward discount factors from either a
-<a href='ZeroCurve.html'>ZeroCurve</a> or some other object that contains such an object.</p>
-    </div>
 
-    <pre class="usage"><span class='fu'>interpolate_dfs</span>(<span class='no'>x</span>, <span class='no'>from</span>, <span class='no'>to</span>, <span class='no'>...</span>)
+<p>Fixes #.</p>
+<p>Changes proposed:</p>
+<ul>
+<li>
+<li>
+<li>
+</ul>
+<p>@imanuelcostigan</p>
 
-<span class='fu'>interpolate_fwds</span>(<span class='no'>x</span>, <span class='no'>from</span>, <span class='no'>to</span>, <span class='no'>...</span>)
-
-<span class='co'># S3 method for ZeroCurve</span>
-<span class='fu'>interpolate_fwds</span>(<span class='no'>x</span>, <span class='no'>from</span>, <span class='no'>to</span>, <span class='no'>...</span>)
-
-<span class='co'># S3 method for ZeroCurve</span>
-<span class='fu'>interpolate_dfs</span>(<span class='no'>x</span>, <span class='no'>from</span>, <span class='no'>to</span>, <span class='no'>...</span>)</pre>
-
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>x</th>
-      <td><p>the object to interpolate</p></td>
-    </tr>
-    <tr>
-      <th>from</th>
-      <td><p>a <a href='https://rdrr.io/r/base/Dates.html'>Date</a> vector representing the start of the forward period</p></td>
-    </tr>
-    <tr>
-      <th>to</th>
-      <td><p>a <a href='https://rdrr.io/r/base/Dates.html'>Date</a> vector representing the end of the forward period</p></td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td><p>further arguments passed to specific methods</p></td>
-    </tr>
-    </table>
-
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p><code>interpolate_dfs</code> returns a <a href='DiscountFactor.html'>DiscountFactor</a> object
-of forward discount factors while <code>interpolate_fwds</code> returns an
-<a href='InterestRate.html'>InterestRate</a> object of interpolated simply compounded
-forward rates.</p>
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <div class='dont-index'><p>Other interpolate functions: <code><a href='interpolate.VolSurface.html'>interpolate.VolSurface</a></code>,
-  <code><a href='interpolate.ZeroCurve.html'>interpolate.ZeroCurve</a></code>,
-  <code><a href='interpolate_zeros.html'>interpolate_zeros</a></code>,
-  <code><a href='interpolate.html'>interpolate</a></code></p></div>
 
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#value">Value</a></li>
-      <li><a href="#see-also">See also</a></li>
-    </ul>
 
-  </div>
 </div>
+
 
 
       <footer>

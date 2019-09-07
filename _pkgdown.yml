@@ -58,6 +58,14 @@ reference:
       - interpolate_dfs
       - interpolate_fwds
       - as_tibble.ZeroCurve
+  - title: "Volatility surfaces"
+    desc: "Creating and working with volatility surfaces"
+    contents:
+      - VolSurface
+      - VolQuotes
+      - is.VolSurface
+      - is.VolQuotes
+      - interpolate.VolSurface
   - title: "Interpolation schemes"
     desc: "Light weight classes that define interpolation schemes"
     contents:
@@ -70,3 +78,5 @@ reference:
       - oniaindices
       - iborindices
       - build_zero_curve
+      - build_vol_quotes
+      - build_vol_surface
