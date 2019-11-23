@@ -7,10 +7,8 @@
 
 [![CRAN
 status](https://www.r-pkg.org/badges/version/fmbasics)](https://CRAN.R-project.org/package=fmbasics)
-[![Travis-CI Build
-Status](https://travis-ci.org/imanuelcostigan/fmbasics.svg?branch=master)](https://travis-ci.org/imanuelcostigan/fmbasics)
-[![AppVeyor Build
-Status](https://ci.appveyor.com/api/projects/status/github/imanuelcostigan/fmbasics?branch=master&svg=true)](https://ci.appveyor.com/project/imanuelcostigan/fmbasics)
+[![GitHub
+Actions](https://github.com/imanuelcostigan/fmbasics/workflows/R-CMD-check/badge.svg)](https://github.com/imanuelcostigan/fmbasics/actions?workflow=R-CMD-check)
 [![Coverage
 Status](https://img.shields.io/codecov/c/github/imanuelcostigan/fmbasics/master.svg)](https://codecov.io/github/imanuelcostigan/fmbasics?branch=master)
 <!-- badges: end -->
@@ -68,8 +66,7 @@ to_maturity(as.Date("2017-01-20"), USDLIBOR(months(3)))
 ## Interest rates and discount factors
 
 You can create and perform basic manipulation of interest rates and
-discount
-factors:
+discount factors:
 
 ``` r
 rr <- InterestRate(value = 0.01, compounding = Inf, day_basis = "act/365")
