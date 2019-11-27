@@ -25,7 +25,8 @@ Imports:
     stats,
     tibble,
     utils,
-    tidyr
+    tidyr,
+    credule
 Suggests: 
     covr,
     knitr,
