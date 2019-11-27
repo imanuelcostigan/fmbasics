@@ -1,0 +1,70 @@
+on: [push, pull_request]
+
+name: R-CMD-check
+
+jobs:
+  R-CMD-check:
+    runs-on: ${{ matrix.config.os }}
+    name: ${{ matrix.config.os }} (${{ matrix.config.r }})
+    strategy:
+      fail-fast: true
+      matrix:
+        config:
+        - { os: windows-latest, r: '3.6', args: "--no-manual" }
+        - { os: windows-latest, r: 'devel', args: "--no-manual" }
+        - { os: macOS-latest, r: '3.5' }
+        - { os: macOS-latest, r: '3.6' }
+        - { os: ubuntu-latest, r: '3.6', cran: "https://demo.rstudiopm.com/all/__linux__/bionic/latest", args: "--no-manual" }
+    env:
+      R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
+      CRAN: ${{ matrix.config.cran }}
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v1
+      - name: Setup R
+        uses: r-lib/actions/setup-r@master
+        with:
+          r-version: ${{ matrix.config.r }}
+      - name: Setup pandoc
+        uses: r-lib/actions/setup-pandoc@master
+      - name: Setup TinyTeX
+        uses: r-lib/actions/setup-tinytex@master
+        if: contains(matrix.config.args, 'no-manual') == false
+      - name: Cache R packages
+        uses: actions/cache@v1
+        with:
+          path: ${{ env.R_LIBS_USER }}
+          key: ${{ runner.os }}-r-${{ matrix.config.r }}-${{ hashFiles('DESCRIPTION') }}
+      - name: Install system dependencies
+        if: runner.os == 'Linux'
+        env:
+          RHUB_PLATFORM: linux-x86_64-ubuntu-gcc
+        run: |
+          Rscript -e "install.packages('remotes')"
+          Rscript -e "remotes::install_github('r-hub/sysreqs')"
+          sysreqs=$(Rscript -e "cat(sysreqs::sysreq_commands('DESCRIPTION'))")
+          sudo -s eval "$sysreqs"
+      - name: Install dependencies
+        run: |
+          Rscript -e "install.packages('remotes')"
+          Rscript -e "remotes::install_deps(dependencies = TRUE)"
+      - name: Install check tools
+        run: Rscript -e "remotes::install_cran('rcmdcheck')"
+      - name: R session info # sessioninfo is a reverse dep of {{rcmdcheck}}
+        run: Rscript -e "sessioninfo::platform_info()"
+      - name: Check
+        run: Rscript -e "rcmdcheck::rcmdcheck(args = '${{ matrix.config.args }}', error_on = 'warning', check_dir = 'check')"
+      - name: Make check directory
+        if: failure()
+        run: mkdir -p check
+      - name: Upload check results
+        if: failure()
+        uses: actions/upload-artifact@v1
+        with:
+          name: ${{ runner.os }}-r${{ matrix.config.r }}-results
+          path: check
+      - name: Test coverage
+        if: matrix.config.os == 'macOS-latest' && matrix.config.r == '3.6'
+        run: |
+          Rscript -e 'remotes::install_github("r-lib/covr@gh-actions")'
+          Rscript -e 'covr::codecov(token = "${{secrets.CODECOV_TOKEN}}")'

@@ -1,7 +1,10 @@
-urls:
-  reference: http://imanuelcostigan.github.io/fmbasics/reference
-  article: http://imanuelcostigan.github.io/fmbasics/articles
+pandoc: 2.3.1
+pkgdown: 1.4.0
+pkgdown_sha: ~
 articles:
   basics: basics.html
   rates: rates.html
+urls:
+  reference: http://imanuelcostigan.github.io/fmbasics/reference
+  article: http://imanuelcostigan.github.io/fmbasics/articles
 
