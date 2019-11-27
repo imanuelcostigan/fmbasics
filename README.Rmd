@@ -14,8 +14,9 @@ knitr::opts_chunk$set(
 
 # fmbasics - Financial Market Building Blocks
 
-[![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/fmbasics)](https://cran.r-project.org/package=fmbasics) [![Travis-CI Build Status](https://travis-ci.org/imanuelcostigan/fmbasics.svg?branch=master)](https://travis-ci.org/imanuelcostigan/fmbasics) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/imanuelcostigan/fmbasics?branch=master&svg=true)](https://ci.appveyor.com/project/imanuelcostigan/fmbasics) [![Coverage Status](https://img.shields.io/codecov/c/github/imanuelcostigan/fmbasics/master.svg)](https://codecov.io/github/imanuelcostigan/fmbasics?branch=master)
-
+<!-- badges: start -->
+[![CRAN status](https://www.r-pkg.org/badges/version/fmbasics)](https://CRAN.R-project.org/package=fmbasics) [![GitHub Actions](https://github.com/imanuelcostigan/fmbasics/workflows/R-CMD-check/badge.svg)](https://github.com/imanuelcostigan/fmbasics/actions?workflow=R-CMD-check) [![Coverage Status](https://img.shields.io/codecov/c/github/imanuelcostigan/fmbasics/master.svg)](https://codecov.io/github/imanuelcostigan/fmbasics?branch=master)
+<!-- badges: end -->
 
 Implements basic financial market objects like currencies, currency pairs,
 interest rates and interest rate indices. You will be able to use Benchmark
@@ -85,5 +86,17 @@ interpolate_zeros(zc, ymd(20170331))
 interpolate_fwds(zc, ymd(20170331), ymd(20170630))
 interpolate_dfs(zc, ymd(20170331), ymd(20170630))
 ```
+
+Basic support for creating and interpolating volatility surfaces is possible:
+
+```{r}
+vs <- build_vol_surface()
+at <- tibble::tibble(
+ maturity = as.Date(c("2020-03-31", "2021-03-31")),
+ smile = c(0.40, 0.80)
+)
+interpolate(vs, at)
+```
+
 
 Further details can be found in this package's help pages and vignettes (`vignette(package = "fmbasics")`) 
