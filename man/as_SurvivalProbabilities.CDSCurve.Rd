@@ -10,6 +10,8 @@ The output of bootstrapping is a vector of cumulative survival probabilities.}
   num_timesteps_pa = 12, accrued_premium = TRUE)
 }
 \arguments{
+\item{x}{An object of type \code{CDSCurve}}
+
 \item{zero_curve}{An object of type \code{ZeroCurve}}
 
 \item{num_timesteps_pa}{It represents the number of timesteps used to perform the numerical integral
@@ -18,8 +20,6 @@ usually gives a good approximation (Ref. Valuation of Credit Default Swaps, Domi
 Stuart Turnbull)}
 
 \item{accrued_premium}{If set to TRUE, the accrued premium will be taken into account in the calculation of the premium leg value.}
-
-\item{cds_curve}{An object of type \code{CDSCurve}}
 }
 \value{
 An object of type \code{SurvivalProbabilitiesCurve}
@@ -28,17 +28,4 @@ An object of type \code{SurvivalProbabilitiesCurve}
 Bootstraps Survival Probabilitie from a CDS curve
 Using \href{https://www.rdocumentation.org/packages/credule/versions/0.1.3}{credule package.}
 The output of bootstrapping is a vector of cumulative survival probabilities.
-}
-\examples{
-
-
-zero_curve <- build_zero_curve()
-specs <- CDSMarkitSpec(rating = "AAA", region = "Japan", sector = "Utilities")
-cds_curve <- CDSCurve(
- reference_date = zero_curve$reference_date,
-   tenors = c(1, 3, 5, 7), spreads = c(0.0050, 0.0070, 0.0090, 0.0110), lgd = .6,
-   premium_frequency = 4, specs = curve_specs)
-as_SurvivalProbabilities(x = cds_curve, zero_curve = zero_curve)
-
-
 }

@@ -19,6 +19,16 @@ basis for internal storage purposes}
 }
 \value{
 a \code{CreditCurve} object
+curve_specs <- CDSMarkitSpec(rating = "AAA", region = "Japan", sector = "Utilities")
+zero_curve <- build_zero_curve()
+ref_date <- zero_curve$reference_date
+specs <- CDSMarkitSpec(rating = "AAA", region = "Japan", sector = "Utilities")
+cds_curve <- CDSCurve(reference_date = ref_date, tenors = c(1, 3, 5, 7),
+spreads = c(0.0050, 0.0070, 0.0090, 0.0110), lgd = .6, premium_frequency = 4,
+specs = curve_specs)
+sp <- as_SurvivalProbabilities(x = cds_curve, zero_curve = zero_curve)
+CreditCurve(survival_probabilities = sp, reference_date =ref_date,
+interpolation =  CubicInterpolation(), specs = curve_specs)
 }
 \description{
 A class that defines the bare bones of a credit curve pricing
@@ -37,18 +47,6 @@ The following interpolation schemes are supported by \code{ZeroCurve}:
 \code{ConstantInterpolation}, \code{LinearInterpolation}, \code{LogDFInterpolation} and
 \code{CubicInterpolation}. Points outside the calibration region use constant
 extrapolation on the zero hazard rate.
-}
-\examples{
-curve_specs <- CDSMarkitSpec(rating = "AAA", region = "Japan", sector = "Utilities")
-zero_curve <- build_zero_curve()
-ref_date <- zero_curve$reference_date
-specs <- CDSMarkitSpec(rating = "AAA", region = "Japan", sector = "Utilities")
-cds_curve <- CDSCurve(reference_date = ref_date, tenors = c(1, 3, 5, 7),
-spreads = c(0.0050, 0.0070, 0.0090, 0.0110), lgd = .6, premium_frequency = 4,
-specs = curve_specs)
-sp <- as_SurvivalProbabilities(x = cds_curve, zero_curve = zero_curve)
-CreditCurve(survival_probabilities = sp, reference_date =ref_date,
- interpolation =  CubicInterpolation(), specs = curve_specs)
 }
 \seealso{
 \link{Interpolation}

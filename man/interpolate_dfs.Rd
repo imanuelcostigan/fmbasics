@@ -44,7 +44,7 @@ This interpolates forward rates and forward discount factors from either a
 \seealso{
 Other interpolate functions: \code{\link{interpolate.CreditCurve}},
   \code{\link{interpolate.ZeroCurve}},
-  \code{\link{interpolate_zeros}},
+  \code{\link{interpolate_zeros.CreditCurve}},
   \code{\link{interpolate}}
 }
 \concept{interpolate functions}

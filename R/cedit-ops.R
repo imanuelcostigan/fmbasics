@@ -81,7 +81,7 @@ c.ZeroHazardRate <- function (..., recursive = FALSE) {
 
 #' @export
 `[.ZeroHazardRate` <- function (x, i, j, ..., drop = TRUE) {
-  new_ZeroHazardRate(x$value[i], x$compounding[i], x$day_basis[i], spec = x$specs[i])
+  new_ZeroHazardRate(x$value[i], x$compounding[i], x$day_basis[i], specs = x$specs[i])
 }
 
 
@@ -265,7 +265,7 @@ c.SurvivalProbabilities <- function (..., recursive = FALSE) {
 
 #' @export
 `[.SurvivalProbabilities` <- function (x, i, j, ..., drop = TRUE) {
-  new_SurvivalProbabilities(x$value[i], x$start_date[i], x$end_date[i], spec = x$specs[i])
+  new_SurvivalProbabilities(x$value[i], x$start_date[i], x$end_date[i], specs = x$specs[i])
 }
 
 #' @export

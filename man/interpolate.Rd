@@ -21,6 +21,6 @@ Interpolate values from an object
 Other interpolate functions: \code{\link{interpolate.CreditCurve}},
   \code{\link{interpolate.ZeroCurve}},
   \code{\link{interpolate_dfs.CreditCurve}},
-  \code{\link{interpolate_zeros}}
+  \code{\link{interpolate_zeros.CreditCurve}}
 }
 \concept{interpolate functions}

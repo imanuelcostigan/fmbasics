@@ -19,20 +19,6 @@ Create a \code{tibble} that contains the pillar point maturities in years (using
 the \code{act/365} convention) and the corresponding continuously compounded zero
 rates.
 }
-\examples{
-curve_specs <- CDSMarkitSpec(rating = "AAA", region = "Japan", sector = "Utilities")
-zero_curve <- build_zero_curve()
-ref_date <- zero_curve$reference_date
-specs <- CDSMarkitSpec(rating = "AAA", region = "Japan", sector = "Utilities")
-cds_curve <- CDSCurve(reference_date = ref_date,
-tenors = c(1, 3, 5, 7), spreads = c(0.0050, 0.0070, 0.0090, 0.0110), lgd = .6,
-premium_frequency = 4, specs = curve_specs)
-sp <- as_SurvivalProbabilities(x = cds_curve, zero_curve = zero_curve)
-cc <- CreditCurve(survival_probabilities = sp,
- reference_date =ref_date, interpolation =  LinearInterpolation(),
- specs = curve_specs)
- as_tibble(cc)
-}
 \seealso{
 \code{\link[tibble:tibble]{tibble::tibble()}}
 }

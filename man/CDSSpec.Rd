@@ -22,7 +22,7 @@ Object of type \code{CDSSpec}
 }
 \description{
 This class will enable you to specify CDS curves. It is used by
-\code{\link[=SurvivalProbabilitiesCurve]{SurvivalProbabilitiesCurve()}} and \code{\link[=ZeroHazardCurve]{ZeroHazardCurve()}}.
+\code{\link[=SurvivalProbabilities]{SurvivalProbabilities()}} and \code{\link[=ZeroHazardRate]{ZeroHazardRate()}}.
 }
 \examples{
 CDSSpec(rank = "SubTier3")

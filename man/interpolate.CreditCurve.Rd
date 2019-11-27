@@ -31,7 +31,7 @@ interpolate(zc, c(1.5, 3))
 \seealso{
 Other interpolate functions: \code{\link{interpolate.ZeroCurve}},
   \code{\link{interpolate_dfs.CreditCurve}},
-  \code{\link{interpolate_zeros}},
+  \code{\link{interpolate_zeros.CreditCurve}},
   \code{\link{interpolate}}
 }
 \concept{interpolate functions}

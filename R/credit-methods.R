@@ -1,10 +1,18 @@
+#' Coerce to InterestRate
+#'
+#' You can coerce objects to the `SurvivalProbabilities` class using this method.
+#'
+#' @param x object to coerce
+#' @param ... other parameters passed to methods
+#' @return an `SurvivalProbabilities` object
+#' @export
 as_SurvivalProbabilities <- function(x, ...) UseMethod("as_SurvivalProbabilities")
 
 #' Bootstraps Survival Probabilitie from a CDS curve
 #' Using \href{https://www.rdocumentation.org/packages/credule/versions/0.1.3}{credule package.}
 #' The output of bootstrapping is a vector of cumulative survival probabilities.
 #'
-#' @param cds_curve An object of type `CDSCurve`
+#' @param x An object of type `CDSCurve`
 #' @param zero_curve An object of type `ZeroCurve`
 #' @param num_timesteps_pa It represents the number of timesteps used to perform the numerical integral
 #'  required while computing the default leg value. It is shown that a monthly discretisation
@@ -13,24 +21,14 @@ as_SurvivalProbabilities <- function(x, ...) UseMethod("as_SurvivalProbabilities
 #' @param accrued_premium If set to TRUE, the accrued premium will be taken into account in the calculation of the premium leg value.
 #'
 #' @return An object of type `SurvivalProbabilitiesCurve`
-#' @examples
-#'
-#'
-#'zero_curve <- build_zero_curve()
-#'specs <- CDSMarkitSpec(rating = "AAA", region = "Japan", sector = "Utilities")
-#'cds_curve <- CDSCurve(
-#'  reference_date = zero_curve$reference_date,
-#'    tenors = c(1, 3, 5, 7), spreads = c(0.0050, 0.0070, 0.0090, 0.0110), lgd = .6,
-#'    premium_frequency = 4, specs = curve_specs)
-#'as_SurvivalProbabilities(x = cds_curve, zero_curve = zero_curve)
-#'
-#'
+
 as_SurvivalProbabilities.CDSCurve <- function(x,
-                                        zero_curve,
-                                        num_timesteps_pa = 12,
-                                        accrued_premium = TRUE) {
-  if (cds_curve$reference_date != zero_curve$reference_date) {
-    stop("The reference dates for CDS Curve and the Zero Curve are different", call. = FALSE)
+  zero_curve,
+  num_timesteps_pa = 12,
+  accrued_premium = TRUE) {
+  if (x$reference_date != zero_curve$reference_date) {
+    stop("The reference dates for CDS Curve and the Zero Curve are different",
+      call. = FALSE)
   }
   if (!is.ZeroCurve(zero_curve)) {
     stop("zero_curve must be an object of type ZeroCurve", call. = FALSE)
@@ -39,20 +37,20 @@ as_SurvivalProbabilities.CDSCurve <- function(x,
   sp_output <- credule::bootstrapCDS(
     yieldcurveTenor = zero_curve$pillar_times,
     yieldcurveRate = zero_curve$pillar_zeros,
-    cdsTenors = cds_curve$tenors,
-    cdsSpreads = cds_curve$spread,
-    recoveryRate = 1 - cds_curve$lgd,
-    numberPremiumPerYear = cds_curve$premium_frequency,
+    cdsTenors = x$tenors,
+    cdsSpreads = x$spread,
+    recoveryRate = 1 - x$lgd,
+    numberPremiumPerYear = x$premium_frequency,
     numberDefaultIntervalPerYear = num_timesteps_pa,
     accruedPremium = accrued_premium
   )
 
 
   SurvivalProbabilities(
-    d1 = cds_curve$reference_date,
-    d2 = cds_curve$reference_date + 365 * cds_curve$tenors,
+    d1 = x$reference_date,
+    d2 = x$reference_date + 365 * x$tenors,
     values = sp_output$survprob,
-    specs = cds_curve$specs
+    specs = x$specs
   )
 }
 
@@ -60,9 +58,14 @@ as_SurvivalProbabilities.CDSCurve <- function(x,
 #' @inheritParams SurvivalProbabilities
 #' @rdname as_SurvivalProbabilities
 #' @examples
+#' curve_specs <- CDSMarkitSpec(
+#'   rating = "AAA",
+#'   region = "Japan",
+#'   sector = "Utilities"
+#' )
 #' HR <- ZeroHazardRate(values = c(0.04, 0.05), compounding = c(2, 4),
-#' day_basis = 'act/365', specs = specs)
-#' as_SurvivalProbabilities(HR, ymd(20160202), ymd(20160302))
+#' day_basis = 'act/365', specs = curve_specs)
+#' as_SurvivalProbabilities(HR, lubridate::ymd(20160202), lubridate::ymd(20160302))
 #' @export
 as_SurvivalProbabilities.ZeroHazardRate <- function(x, d1, d2, ...) {
   assertthat::assert_that(
@@ -100,7 +103,7 @@ as_SurvivalProbabilities.ZeroHazardRate <- function(x, d1, d2, ...) {
 #' @return an `ZeroHazardRate` object
 #' @examples
 #' library("lubridate")
-#' as_InterestRate(SurvivalProbabilities(0.95, ymd(20130101), ymd(20140101), CDSSpec("Empty")),
+#' as_ZeroHazardRate(SurvivalProbabilities(0.95, ymd(20130101), ymd(20140101), CDSSpec("Empty")),
 #'   compounding = 2, day_basis = "act/365")
 #' @export
 as_ZeroHazardRate <- function(x, ...) UseMethod("as_ZeroHazardRate")

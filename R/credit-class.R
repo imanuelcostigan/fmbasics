@@ -1,7 +1,7 @@
 #' Build a `CDSSpec`
 #'
 #' This class will enable you to specify CDS curves. It is used by
-#' [SurvivalProbabilitiesCurve()] and [ZeroHazardCurve()].
+#' [SurvivalProbabilities()] and [ZeroHazardRate()].
 #'
 #' @param rank Seniority of the reference debt. Must be one of the following
 #'   options: "SNR" for Senior, "SubTier3" for Subordinate Tier 3,
@@ -188,7 +188,7 @@ validate_CDSCurve <- function(x) {
 #' typically be bootstrapped from a [CDSCurve()].
 #'
 #' @inheritParams CDSCurve
-#' @param survival_probabilities a vector of survival probabilities corresponding to each
+#' @param values a vector of survival probabilities corresponding to each
 #'   time step in `tenors`.
 #' @param d1 a `Date` vector containing the as of date
 #' @param d2 a `Date` vector containing the date to which the survival probability
@@ -233,19 +233,22 @@ validate_SurvivalProbabilities <- function(x) {
 #' Builds a `ZeroHazardRate`
 #'
 #' This will allow you to create a harzard rate curve. This will typically be
-#' bootstrapped or implied from a [CDSCurve()] or [SurvivalProbabilitiesCurve()].
+#' bootstrapped or implied from a [CDSCurve()] or [SurvivalProbabilities()].
 #'
 #' @inheritParams CDSCurve
-#' @param hazard_rates a vector of hazard rates corresponding to each time step
 #' in `tenors`
-#' @param value a numeric vector containing zero hazard rate values (as decimals).
+#' @param values a numeric vector containing zero hazard rate values (as decimals).
 #' @param compounding a numeric vector representing the [compounding] frequency.
 #' @param day_basis a character vector representing the day basis associated
 #'   with the interest rate and hazard rate(see [fmdates::year_frac()])
 #' @param specs CDS curve specifications that inherits from [CDSSpec()]
 #' @return returns an object of type `hazard_rates`
 #' @examples
-#'
+#' curve_specs <- CDSMarkitSpec(
+#'   rating = "AAA",
+#'   region = "Japan",
+#'   sector = "Utilities"
+#' )
 #' ZeroHazardRate(values = c(0.04, 0.05), compounding = c(2, 4),
 #' day_basis =  'act/365', specs = curve_specs )
 #'
@@ -306,8 +309,6 @@ validate_ZeroHazardRate <- function(x) {
 #' @param specs CDS curve specifications that inherits from [CDSSpec()]
 #'
 #' @return a `CreditCurve` object
-#'
-#' @examples
 #' curve_specs <- CDSMarkitSpec(rating = "AAA", region = "Japan", sector = "Utilities")
 #' zero_curve <- build_zero_curve()
 #' ref_date <- zero_curve$reference_date
@@ -318,6 +319,9 @@ validate_ZeroHazardRate <- function(x) {
 #' sp <- as_SurvivalProbabilities(x = cds_curve, zero_curve = zero_curve)
 #' CreditCurve(survival_probabilities = sp, reference_date =ref_date,
 #'  interpolation =  CubicInterpolation(), specs = curve_specs)
+#'
+#'
+#'
 #' @export
 #' @seealso [Interpolation]
 CreditCurve <- function(survival_probabilities, reference_date, interpolation,
@@ -576,6 +580,11 @@ format.ZeroHazardRate <- function(x, ...) {
 print.ZeroHazardRate <- function(x, ...) {cat(format(x), "\n"); invisible(x)}
 
 
+#' Inherits from CreditCurve
+#'
+#' Checks whether object inherits from `CreditCurve` class
+#' @param x an R Object
+#' @return `TRUE` if `x` inherits from the `CreditCurve` class; otherwise `FALSE`
 #' @export
 is.CreditCurve <- function(x) {
   inherits(x, "CreditCurve")
@@ -603,19 +612,6 @@ print.CreditCurve <- function(x, ...) {
 #' @return a `tibble` with two columns named `Years` and `Zero Hazard Rates`.
 #' @seealso [tibble::tibble()]
 #' @importFrom tibble as_tibble
-#' @examples
-#' curve_specs <- CDSMarkitSpec(rating = "AAA", region = "Japan", sector = "Utilities")
-#' zero_curve <- build_zero_curve()
-#' ref_date <- zero_curve$reference_date
-#' specs <- CDSMarkitSpec(rating = "AAA", region = "Japan", sector = "Utilities")
-#' cds_curve <- CDSCurve(reference_date = ref_date,
-#' tenors = c(1, 3, 5, 7), spreads = c(0.0050, 0.0070, 0.0090, 0.0110), lgd = .6,
-#' premium_frequency = 4, specs = curve_specs)
-#' sp <- as_SurvivalProbabilities(x = cds_curve, zero_curve = zero_curve)
-#' cc <- CreditCurve(survival_probabilities = sp,
-#'  reference_date =ref_date, interpolation =  LinearInterpolation(),
-#'  specs = curve_specs)
-#'  as_tibble(cc)
 #' @export
 as_tibble.CreditCurve <- function(x, ...) {
   tibble::tibble(
@@ -648,7 +644,7 @@ interpolate.CreditCurve <- function(x, at, ...) {
   x$interpolator(at)
 }
 
-#' @rdname interpolate_zeros *edit interpolate zero
+#' @rdname interpolate_zeros
 #' @export
 interpolate_zeros.CreditCurve <- function(x, at, compounding = NULL, day_basis = NULL, ...) {
 

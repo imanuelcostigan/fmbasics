@@ -32,6 +32,6 @@ You can coerce objects to the \code{ZeroHazardRate} class using this method.
 }
 \examples{
 library("lubridate")
-as_InterestRate(SurvivalProbabilities(0.95, ymd(20130101), ymd(20140101), CDSSpec("Empty")),
+as_ZeroHazardRate(SurvivalProbabilities(0.95, ymd(20130101), ymd(20140101), CDSSpec("Empty")),
   compounding = 2, day_basis = "act/365")
 }
