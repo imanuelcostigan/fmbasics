@@ -19,9 +19,6 @@ as_SurvivalProbabilities(x, ...)
 \item{d2}{a \code{Date} vector containing the date to which the survival probability
 applies}
 }
-\value{
-an \code{SurvivalProbabilities} object
-}
 \description{
 You can coerce objects to the \code{SurvivalProbabilities} class using this method.
 }

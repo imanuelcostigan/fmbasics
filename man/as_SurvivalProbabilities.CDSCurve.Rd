@@ -7,7 +7,7 @@ Using \href{https://www.rdocumentation.org/packages/credule/versions/0.1.3}{cred
 The output of bootstrapping is a vector of cumulative survival probabilities.}
 \usage{
 \method{as_SurvivalProbabilities}{CDSCurve}(x, zero_curve,
-  num_timesteps_pa = 12, accrued_premium = TRUE)
+  num_timesteps_pa = 12, accrued_premium = TRUE, ...)
 }
 \arguments{
 \item{x}{An object of type \code{CDSCurve}}
@@ -20,9 +20,13 @@ usually gives a good approximation (Ref. Valuation of Credit Default Swaps, Domi
 Stuart Turnbull)}
 
 \item{accrued_premium}{If set to TRUE, the accrued premium will be taken into account in the calculation of the premium leg value.}
+
+\item{...}{other parameters passed to methods}
 }
 \value{
 An object of type \code{SurvivalProbabilitiesCurve}
+
+an \code{SurvivalProbabilities} object
 }
 \description{
 Bootstraps Survival Probabilitie from a CDS curve

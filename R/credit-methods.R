@@ -4,7 +4,6 @@
 #'
 #' @param x object to coerce
 #' @param ... other parameters passed to methods
-#' @return an `SurvivalProbabilities` object
 #' @export
 as_SurvivalProbabilities <- function(x, ...) UseMethod("as_SurvivalProbabilities")
 
@@ -19,13 +18,23 @@ as_SurvivalProbabilities <- function(x, ...) UseMethod("as_SurvivalProbabilities
 #'   usually gives a good approximation (Ref. Valuation of Credit Default Swaps, Dominic O Kane and
 #'   Stuart Turnbull)
 #' @param accrued_premium If set to TRUE, the accrued premium will be taken into account in the calculation of the premium leg value.
-#'
+#' @param ... other parameters passed to methods
 #' @return An object of type `SurvivalProbabilitiesCurve`
-
+#' @return an `SurvivalProbabilities` object
+#' @example
+#' zero_curve <- build_zero_curve()
+# curve_specs <- CDSMarkitSpec(rating = "AAA", region = "Japan", sector = "Utilities")
+# cds_curve1 <- CDSCurve(
+#  reference_date = zero_curve$reference_date,
+#    tenors = c(1, 3, 5, 7), spreads = c(0.0050, 0.0070, 0.0090, 0.0110), lgd = .6,
+#    premium_frequency = 4, specs = curve_specs)
+# as_SurvivalProbabilities(x = cds_curve1, zero_curve = zero_curve)
+#' @export
+#'
 as_SurvivalProbabilities.CDSCurve <- function(x,
   zero_curve,
   num_timesteps_pa = 12,
-  accrued_premium = TRUE) {
+  accrued_premium = TRUE, ...) {
   if (x$reference_date != zero_curve$reference_date) {
     stop("The reference dates for CDS Curve and the Zero Curve are different",
       call. = FALSE)
