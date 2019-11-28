@@ -19,6 +19,7 @@ Interpolate values from an object
 }
 \seealso{
 Other interpolate functions: \code{\link{interpolate.CreditCurve}},
+  \code{\link{interpolate.VolSurface}},
   \code{\link{interpolate.ZeroCurve}},
   \code{\link{interpolate_dfs.CreditCurve}},
   \code{\link{interpolate_zeros.CreditCurve}}
