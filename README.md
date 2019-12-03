@@ -96,26 +96,25 @@ plot(zc$pillar_times, zc$pillar_zeros, xlab = 'Years', ylab = 'Zero')
 
 ``` r
 interpolate(zc, year_frac(zc$reference_date, ymd(20170331), "act/365"))
-#> [1] 0.01858073
+#> [1] 0.0187453
 interpolate_zeros(zc, ymd(20170331))
-#> <InterestRate> 1.858073%, CONTINUOUS, ACT/365
+#> <InterestRate> 1.87453%, CONTINUOUS, ACT/365
 interpolate_fwds(zc, ymd(20170331), ymd(20170630))
-#> <InterestRate> 1.837645%, SIMPLE, ACT/365
+#> <InterestRate> 1.837274%, SIMPLE, ACT/365
 interpolate_dfs(zc, ymd(20170331), ymd(20170630))
-#> <DiscountFactor> 0.995439369532595, 2017-03-31--2017-06-30
+#> <DiscountFactor> 0.995440285935839, 2017-03-31--2017-06-30
 ```
 
 Basic support for creating and interpolating volatility surfaces is
 possible:
 
 ``` r
-vs <- build_vol_surface()
-at <- tibble::tibble(
- maturity = as.Date(c("2020-03-31", "2021-03-31")),
- smile = c(0.40, 0.80)
-)
-interpolate(vs, at)
-#> [1] 0.6001969 0.6042421
+# vs <- build_vol_surface()
+# at <- tibble::tibble(
+#  maturity = as.Date(c("2020-03-31", "2021-03-31")),
+#  smile = c(0.40, 0.80)
+# )
+# interpolate(vs, at)
 ```
 
 Further details can be found in this package’s help pages and vignettes

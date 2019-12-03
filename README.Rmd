@@ -90,12 +90,12 @@ interpolate_dfs(zc, ymd(20170331), ymd(20170630))
 Basic support for creating and interpolating volatility surfaces is possible:
 
 ```{r}
-vs <- build_vol_surface()
-at <- tibble::tibble(
- maturity = as.Date(c("2020-03-31", "2021-03-31")),
- smile = c(0.40, 0.80)
-)
-interpolate(vs, at)
+# vs <- build_vol_surface()
+# at <- tibble::tibble(
+#  maturity = as.Date(c("2020-03-31", "2021-03-31")),
+#  smile = c(0.40, 0.80)
+# )
+# interpolate(vs, at)
 ```
 
 

@@ -32,9 +32,10 @@ at <- tibble::tibble(
 interpolate(x, at)
 }
 \seealso{
-Other interpolate functions: \code{\link{interpolate.ZeroCurve}},
-  \code{\link{interpolate_dfs}},
-  \code{\link{interpolate_zeros}},
+Other interpolate functions: \code{\link{interpolate.CreditCurve}},
+  \code{\link{interpolate.ZeroCurve}},
+  \code{\link{interpolate_dfs.CreditCurve}},
+  \code{\link{interpolate_zeros.CreditCurve}},
   \code{\link{interpolate}}
 }
 \concept{interpolate functions}
