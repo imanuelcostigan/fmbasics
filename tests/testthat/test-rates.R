@@ -14,17 +14,20 @@ test_that("Constructor works", {
 
 test_that("as_DiscountFactor method works", {
   rate <- InterestRate(0.04, 0, "act/360")
-  expect_equal(as_DiscountFactor(rate, ymd("20100101"), ymd("20150101"))$value,
-    0.831331978570109, tolerance=1e20)
+  df <- as_DiscountFactor(rate, ymd("20100101"), ymd("20150101"))
+  expect_equal(field(df,"value"), 0.831331978570109, tolerance=1e20)
+
   rate <- InterestRate(0.075, Inf, "act/365")
-  expect_equal(as_DiscountFactor(rate, ymd("20100101"), ymd("20150101"))$value,
-    0.687148069474866, tolerance=1e20)
+  df <- as_DiscountFactor(rate, ymd("20100101"), ymd("20150101"))
+  expect_equal(field(df, "value"), 0.687148069474866, tolerance=1e20)
+
   rate <- InterestRate(0.01, 4, "30/360us")
-  expect_equal(as_DiscountFactor(rate, ymd("20100101"), ymd("20150101"))$value,
-    0.951288779290496, tolerance=1e20)
+  df <- as_DiscountFactor(rate, ymd("20100101"), ymd("20150101"))
+  expect_equal(field(df, "value"), 0.951288779290496, tolerance=1e20)
+
   rate <- InterestRate(0.01, -1, "30/360us")
-  expect_equal(as_DiscountFactor(rate, ymd("20100101"), ymd("20100330"))$value,
-    0.997527777777778, tolerance=1e20)
+  df <- as_DiscountFactor(rate, ymd("20100101"), ymd("20100330"))
+  expect_equal(field(df, "value"), 0.997527777777778, tolerance=1e20)
 })
 
 test_that("convert method works", {
@@ -45,10 +48,10 @@ context("DiscountFactor")
 
 test_that("Constructor works", {
   dfs <- DiscountFactor(c(0.95, 0.94, 0.93), ymd(20130101),
-    ymd(20140101, 20150101))
-  expect_equal(dfs$value, c(0.95, 0.94, 0.93))
-  expect_equal(dfs$start_date, rep(ymd(20130101), 3))
-  expect_equal(dfs$end_date, ymd(20140101, 20150101, 20140101))
+    ymd(20140101, 20150101, 20140101))
+  expect_equal(field(dfs,"value"), c(0.95, 0.94, 0.93))
+  expect_equal(field(dfs,"start_date"), rep(ymd(20130101), 3))
+  expect_equal(field(dfs, "end_date"), ymd(20140101, 20150101, 20140101))
   expect_true(is.DiscountFactor(dfs))
 })
 

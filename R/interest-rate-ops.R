@@ -170,143 +170,104 @@ compare_rate <- function(op) {
 
 #' \code{DiscountFactor} operations
 #'
-#' A number of different operations can be performed on or with
-#' \code{\link{DiscountFactor}} objects. Methods have been defined for base
-#' package generic operations including arithmetic and comparison.
+#' As the \code{\link{DiscountFactor}} is built with the vctrs package all base
+#' vector operations are available (i.e. \code{c}, \code{[}, ...).
 #'
-#' The operations are:
+#' Additionally \code{DiscountFactor} objects may be multiplied and divided
+#' under the following constraints:
 #' \itemize{
-#' \item \code{c}: concatenates a vector of \code{DiscountFactor} objects
-#' \item \code{[}: extract parts of a \code{DiscountFactor} vector
-#' \item \code{[<-}: replace parts of a \code{DiscountFactor} vector
-#' \item \code{rep}: repeat a \code{DiscountFactor} object
-#' \item \code{length}: determines the length of a \code{DiscountFactor} vector
 #' \item \code{*}: multiplication of \code{DiscountFactor} objects. The end
 #' date of the first discount factor object must be equivalent to the start
 #' date of the second (or vice versa). Arguments are recycled as necessary.
 #' \item \code{/}: division of \code{DiscountFactor} objects. The start date
 #' date of both arguments must be the same. Arguments are recycled as necessary.
-#' \item \code{<, >, <=, >=, ==, !=}: these operate in the standard way on the
-#' \code{discount_factor} field.
 #' }
 #'
 #' @name DiscountFactor-operators
 NULL
 
-#' @export
-c.DiscountFactor <- function (..., recursive = FALSE) {
-  dots <- list(...)
-  assertthat::assert_that(is_atomic_list(dots, is.DiscountFactor))
-  df <- d1 <- d2 <- vector("numeric", length(dots))
-  for (i in seq_along(dots)) {
-    df[i] <- dots[[i]]$value
-    d1[i] <- dots[[i]]$start_date
-    d2[i] <- dots[[i]]$end_date
-  }
-  new_DiscountFactor(df, lubridate::as_date(d1), lubridate::as_date(d2))
-}
-
-#' @export
-`[.DiscountFactor` <- function (x, i, j, ..., drop = TRUE) {
-  new_DiscountFactor(x$value[i], x$start_date[i], x$end_date[i])
-}
-
-#' @export
-`[<-.DiscountFactor` <- function (x, i, j, ..., value) {
-  x$value[i] <- value$value
-  x$start_date[i] <- value$start_date
-  x$end_date[i] <- value$end_date
-  x
-}
-
-#' @export
-rep.DiscountFactor <- function (x, ...) {
-  discount_factor <- rep(x$value, ...)
-  start_date <- rep(x$start_date, ...)
-  end_date <- rep(x$end_date, ...)
-  new_DiscountFactor(discount_factor, start_date, end_date)
-}
-
-#' @export
-length.DiscountFactor <- function (x) {
-  length(x$value)
-}
-
 #' @method all.equal DiscountFactor
-all.equal.DiscountFactor <- function (target, current, ...) {
-  equal_df <- all.equal(target$value, current$value)
-  equal_d1 <- all.equal(target$start_date, current$start_date)
-  equal_d2 <- all.equal(target$end_date, current$end_date)
+all.equal.DiscountFactor <- function(target, current, ...) {
+  equal_df <-
+    all.equal(field(target, "value"), field(current, "value"))
+  equal_d1 <-
+    all.equal(field(target, "start_date"), field(current, "start_date"))
+  equal_d2 <-
+    all.equal(field(target, "end_date"), field(current, "end_date"))
   msg <- NULL
   if (is.character(equal_df))
-    msg <- 'The discount_factor fields are not equal.'
+    msg <- "The discount_factor fields are not equal."
   if (is.character(equal_d1))
-    msg <- c(msg, 'The start_date fields are not equal.')
+    msg <- c(msg, "The start_date fields are not equal.")
   if (is.character(equal_d2))
-    msg <- c(msg, 'The end_date fields are not equal.')
+    msg <- c(msg, "The end_date fields are not equal.")
   if (is.null(msg)) TRUE else msg
 }
 
-#####
-# See zzz.R and https://github.com/wch/s3ops
-####
+#' @method vec_arith DiscountFactor
+#' @export
+vec_arith.DiscountFactor <- function(op, x, y, ...) {
+  UseMethod("vec_arith.DiscountFactor", y)
+}
 
-times_df <- function (e1, e2) {
-  n <- max(length(e1), length(e2))
-  e1 <- rep(e1, length.out = n)
-  e2 <- rep(e2, length.out = n)
-  assertthat::assert_that(
-    any(all(e2$end_date == e1$start_date),
-    all(e1$end_date == e2$start_date))
+#' @method vec_arith.DiscountFactor default
+#' @export
+vec_arith.DiscountFactor.default <- function(op, x, y, ...) {
+  stop_incompatible_op(op, x, y)
+}
+
+#' @method vec_arith.DiscountFactor DiscountFactor
+#' @export
+vec_arith.DiscountFactor.DiscountFactor <- function(op, x, y, ...) {
+  switch(
+    op,
+    "*" = times_df(x, y),
+    "/" = div_df(x, y),
+    stop_incompatible_op(op, x, y)
   )
-  df <- e1$value * e2$value
+}
+
+times_df <- function(e1, e2) {
+  c(e1, e2) %<-% vec_recycle_common(e1, e2)
+
+  e1_start_date <- field(e1, "start_date")
+  e1_end_date <- field(e1, "end_date")
+  e2_start_date <- field(e2, "start_date")
+  e2_end_date <- field(e2, "end_date")
+
+  assertthat::assert_that(
+    any(all(e2_end_date == e1_start_date),
+    all(e1_end_date == e2_start_date))
+  )
+  df <- field(e1, "value") * field(e2, "value")
   # http://adv-r.had.co.nz/Performance.html#implementation-performance
   # Use of pmin/pmax suboptimal
-  d1 <- e1$start_date
-  d1[d1 >= e2$start_date] <- e2$start_date[d1 >= e2$start_date]
-  d2 <- e1$end_date
-  d2[d2 <= e2$end_date] <- e2$end_date[d2 <= e2$end_date]
+  d1 <- e1_start_date
+  d1[d1 >= e2_start_date] <- e2_start_date[d1 >= e2_start_date]
+  d2 <- e1_end_date
+  d2[d2 <= e2_end_date] <- e2_end_date[d2 <= e2_end_date]
   new_DiscountFactor(df, d1, d2)
 }
 
-div_df <- function (e1, e2) {
-  n <- max(length(e1), length(e2))
-  e1 <- rep(e1, length.out = n)
-  e2 <- rep(e2, length.out = n)
-  assertthat::assert_that(all(e1$start_date == e2$start_date))
-  df <- e1$value / e2$value
-  d1 <- e1$end_date
-  d1[d1 >= e2$end_date] <- e2$end_date[d1 >= e2$end_date]
-  d2 <- e1$end_date
-  d2[d2 <= e2$end_date] <- e2$end_date[d2 <= e2$end_date]
+div_df <- function(e1, e2) {
+  c(e1, e2) %<-% vec_recycle_common(e1, e2)
+
+  e1_start_date <- field(e1, "start_date")
+  e1_end_date <- field(e1, "end_date")
+  e2_start_date <- field(e2, "start_date")
+  e2_end_date <- field(e2, "end_date")
+
+  assertthat::assert_that(all(e1_start_date == e2_start_date))
+
+  df <- field(e1, "value") / field(e2, "value")
+  d1 <- e1_end_date
+  d1[d1 >= e2_end_date] <- e2_end_date[d1 >= e2_end_date]
+  d2 <- e1_end_date
+  d2[d2 <= e2_end_date] <- e2_end_date[d2 <= e2_end_date]
   new_DiscountFactor(df, d1, d2)
 }
 
 #' @export
-`==.DiscountFactor` <- function (e1, e2) {
-  e1$value == e2$value
-}
-
-#' @export
-`<.DiscountFactor` <- function (e1, e2) {
-  e1$value < e2$value
-}
-
-`>.DiscountFactor` <- function (e1, e2) {
-  e1$value > e2$value
-}
-
-#' @export
-`<=.DiscountFactor` <- function (e1, e2) {
-  (e1 < e2) | (e1 == e2)
-}
-
-#' @export
-`>=.DiscountFactor` <- function (e1, e2) {
-  (e1 > e2) | (e1 == e2)
-}
-
-#' @export
-`!=.DiscountFactor` <- function (e1, e2) {
-  !(e1 == e2)
+vec_proxy_compare.DiscountFactor <- function(x, ...) {
+  field(x, "value")
 }

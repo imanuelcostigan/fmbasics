@@ -4,24 +4,17 @@
 \alias{DiscountFactor-operators}
 \title{\code{DiscountFactor} operations}
 \description{
-A number of different operations can be performed on or with
-\code{\link{DiscountFactor}} objects. Methods have been defined for base
-package generic operations including arithmetic and comparison.
+As the \code{\link{DiscountFactor}} is built with the vctrs package all base
+vector operations are available (i.e. \code{c}, \code{[}, ...).
 }
 \details{
-The operations are:
+Additionally \code{DiscountFactor} objects may be multiplied and divided
+under the following constraints:
 \itemize{
-\item \code{c}: concatenates a vector of \code{DiscountFactor} objects
-\item \code{[}: extract parts of a \code{DiscountFactor} vector
-\item \code{[<-}: replace parts of a \code{DiscountFactor} vector
-\item \code{rep}: repeat a \code{DiscountFactor} object
-\item \code{length}: determines the length of a \code{DiscountFactor} vector
 \item \code{*}: multiplication of \code{DiscountFactor} objects. The end
 date of the first discount factor object must be equivalent to the start
 date of the second (or vice versa). Arguments are recycled as necessary.
 \item \code{/}: division of \code{DiscountFactor} objects. The start date
 date of both arguments must be the same. Arguments are recycled as necessary.
-\item \code{<, >, <=, >=, ==, !=}: these operate in the standard way on the
-\code{discount_factor} field.
 }
 }

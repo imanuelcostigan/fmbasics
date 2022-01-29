@@ -9,4 +9,6 @@
 #' @name fmbasics
 #' @docType package
 #' @import fmdates
+#' @import vctrs
+#' @importFrom zeallot `%<-%`
 NULL
