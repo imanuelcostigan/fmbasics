@@ -4,39 +4,21 @@
 \alias{InterestRate-operators}
 \title{\code{InterestRate} operations}
 \description{
-A number of different operations can be performed on or with
-\code{\link{InterestRate}} objects. Methods have been defined for base
-package generic operations including arithmetic and comparison.
+The \code{\link{InterestRate}} class is built using the vctrs package.
+Therefore all base vector operations can be performed on or with
+\code{\link{InterestRate}} objects.
 }
 \details{
-The operations are:
+Some care has to be taken when using arithmetic and comparison operators:
 \itemize{
-\item \code{c}: concatenates a vector of \code{InterestRate} objects
-\item \code{[}: extract parts of a \code{InterestRate} vector
-\item \code{[<-}: replace parts of a \code{InterestRate} vector
-\item \code{rep}: repeat a \code{InterestRate} object
-\item \code{length}: determines the length of a \code{InterestRate} vector
-\item \code{+, -}: addition/subtraction of \code{InterestRate} objects. Where
-two \code{InterestRate} objects are added/subtracted, the second is first
-converted to have the same compounding and day basis frequency as the first.
-Numeric values can be added/subtracted to/from an \code{InterestRate}
-object by performing the operation directly on the \code{rate} field.
+\item Arithmetic operations on \code{InterestRate} objects: Where both
+arguments are \code{InterestRate} objects,their compounding and day
+basis frequency must match.
+Operations between numeric values and an \code{InterestRate} object are
+performed directly on the \code{rate} field.
 Arguments are recycled as necessary.
-\item \code{*}: multiplication of \code{InterestRate} objects. Where
-two \code{InterestRate} objects are multiplied, the second is first
-converted to have the same compounding and day basis frequency as the first.
-Numeric values can be multiplied to an \code{InterestRate}
-object by performing the operation directly on the \code{rate} field.
-Arguments are recycled as necessary.
-\item \code{/}: division of \code{InterestRate} objects.  Where
-two \code{InterestRate} objects are divided, the second is first
-converted to have the same compounding and day basis frequency as the first.
-Numeric values can divide an \code{InterestRate}
-object by performing the operation directly on the \code{rate} field.
-Arguments are recycled as necessary.
-\item \code{<, >, <=, >=, ==, !=}: these operate in the standard way on the
-\code{rate} field, and if necessary, the second \code{InterestRate} object
-is converted to have the same compounding and day basis frequency as the
-first.
+\item \code{<, >, <=, >=, ==, !=}: To enable comparison both vectors are
+converted to infinite compounding and act/365 day basis. The
+resulting \code{rate} field is used for comparison.
 }
 }

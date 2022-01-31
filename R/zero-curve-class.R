@@ -62,7 +62,7 @@ new_ZeroCurve <- function(discount_factors, reference_date, interpolation) {
   cp <- Inf
 
   dt <- fmdates::year_frac(reference_date, field(discount_factors, "end_date"), db)
-  r <- as_InterestRate(discount_factors, cp, db)$value
+  r <- field(as_InterestRate(discount_factors, cp, db), "value")
 
   f <- function(t) {
     before_first <- t < dt[1]
