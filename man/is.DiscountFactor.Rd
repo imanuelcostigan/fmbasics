@@ -10,7 +10,8 @@ is.DiscountFactor(x)
 \item{x}{an R object}
 }
 \value{
-\code{TRUE} if \code{x} inherits from the \code{DiscountFactor} class; otherwise \code{FALSE}
+\code{TRUE} if \code{x} inherits from the \code{DiscountFactor} class;
+otherwise \code{FALSE}
 }
 \description{
 Checks whether object inherits from \code{DiscountFactor} class

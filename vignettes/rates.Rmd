@@ -37,10 +37,10 @@ as_InterestRate(rate, day_basis = 'act/360')
 as_InterestRate(rate, compounding = Inf, day_basis = '30/360us')
 ```
 
-You can perform arithmetic on interest rates. Rates are implicitly converted to equivalent day basis and compounding before the operation is performed on the rates' values.
+You can perform arithmetic on interest rates. Their day basis and compounding have to match.
 
 ```{r rate_ops}
-rate1 <- InterestRate(0.04, 2, 'act/365')
+rate1 <- InterestRate(0.04, Inf, 'act/360')
 rate2 <- InterestRate(0.01, Inf, 'act/360')
 rate1 + rate2
 ```

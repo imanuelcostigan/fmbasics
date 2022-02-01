@@ -14,30 +14,32 @@
 #' @return a (vectorised) `DiscountFactor` object
 #' @examples
 #' library("lubridate")
-#' df <- DiscountFactor(c(0.95, 0.94, 0.93), ymd(20130101), ymd(20140101, 20150101))
+#' df <- DiscountFactor(c(0.95, 0.94, 0.93), ymd(20130101),
+#'   ymd(20140101, 20150101, 20140101))
 #' as_InterestRate(df, 2, "act/365")
 #' @export
 
 DiscountFactor <- function(value, d1, d2) {
+  c(value, d1, d2) %<-% vec_recycle_common(value, d1, d2)
   validate_DiscountFactor(new_DiscountFactor(value, d1, d2))
 }
 
-new_DiscountFactor <- function(value, d1, d2) {
-  n <- max(NROW(value), NROW(d1), NROW(d2))
-  structure(list(
-    value = rep(value, length.out = n),
-    start_date = rep(d1, length.out = n),
-    end_date = rep(d2, length.out = n)),
-    class = "DiscountFactor"
-  )
+new_DiscountFactor <- function(value = double(), d1=new_date(), d2=new_date()) {
+  vec_assert(value, ptype = double())
+  vec_assert(d1, ptype = new_date())
+  vec_assert(d2, ptype = new_date())
+
+  new_rcrd(list(
+    value = value,
+    start_date = d1,
+    end_date = d2
+  ), class = "DiscountFactor")
 }
 
 validate_DiscountFactor <- function(x) {
   assertthat::assert_that(
-    all(is.numeric(x$value)),
-    all(lubridate::is.Date(x$start_date)),
-    all(lubridate::is.Date(x$end_date)),
-    all(x$value > 0), all(x$start_date <= x$end_date)
+    all(field(x, "value") > 0),
+    all(field(x, "start_date") <= field(x, "end_date"))
   )
   x
 }
@@ -67,20 +69,21 @@ InterestRate <- function(value, compounding, day_basis) {
 }
 
 new_InterestRate <- function(value, compounding, day_basis) {
-  n <- max(NROW(value), NROW(day_basis), NROW(compounding))
-  structure(list(
-    value = rep_len(value, n),
-    day_basis = rep_len(day_basis, n),
-    compounding = rep_len(compounding, n)),
+  vec_assert(value, ptype = double())
+  vec_assert(day_basis, ptype = character())
+  c(value, compounding, day_basis) %<-%
+    vec_recycle_common(value, compounding, day_basis)
+
+  new_rcrd(
+    list(value = value, day_basis = day_basis, compounding = compounding),
     class = "InterestRate"
   )
 }
 
 validate_InterestRate <- function(x) {
   assertthat::assert_that(
-    all(is.numeric(x$value)),
-    fmdates::is_valid_day_basis(x$day_basis),
-    is_valid_compounding(x$compounding)
+    fmdates::is_valid_day_basis(field(x, "day_basis")),
+    is_valid_compounding(field(x, "compounding"))
   )
   x
 }
@@ -110,36 +113,42 @@ as_InterestRate.DiscountFactor <- function(x, compounding, day_basis, ...) {
     fmdates::is_valid_day_basis(day_basis),
     is_valid_compounding(compounding)
   )
-  term <- fmdates::year_frac(x$start_date, x$end_date, day_basis)
+  term <- fmdates::year_frac(
+    field(x, "start_date"),
+    field(x, "end_date"),
+    day_basis
+  )
   is_cc <- is.infinite(compounding)
   is_simple <- compounding == 0
   is_tbill <- compounding == -1
   is_pc <- !(is_cc | is_simple | is_tbill)
-  rate <- vector("numeric", NROW(x$value))
-  rate[is_cc] <- -log(x$value) / term
-  rate[is_simple] <- (1 / x$value - 1) / term
-  rate[is_tbill] <- (1 - x$value) / term
+
+  df_value <- field(x, "value")
+  rate <- vector("numeric", length(x))
+  rate[is_cc] <- -log(df_value) / term
+  rate[is_simple] <- (1 / df_value - 1) / term
+  rate[is_tbill] <- (1 - df_value) / term
   rate[is_pc] <- compounding *
-    ((1 / x$value) ^ (1 / (compounding * term)) - 1)
+    ((1 / df_value) ^ (1 / (compounding * term)) - 1)
   new_InterestRate(rate, compounding, day_basis)
 }
 
 #' @inheritParams InterestRate
 #' @rdname as_InterestRate
 #' @export
-as_InterestRate.InterestRate <- function(x, compounding = NULL, day_basis = NULL, ...) {
-  if (!all(is.null(compounding), is.null(day_basis))) {
+as_InterestRate.InterestRate <-
+  function(x,
+           compounding = NULL,
+           day_basis = NULL,
+           ...) {
+    if (!all(is.null(compounding), is.null(day_basis))) {
     # start and end dates here don't matter.
     df <- as_DiscountFactor(x, as.Date("2013-01-01"), as.Date("2014-01-01"))
-    if (!is.null(compounding)) {
-      compounding <- rep(compounding, length(x$compounding))
-    } else {
-      compounding <- x$compounding
+    if (is.null(compounding)) {
+      compounding <- field(x, "compounding")
     }
-    if (!is.null(day_basis)) {
-      day_basis <- rep(day_basis, length(x$day_basis))
-    } else {
-      day_basis <- x$day_basis
+    if (is.null(day_basis)) {
+      day_basis <- field(x, "day_basis")
     }
     return(as_InterestRate(df, compounding, day_basis))
   } else {
@@ -169,20 +178,22 @@ as_DiscountFactor.InterestRate <- function(x, d1, d2, ...) {
     lubridate::is.Date(d2)
   )
   # year_frac is vectorised
-  term <- fmdates::year_frac(d1, d2, x$day_basis)
+  term <- fmdates::year_frac(d1, d2, field(x, "day_basis"))
   # determine compounding frequency for each x value
-  is_cc <- is.infinite(x$compounding)
-  is_simple <- x$compounding == 0
-  is_tbill <- x$compounding == -1
+  compounding <- field(x, "compounding")
+  is_cc <- is.infinite(compounding)
+  is_simple <- compounding == 0
+  is_tbill <- compounding == -1
   is_pc <- !(is_cc | is_simple | is_tbill)
   # determine discount factors
-  df <- vector("numeric", NROW(x$value))
-  df[is_cc] <- exp(-x$value * term)
-  df[is_simple] <- 1 / (1 + x$value * term)
-  df[is_tbill] <- 1 - x$value * term
-  df[is_pc] <- 1 / ((1 + x$value / x$compounding) ^
-      (x$compounding * term))
-  new_DiscountFactor(df, d1, d2)
+  df <- vector("numeric", length(x))
+  value <- field(x, "value")
+  df[is_cc] <- exp(-value * term)
+  df[is_simple] <- 1 / (1 + value * term)
+  df[is_tbill] <- 1 - value * term
+  df[is_pc] <- 1 / ((1 + value / compounding) ^
+      (compounding * term))
+  DiscountFactor(df, d1, d2)
 }
 
 #' Inherits from InterestRate
@@ -190,7 +201,8 @@ as_DiscountFactor.InterestRate <- function(x, d1, d2, ...) {
 #' Checks whether object inherits from `InterestRate` class
 #'
 #' @param x an R object
-#' @return `TRUE` if `x` inherits from the `InterestRate` class; otherwise `FALSE`
+#' @return `TRUE` if `x` inherits from the `InterestRate` class;
+#'   otherwise `FALSE`
 #' @examples
 #' is.InterestRate(InterestRate(0.04, 2, "act/365"))
 #' @export
@@ -202,7 +214,8 @@ is.InterestRate <- function(x) inherits(x, "InterestRate")
 #' Checks whether object inherits from `DiscountFactor` class
 #'
 #' @param x an R object
-#' @return `TRUE` if `x` inherits from the `DiscountFactor` class; otherwise `FALSE`
+#' @return `TRUE` if `x` inherits from the `DiscountFactor` class;
+#' otherwise `FALSE`
 #' @examples
 #' is.DiscountFactor(DiscountFactor(0.97, Sys.Date(), Sys.Date() + 30))
 #' @export
@@ -241,31 +254,33 @@ is_valid_compounding <- function(compounding) {
   all(compounding %in% COMPOUNDINGS)
 }
 
-assertthat::on_failure(is_valid_compounding) <- function (call, env) {
+assertthat::on_failure(is_valid_compounding) <- function(call, env) {
   paste0(eval(deparse(call$compounding)), " is not a valid compounding frequency.")
 }
 
 #' @export
-as.double.DiscountFactor <- function(x, ...) x$value
+as.double.DiscountFactor <- function(x, ...) field(x, "value")
 #' @export
-as.double.InterestRate <- function(x, ...) x$value
+as.double.InterestRate <- function(x, ...) field(x, "value")
+
 #' @export
 format.DiscountFactor <- function(x, ...) {
-  paste0("<DiscountFactor> ", x$value, ', ',
-    x$start_date, '--', x$end_date, collapse = '\n')
+  paste0(field(x, "value"), ", ",
+    field(x, "start_date"), "--", field(x, "end_date"))
 }
+
+#' @export
+obj_print_data.InterestRate <- function(x, ...) {
+  cat(paste0(format(x), collapse = "\n"))
+}
+
 #' @export
 format.InterestRate <- function(x, ...) {
-  rp <- format(x$value * 100, nsmall = 5)
-  cmp <- compounding_as_string(x$compounding)
-  db <- x$day_basis
-  paste0("<InterestRate> ", toupper(paste0(rp, "%, ", cmp, ", ", db)),
-    collapse = '\n')
+  rp <- format(field(x, "value") * 100, nsmall = 5)
+  cmp <- compounding_as_string(field(x, "compounding"))
+  db <- field(x, "day_basis")
+  toupper(paste0(rp, "%, ", cmp, ", ", db))
 }
-#' @export
-print.DiscountFactor <- function(x, ...) {cat(format(x), "\n"); invisible(x)}
-#' @export
-print.InterestRate <- function(x, ...) {cat(format(x), "\n"); invisible(x)}
 
 compounding_as_string <- function (compounding) {
   all_freq <- c(-1, 0, 1, 2, 3, 4, 6, 12, 24, 52, 365, Inf)
@@ -284,4 +299,3 @@ compounding_as_string <- function (compounding) {
     "Continuous")
   all_string[all_freq %in% compounding]
 }
-

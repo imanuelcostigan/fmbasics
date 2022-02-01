@@ -61,8 +61,8 @@ new_ZeroCurve <- function(discount_factors, reference_date, interpolation) {
   db <- "act/365"
   cp <- Inf
 
-  dt <- fmdates::year_frac(reference_date, discount_factors$end_date, db)
-  r <- as_InterestRate(discount_factors, cp, db)$value
+  dt <- fmdates::year_frac(reference_date, field(discount_factors, "end_date"), db)
+  r <- field(as_InterestRate(discount_factors, cp, db), "value")
 
   f <- function(t) {
     before_first <- t < dt[1]
@@ -119,10 +119,10 @@ new_ZeroCurve <- function(discount_factors, reference_date, interpolation) {
 
 validate_ZeroCurve <- function(x) {
   assertthat::assert_that(
-    all(x$reference_date <= x$discount_factors$end_date),
+    all(x$reference_date <= field(x$discount_factors, "end_date")),
     is.DiscountFactor(x$discount_factors),
     assertthat::is.date(x$reference_date),
-    !is.unsorted(x$discount_factors$end_date)
+    !is.unsorted(field(x$discount_factors, "end_date"))
   )
   x
 }

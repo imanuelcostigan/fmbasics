@@ -1,312 +1,205 @@
 #' \code{InterestRate} operations
 #'
-#' A number of different operations can be performed on or with
-#' \code{\link{InterestRate}} objects. Methods have been defined for base
-#' package generic operations including arithmetic and comparison.
+#' The \code{\link{InterestRate}} class is built using the vctrs package.
+#' Therefore all base vector operations can be performed on or with
+#' \code{\link{InterestRate}} objects.
 #'
-#' The operations are:
+#' Some care has to be taken when using arithmetic and comparison operators:
 #' \itemize{
-#' \item \code{c}: concatenates a vector of \code{InterestRate} objects
-#' \item \code{[}: extract parts of a \code{InterestRate} vector
-#' \item \code{[<-}: replace parts of a \code{InterestRate} vector
-#' \item \code{rep}: repeat a \code{InterestRate} object
-#' \item \code{length}: determines the length of a \code{InterestRate} vector
-#' \item \code{+, -}: addition/subtraction of \code{InterestRate} objects. Where
-#' two \code{InterestRate} objects are added/subtracted, the second is first
-#' converted to have the same compounding and day basis frequency as the first.
-#' Numeric values can be added/subtracted to/from an \code{InterestRate}
-#' object by performing the operation directly on the \code{rate} field.
+#' \item Arithmetic operations on \code{InterestRate} objects: Where both
+#' arguments are \code{InterestRate} objects,their compounding and day
+#' basis frequency must match.
+#' Operations between numeric values and an \code{InterestRate} object are
+#' performed directly on the \code{rate} field.
 #' Arguments are recycled as necessary.
-#' \item \code{*}: multiplication of \code{InterestRate} objects. Where
-#' two \code{InterestRate} objects are multiplied, the second is first
-#' converted to have the same compounding and day basis frequency as the first.
-#' Numeric values can be multiplied to an \code{InterestRate}
-#' object by performing the operation directly on the \code{rate} field.
-#' Arguments are recycled as necessary.
-#' \item \code{/}: division of \code{InterestRate} objects.  Where
-#' two \code{InterestRate} objects are divided, the second is first
-#' converted to have the same compounding and day basis frequency as the first.
-#' Numeric values can divide an \code{InterestRate}
-#' object by performing the operation directly on the \code{rate} field.
-#' Arguments are recycled as necessary.
-#' \item \code{<, >, <=, >=, ==, !=}: these operate in the standard way on the
-#' \code{rate} field, and if necessary, the second \code{InterestRate} object
-#' is converted to have the same compounding and day basis frequency as the
-#' first.
+#' \item \code{<, >, <=, >=, ==, !=}: To enable comparison both vectors are
+#' converted to infinite compounding and act/365 day basis. The
+#' resulting \code{rate} field is used for comparison.
 #' }
 #'
 #' @name InterestRate-operators
 NULL
 
-#' @export
-c.InterestRate <- function (..., recursive = FALSE) {
-  dots <- list(...)
-  assertthat::assert_that(is_atomic_list(dots, is.InterestRate))
-  value <- compounding <- vector("numeric")
-  day_basis <- vector("character")
-  for (i in seq_along(dots)) {
-    value <- c(value, dots[[i]]$value)
-    compounding <- c(compounding, dots[[i]]$compounding)
-    day_basis <- c(day_basis, dots[[i]]$day_basis)
-  }
-  new_InterestRate(value, compounding, day_basis)
-}
-
-#' @export
-`[.InterestRate` <- function (x, i, j, ..., drop = TRUE) {
-  new_InterestRate(x$value[i], x$compounding[i], x$day_basis[i])
-}
-
-#' @export
-`[<-.InterestRate` <- function (x, i, j, ..., value) {
-  x$value[i] <- value$value
-  x$compounding[i] <- value$compounding
-  x$day_basis[i] <- value$day_basis
-  x
-}
-
-#' @export
-rep.InterestRate <- function (x, ...) {
-  value <- rep(x$value, ...)
-  compounding <- rep(x$compounding, ...)
-  day_basis <- rep(x$day_basis, ...)
-  new_InterestRate(value, compounding, day_basis)
-}
-
-#' @export
-length.InterestRate <- function (x) {
-  length(x$value)
-}
-
 #' @method all.equal InterestRate
 #' @export
-all.equal.InterestRate <- function (target, current, ...) {
-  equal_rates <- all.equal(target$value, current$value)
-  equal_compounding <- all.equal(target$compounding, current$compounding)
-  equal_day_basis <- all.equal(target$day_basis, current$day_basis)
+all.equal.InterestRate <- function(target, current, ...) {
+  equal_rates <-
+    all.equal(field(target, "value"), field(current, "value"))
+  equal_compounding <-
+    all.equal(field(target, "compounding"), field(current, "compounding"))
+  equal_day_basis <-
+    all.equal(field(target, "day_basis"), field(current, "day_basis"))
   msg <- NULL
   if (is.character(equal_rates))
-    msg <- 'The rate fields are not equal.'
+    msg <- "The rate fields are not equal."
   if (is.character(equal_compounding))
-    msg <- c(msg, 'The compounding fields are not equal.')
+    msg <- c(msg, "The compounding fields are not equal.")
   if (is.character(equal_day_basis))
-    msg <- c(msg, 'The day basis fields are not equal.')
+    msg <- c(msg, "The day basis fields are not equal.")
   if (is.null(msg)) TRUE else msg
 }
 
-#####
-# See zzz.R and https://github.com/wch/s3ops
-####
 
-op_ir <- function (op) {
-  f <- function (e1, e2) {
-    # Make sure both args are the same length
-    n <- max(length(e1), length(e2))
-    e1 <- rep(e1, length.out = n)
-    e2 <- rep(e2, length.out = n)
-    # Operate
-    is_ir <- c(is.InterestRate(e1), is.InterestRate(e2))
-    if (xor(is_ir[1], is_ir[2])) {
-      # Only one IR. Which of e1 / e2 is IR?
-      if (is_ir[1]) {
-        return(new_InterestRate(op(e1$value, e2), e1$compounding, e1$day_basis))
-      } else {
-        return(f(e2, e1))
-      }
-    } else {
-      # Both are IR (this function is called only if at least one IR found)
-      # Convert second to same comp/daybasis as first.
-      e2 <- as_InterestRate(e2, e1$compounding, e1$day_basis)
-      return(new_InterestRate(op(e1$value, e2$value), e1$compounding, e1$day_basis))
-    }
+#' @method vec_arith InterestRate
+#' @export
+vec_arith.InterestRate <- function(op, x, y, ...) {
+  UseMethod("vec_arith.InterestRate", y)
+}
+
+#' @method vec_arith.InterestRate default
+#' @export
+vec_arith.InterestRate.default <- function(op, x, y, ...) {
+  stop_incompatible_op(op, x, y)
+}
+
+#' @method vec_arith.InterestRate InterestRate
+#' @export
+vec_arith.InterestRate.InterestRate <- function(op, x, y, ...) {
+  if (!all(field(x, "compounding") == field(y, "compounding"))) {
+    stop_incompatible_op(details = "Compounding fields must be equal.")
   }
-  return (f)
-}
-
-plus_ir <- op_ir(`+`)
-times_ir <- op_ir(`*`)
-minus_ir <- op_ir(`-`)
-div_ir <- op_ir(`/`)
-
-compare_rate <- function(op) {
-  function (e1, e2) {
-    res <- vector("logical", length(e1))
-    same_basis <- e1$compounding == e2$compounding & e1$day_basis == e2$day_basis
-    if (any(same_basis)) {
-      res[same_basis] <- op(e1$value[same_basis], e2$value[same_basis])
-    }
-    if (!all(same_basis)) {
-      res[!same_basis] <- op(e1$value[!same_basis], as_InterestRate(e2,
-        e1$compounding[!same_basis], e1$day_basis[!same_basis])$value)
-    }
-    return(res)
+  if (!all(field(x, "day_basis") == field(y, "day_basis"))) {
+    stop_incompatible_op(details = "Day basis fields must be equal.")
   }
+
+  new_InterestRate(
+    vec_arith_base(op, field(x, "value"), field(y, "value")),
+    field(x, "compounding"),
+    field(x, "day_basis")
+  )
+}
+
+#' @method vec_arith.InterestRate numeric
+#' @export
+vec_arith.InterestRate.numeric <- function(op, x, y, ...) {
+  new_InterestRate(
+    vec_arith_base(op, field(x, "value"), y),
+    field(x, "compounding"),
+    field(x, "day_basis")
+  )
+}
+
+#' @method vec_arith.numeric InterestRate
+#' @export
+vec_arith.numeric.InterestRate <- function(op, x, y, ...) {
+  new_InterestRate(
+    vec_arith_base(op, x, field(y, "value")),
+    field(y, "compounding"),
+    field(y, "day_basis")
+  )
 }
 
 #' @export
-`==.InterestRate` <- compare_rate(`==`)
-
-#' @export
-`<.InterestRate` <- compare_rate(`<`)
-
-#' @export
-`>.InterestRate` <- compare_rate(`>`)
-
-#' @export
-`<=.InterestRate` <- function (e1, e2) {
-  (e1 < e2) | (e1 == e2)
+vec_proxy_equal.InterestRate <- function(x, ...) {
+  field(as_InterestRate(x, compounding = Inf, day_basis = "act/365"), "value")
 }
 
 #' @export
-`>=.InterestRate` <- function (e1, e2) {
-  (e1 > e2) | (e1 == e2)
-}
-
-#' @export
-`!=.InterestRate` <- function (e1, e2) {
-  !(e1 == e2)
+vec_proxy_compare.InterestRate <- function(x, ...) {
+  field(as_InterestRate(x, compounding = Inf, day_basis = "act/365"), "value")
 }
 
 
 #' \code{DiscountFactor} operations
 #'
-#' A number of different operations can be performed on or with
-#' \code{\link{DiscountFactor}} objects. Methods have been defined for base
-#' package generic operations including arithmetic and comparison.
+#' As the \code{\link{DiscountFactor}} is built with the vctrs package all base
+#' vector operations are available (i.e. \code{c}, \code{[}, ...).
 #'
-#' The operations are:
+#' Additionally \code{DiscountFactor} objects may be multiplied and divided
+#' under the following constraints:
 #' \itemize{
-#' \item \code{c}: concatenates a vector of \code{DiscountFactor} objects
-#' \item \code{[}: extract parts of a \code{DiscountFactor} vector
-#' \item \code{[<-}: replace parts of a \code{DiscountFactor} vector
-#' \item \code{rep}: repeat a \code{DiscountFactor} object
-#' \item \code{length}: determines the length of a \code{DiscountFactor} vector
 #' \item \code{*}: multiplication of \code{DiscountFactor} objects. The end
 #' date of the first discount factor object must be equivalent to the start
 #' date of the second (or vice versa). Arguments are recycled as necessary.
 #' \item \code{/}: division of \code{DiscountFactor} objects. The start date
 #' date of both arguments must be the same. Arguments are recycled as necessary.
-#' \item \code{<, >, <=, >=, ==, !=}: these operate in the standard way on the
-#' \code{discount_factor} field.
 #' }
 #'
 #' @name DiscountFactor-operators
 NULL
 
-#' @export
-c.DiscountFactor <- function (..., recursive = FALSE) {
-  dots <- list(...)
-  assertthat::assert_that(is_atomic_list(dots, is.DiscountFactor))
-  df <- d1 <- d2 <- vector("numeric", length(dots))
-  for (i in seq_along(dots)) {
-    df[i] <- dots[[i]]$value
-    d1[i] <- dots[[i]]$start_date
-    d2[i] <- dots[[i]]$end_date
-  }
-  new_DiscountFactor(df, lubridate::as_date(d1), lubridate::as_date(d2))
-}
-
-#' @export
-`[.DiscountFactor` <- function (x, i, j, ..., drop = TRUE) {
-  new_DiscountFactor(x$value[i], x$start_date[i], x$end_date[i])
-}
-
-#' @export
-`[<-.DiscountFactor` <- function (x, i, j, ..., value) {
-  x$value[i] <- value$value
-  x$start_date[i] <- value$start_date
-  x$end_date[i] <- value$end_date
-  x
-}
-
-#' @export
-rep.DiscountFactor <- function (x, ...) {
-  discount_factor <- rep(x$value, ...)
-  start_date <- rep(x$start_date, ...)
-  end_date <- rep(x$end_date, ...)
-  new_DiscountFactor(discount_factor, start_date, end_date)
-}
-
-#' @export
-length.DiscountFactor <- function (x) {
-  length(x$value)
-}
-
 #' @method all.equal DiscountFactor
-all.equal.DiscountFactor <- function (target, current, ...) {
-  equal_df <- all.equal(target$value, current$value)
-  equal_d1 <- all.equal(target$start_date, current$start_date)
-  equal_d2 <- all.equal(target$end_date, current$end_date)
+all.equal.DiscountFactor <- function(target, current, ...) {
+  equal_df <-
+    all.equal(field(target, "value"), field(current, "value"))
+  equal_d1 <-
+    all.equal(field(target, "start_date"), field(current, "start_date"))
+  equal_d2 <-
+    all.equal(field(target, "end_date"), field(current, "end_date"))
   msg <- NULL
   if (is.character(equal_df))
-    msg <- 'The discount_factor fields are not equal.'
+    msg <- "The discount_factor fields are not equal."
   if (is.character(equal_d1))
-    msg <- c(msg, 'The start_date fields are not equal.')
+    msg <- c(msg, "The start_date fields are not equal.")
   if (is.character(equal_d2))
-    msg <- c(msg, 'The end_date fields are not equal.')
+    msg <- c(msg, "The end_date fields are not equal.")
   if (is.null(msg)) TRUE else msg
 }
 
-#####
-# See zzz.R and https://github.com/wch/s3ops
-####
+#' @method vec_arith DiscountFactor
+#' @export
+vec_arith.DiscountFactor <- function(op, x, y, ...) {
+  UseMethod("vec_arith.DiscountFactor", y)
+}
 
-times_df <- function (e1, e2) {
-  n <- max(length(e1), length(e2))
-  e1 <- rep(e1, length.out = n)
-  e2 <- rep(e2, length.out = n)
-  assertthat::assert_that(
-    any(all(e2$end_date == e1$start_date),
-    all(e1$end_date == e2$start_date))
+#' @method vec_arith.DiscountFactor default
+#' @export
+vec_arith.DiscountFactor.default <- function(op, x, y, ...) {
+  stop_incompatible_op(op, x, y)
+}
+
+#' @method vec_arith.DiscountFactor DiscountFactor
+#' @export
+vec_arith.DiscountFactor.DiscountFactor <- function(op, x, y, ...) {
+  switch(
+    op,
+    "*" = times_df(x, y),
+    "/" = div_df(x, y),
+    stop_incompatible_op(op, x, y)
   )
-  df <- e1$value * e2$value
+}
+
+times_df <- function(e1, e2) {
+  c(e1, e2) %<-% vec_recycle_common(e1, e2)
+
+  e1_start_date <- field(e1, "start_date")
+  e1_end_date <- field(e1, "end_date")
+  e2_start_date <- field(e2, "start_date")
+  e2_end_date <- field(e2, "end_date")
+
+  assertthat::assert_that(
+    any(all(e2_end_date == e1_start_date),
+    all(e1_end_date == e2_start_date))
+  )
+  df <- field(e1, "value") * field(e2, "value")
   # http://adv-r.had.co.nz/Performance.html#implementation-performance
   # Use of pmin/pmax suboptimal
-  d1 <- e1$start_date
-  d1[d1 >= e2$start_date] <- e2$start_date[d1 >= e2$start_date]
-  d2 <- e1$end_date
-  d2[d2 <= e2$end_date] <- e2$end_date[d2 <= e2$end_date]
+  d1 <- e1_start_date
+  d1[d1 >= e2_start_date] <- e2_start_date[d1 >= e2_start_date]
+  d2 <- e1_end_date
+  d2[d2 <= e2_end_date] <- e2_end_date[d2 <= e2_end_date]
   new_DiscountFactor(df, d1, d2)
 }
 
-div_df <- function (e1, e2) {
-  n <- max(length(e1), length(e2))
-  e1 <- rep(e1, length.out = n)
-  e2 <- rep(e2, length.out = n)
-  assertthat::assert_that(all(e1$start_date == e2$start_date))
-  df <- e1$value / e2$value
-  d1 <- e1$end_date
-  d1[d1 >= e2$end_date] <- e2$end_date[d1 >= e2$end_date]
-  d2 <- e1$end_date
-  d2[d2 <= e2$end_date] <- e2$end_date[d2 <= e2$end_date]
+div_df <- function(e1, e2) {
+  c(e1, e2) %<-% vec_recycle_common(e1, e2)
+
+  e1_start_date <- field(e1, "start_date")
+  e1_end_date <- field(e1, "end_date")
+  e2_start_date <- field(e2, "start_date")
+  e2_end_date <- field(e2, "end_date")
+
+  assertthat::assert_that(all(e1_start_date == e2_start_date))
+
+  df <- field(e1, "value") / field(e2, "value")
+  d1 <- e1_end_date
+  d1[d1 >= e2_end_date] <- e2_end_date[d1 >= e2_end_date]
+  d2 <- e1_end_date
+  d2[d2 <= e2_end_date] <- e2_end_date[d2 <= e2_end_date]
   new_DiscountFactor(df, d1, d2)
 }
 
 #' @export
-`==.DiscountFactor` <- function (e1, e2) {
-  e1$value == e2$value
-}
-
-#' @export
-`<.DiscountFactor` <- function (e1, e2) {
-  e1$value < e2$value
-}
-
-`>.DiscountFactor` <- function (e1, e2) {
-  e1$value > e2$value
-}
-
-#' @export
-`<=.DiscountFactor` <- function (e1, e2) {
-  (e1 < e2) | (e1 == e2)
-}
-
-#' @export
-`>=.DiscountFactor` <- function (e1, e2) {
-  (e1 > e2) | (e1 == e2)
-}
-
-#' @export
-`!=.DiscountFactor` <- function (e1, e2) {
-  !(e1 == e2)
+vec_proxy_compare.DiscountFactor <- function(x, ...) {
+  field(x, "value")
 }

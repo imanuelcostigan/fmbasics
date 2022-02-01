@@ -5,7 +5,9 @@ Version: 0.3.99
 Authors@R: c(person(given = "Imanuel", family = "Costigan", role = c("aut", "cre"),
                     email = "i.costigan@me.com"),
              person(given = "Sayf", family = "Hamada", role = "ctb",
-                    email = "sayfeddine.hamada@westpac.com.au"))
+                    email = "sayfeddine.hamada@westpac.com.au"),
+             person(given = "Bastian", family = "Torges", role = "ctb",
+                    email = "bastian.torges@gmail.com"))
 Description: Implements basic financial market objects like
     currencies, currency pairs, interest rates and interest rate indices.
     You will be able to use Benchmark instances of these objects which
@@ -26,7 +28,9 @@ Imports:
     tibble,
     utils,
     tidyr,
-    credule
+    credule,
+    zeallot,
+    vctrs
 Suggests: 
     covr,
     knitr,
@@ -37,4 +41,4 @@ VignetteBuilder:
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 6.1.1
+RoxygenNote: 7.1.2
